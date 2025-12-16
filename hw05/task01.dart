@@ -8,7 +8,7 @@ void main() {
 
   // Тестирование класса Student и функции сортировки
   print('\n Тест класса Student и сортировки:');
-  
+
   List<Student> students = [
     Student('Иван', 20, 4.5),
     Student('Мария', 21, 4.8),
@@ -23,7 +23,7 @@ void main() {
   }
 
   List<Student> sortedStudents = sortStudentsByGPA(students);
-  
+
   print('\n Студенты после сортировки по среднему баллу (по убыванию):');
   for (var student in sortedStudents) {
     print(student);
@@ -43,11 +43,11 @@ List<int> filterEvenNumbers(List<int> numbers) {
 
 // Класс Student
 class Student {
-  String name;
-  int age;
-  double gpa;
+  final String name;
+  final int age;
+  final double gpa;
 
-  Student(this.name, this.age, this.gpa);
+  const Student(this.name, this.age, this.gpa);
 
   @override
   String toString() {
