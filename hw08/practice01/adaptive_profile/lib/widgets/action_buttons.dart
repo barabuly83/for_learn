@@ -18,10 +18,12 @@ class ActionButtons extends StatelessWidget {
     return Row(
       children: [
         Expanded(
+          flex: 2,
           child: _buildPrimaryButton(),
         ),
         const SizedBox(width: AppDimens.paddingMedium),
         Expanded(
+          flex: 1,
           child: _buildSecondaryButton(),
         ),
       ],

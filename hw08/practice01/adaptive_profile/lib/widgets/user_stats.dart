@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import '../utils/constants.dart';
 
 class UserStats extends StatelessWidget {
-  const UserStats({super.key});
+  final bool isWideScreen;
+
+  const UserStats({super.key, this.isWideScreen = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(AppDimens.paddingMedium),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         color: AppColors.background,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.grey[200]!),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: isWideScreen 
+            ? MainAxisAlignment.spaceAround 
+            : MainAxisAlignment.spaceBetween,
         children: [
           _buildStatItem('2.5K', 'Подписчики', Icons.people),
           _buildDivider(),
