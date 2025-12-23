@@ -13,7 +13,6 @@ class ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final double headerHeight = isWideScreen ? 200 : 150;
     final double bannerHeight = isWideScreen ? 140 : 100;
-    final double avatarPosition = isWideScreen ? 24 : MediaQuery.of(context).size.width / 2 - 60;
 
     return SizedBox(
       height: headerHeight,
@@ -21,9 +20,6 @@ class ProfileHeader extends StatelessWidget {
         children: [
           // Фоновый баннер
           _buildBanner(bannerHeight),
-          
-          // Аватар
-          _buildAvatar(avatarPosition),
           
           // Кнопка "Назад"
           _buildBackButton(),
@@ -49,40 +45,6 @@ class ProfileHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatar(double leftPosition) {
-    return Positioned(
-      bottom: 0,
-      left: leftPosition,
-      child: Container(
-        width: AppDimens.avatarSizeLarge,
-        height: AppDimens.avatarSizeLarge,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.white, width: 4),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              spreadRadius: 2,
-            ),
-          ],
-        ),
-        child: ClipOval(
-          child: Image.network(
-            'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400',
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => const Icon(
-              Icons.person,
-              size: 60,
-              color: Colors.grey,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildBackButton() {
     return const Align(
       alignment: Alignment.topLeft,
@@ -90,7 +52,7 @@ class ProfileHeader extends StatelessWidget {
         padding: EdgeInsets.all(12.0),
         child: CircleButton(
           icon: Icons.arrow_back,
-          onPressed: null, // В реальном приложении передайте Navigator.pop
+          onPressed: null,
         ),
       ),
     );
@@ -103,7 +65,7 @@ class ProfileHeader extends StatelessWidget {
         padding: EdgeInsets.all(12.0),
         child: CircleButton(
           icon: Icons.settings,
-          onPressed: null, // В реальном приложении передайте функцию
+          onPressed: null,
         ),
       ),
     );

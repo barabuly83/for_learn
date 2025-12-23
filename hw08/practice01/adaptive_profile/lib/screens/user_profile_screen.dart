@@ -13,22 +13,22 @@ class UserProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final isWideScreen = constraints.maxWidth > 600;
-              
-              return AdaptiveLayout(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isWideScreen = constraints.maxWidth > 600;
+            
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: AdaptiveLayout(
                 isWideScreen: isWideScreen,
                 header: ProfileHeader(isWideScreen: isWideScreen),
                 userInfo: UserInfo(isWideScreen: isWideScreen),
                 stats: const UserStats(),
                 additionalInfo: const AdditionalInfo(),
                 actionButtons: ActionButtons(isWideScreen: isWideScreen),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

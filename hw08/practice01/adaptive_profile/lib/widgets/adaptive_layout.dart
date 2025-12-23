@@ -21,19 +21,21 @@ class AdaptiveLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        header,
-        const SizedBox(height: AppDimens.paddingLarge),
-        userInfo,
-        const SizedBox(height: AppDimens.paddingLarge),
-        stats,
-        const SizedBox(height: AppDimens.paddingLarge),
-        additionalInfo,
-        const Spacer(),
-        actionButtons,
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          header,
+          const SizedBox(height: AppDimens.paddingLarge),
+          userInfo,
+          const SizedBox(height: AppDimens.paddingLarge),
+          stats,
+          const SizedBox(height: AppDimens.paddingLarge),
+          additionalInfo,
+          const SizedBox(height: AppDimens.paddingLarge * 2), // Удвоенный отступ вместо Spacer
+          actionButtons,
+        ],
+      ),
     );
   }
 }
