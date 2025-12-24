@@ -38,7 +38,7 @@ class AdaptiveLayout extends StatelessWidget {
             children: [
               header,
               Positioned(
-                left: 16,
+                left: AppDimens.paddingMedium,
                 bottom: -AppDimens.avatarSizeLarge / 2,
                 child: Container(
                   width: AppDimens.avatarSizeLarge,
@@ -48,14 +48,17 @@ class AdaptiveLayout extends StatelessWidget {
                     color: AppColors.avatarPurple,
                     border: Border.all(
                       color: AppColors.white,
-                      width: 4,
+                      width: AppDimens.avatarBorderWidth,
                     ),
                   ),
                 ),
               ),
               Positioned(
-                left: 16 + AppDimens.avatarSizeLarge + 16,
-                bottom: -AppDimens.avatarSizeLarge / 2 - 20,
+                left: AppDimens.paddingMedium +
+                    AppDimens.avatarSizeLarge +
+                    AppDimens.paddingMedium,
+                bottom: -AppDimens.avatarSizeLarge / 2 -
+                    AppDimens.userInfoVerticalOffset,
                 child: userInfo,
               ),
             ],
@@ -75,13 +78,15 @@ class AdaptiveLayout extends StatelessWidget {
   }
 
   double _calculateStatsOffset() {
-    const double userInfoHeight = 40.0;
-    double userInfoBottom = AppDimens.avatarSizeLarge / 2 - 20 + userInfoHeight;
+    const double userInfoHeight = AppDimens.userInfoHeight;
+    double userInfoBottom = AppDimens.avatarSizeLarge / 2 -
+        AppDimens.userInfoVerticalOffset +
+        userInfoHeight;
     const double minGap = AppDimens.paddingMedium;
     double baseOffset = AppDimens.avatarSizeLarge / 2;
     double calculatedOffset = userInfoBottom + minGap;
     return (calculatedOffset > baseOffset ? calculatedOffset : baseOffset) +
-        4.0;
+        AppDimens.statsOffsetSafetyMargin;
   }
 
   // Вертикальная верстка (телефон)

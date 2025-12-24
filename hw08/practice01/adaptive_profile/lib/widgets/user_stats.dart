@@ -16,19 +16,19 @@ class UserStatsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        vertical: 24,
-        horizontal: 16,
+        vertical: AppDimens.paddingLarge,
+        horizontal: AppDimens.paddingMedium,
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: AppDimens.paddingMedium),
       decoration: BoxDecoration(
         color: AppColors.statsBackground,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppDimens.borderRadiusMedium),
         border: Border.all(color: AppColors.borderGrey),
         boxShadow: [
           BoxShadow(
             color: AppColors.shadowVeryLight,
-            blurRadius: 8,
-            spreadRadius: 1,
+            blurRadius: AppDimens.shadowBlurMedium,
+            spreadRadius: AppDimens.shadowSpreadSmall,
           ),
         ],
       ),
@@ -62,7 +62,7 @@ class UserStatsWidget extends StatelessWidget {
           value,
           style: AppTextStyles.statValue,
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppDimens.paddingXSmall),
         Text(
           label,
           style: AppTextStyles.statLabel,

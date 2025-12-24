@@ -12,16 +12,16 @@ class CustomFloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 56,
-      height: 56,
+      width: AppDimens.fabSize,
+      height: AppDimens.fabSize,
       decoration: BoxDecoration(
         color: AppColors.buttonBackground,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppDimens.borderRadiusMedium),
         boxShadow: [
           BoxShadow(
             color: AppColors.shadowLight,
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            blurRadius: AppDimens.shadowBlurMedium,
+            offset: Offset(0, AppDimens.shadowOffsetY),
           ),
         ],
       ),
@@ -29,12 +29,12 @@ class CustomFloatingActionButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onPressed,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppDimens.borderRadiusMedium),
           child: Center(
             child: Icon(
               Icons.add,
               color: AppColors.textSecondary,
-              size: 28,
+              size: AppDimens.iconSizeMedium,
             ),
           ),
         ),

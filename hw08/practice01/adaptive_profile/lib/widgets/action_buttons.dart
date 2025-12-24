@@ -21,19 +21,21 @@ class ActionButtons extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         backgroundColor: AppColors.buttonBackground,
         side: const BorderSide(color: AppColors.buttonPurple, width: 1),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-        minimumSize: const Size(140, 40),
+        padding: const EdgeInsets.symmetric(
+          vertical: AppDimens.buttonPaddingVertical,
+          horizontal: AppDimens.buttonPaddingHorizontal,
+        ),
+        minimumSize: const Size(
+          AppDimens.buttonMinWidth,
+          AppDimens.buttonMinHeight,
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(AppDimens.borderRadiusLarge),
         ),
       ),
       child: const Text(
         'Редактировать',
-        style: TextStyle(
-          color: AppColors.buttonPurple,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
+        style: AppTextStyles.buttonText,
       ),
     );
   }
@@ -44,19 +46,21 @@ class ActionButtons extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         backgroundColor: AppColors.white,
         side: const BorderSide(color: AppColors.buttonPurple, width: 1),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-        minimumSize: const Size(140, 40),
+        padding: const EdgeInsets.symmetric(
+          vertical: AppDimens.buttonPaddingVertical,
+          horizontal: AppDimens.buttonPaddingHorizontal,
+        ),
+        minimumSize: const Size(
+          AppDimens.buttonMinWidth,
+          AppDimens.buttonMinHeight,
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(AppDimens.borderRadiusLarge),
         ),
       ),
       child: const Text(
         'Поделиться',
-        style: TextStyle(
-          color: AppColors.buttonPurple,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
+        style: AppTextStyles.buttonText,
       ),
     );
   }

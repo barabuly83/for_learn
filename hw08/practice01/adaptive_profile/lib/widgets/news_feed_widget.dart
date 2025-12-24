@@ -130,11 +130,7 @@ class NewsFeedWidget extends StatelessWidget {
                       Center(
                         child: Text(
                           'Лента новостей',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
-                          ),
+                          style: AppTextStyles.newsTitle,
                         ),
                       ),
                       Align(
@@ -160,7 +156,8 @@ class NewsFeedWidget extends StatelessWidget {
           ),
           LayoutBuilder(
             builder: (context, constraints) {
-              final crossAxisCount = constraints.maxWidth > 600 ? 3 : 2;
+              final crossAxisCount =
+                  constraints.maxWidth > AppDimens.breakpointWidth ? 3 : 2;
 
               return GridView.builder(
                 shrinkWrap: true,
@@ -170,7 +167,7 @@ class NewsFeedWidget extends StatelessWidget {
                   crossAxisCount: crossAxisCount,
                   crossAxisSpacing: AppDimens.paddingMedium,
                   mainAxisSpacing: AppDimens.paddingMedium,
-                  childAspectRatio: 0.75,
+                  childAspectRatio: AppDimens.newsCardAspectRatio,
                 ),
                 itemCount: NewsData.items.length,
                 itemBuilder: (context, index) {
