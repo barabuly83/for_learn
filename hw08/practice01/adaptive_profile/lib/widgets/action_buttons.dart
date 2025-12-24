@@ -2,88 +2,60 @@ import 'package:flutter/material.dart';
 import '../utils/constants.dart';
 
 class ActionButtons extends StatelessWidget {
-  final bool isWideScreen;
-
-  const ActionButtons({
-    super.key,
-    required this.isWideScreen,
-  });
+  const ActionButtons({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return isWideScreen ? _buildWideLayout() : _buildNarrowLayout();
-  }
-
-  Widget _buildWideLayout() {
     return Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: _buildPrimaryButton(),
-        ),
-        const SizedBox(width: AppDimens.paddingMedium),
-        Expanded(
-          flex: 1,
-          child: _buildSecondaryButton(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildNarrowLayout() {
-    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _buildPrimaryButton(),
-        const SizedBox(height: AppDimens.paddingMedium),
         _buildSecondaryButton(),
       ],
     );
   }
 
   Widget _buildPrimaryButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+    return OutlinedButton(
+      onPressed: () {},
+      style: OutlinedButton.styleFrom(
+        backgroundColor: AppColors.buttonBackground,
+        side: const BorderSide(color: AppColors.buttonPurple, width: 1),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        minimumSize: const Size(140, 40),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
         ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.chat, size: 20),
-            SizedBox(width: 8),
-            Text('Написать сообщение'),
-          ],
+      ),
+      child: const Text(
+        'Редактировать',
+        style: TextStyle(
+          color: AppColors.buttonPurple,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
   }
 
   Widget _buildSecondaryButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: OutlinedButton(
-        onPressed: () {},
-        style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: AppColors.primary),
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+    return OutlinedButton(
+      onPressed: () {},
+      style: OutlinedButton.styleFrom(
+        backgroundColor: AppColors.white,
+        side: const BorderSide(color: AppColors.buttonPurple, width: 1),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        minimumSize: const Size(140, 40),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
         ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.add_circle_outline, size: 20),
-            SizedBox(width: 8),
-            Text('Подписаться'),
-          ],
+      ),
+      child: const Text(
+        'Поделиться',
+        style: TextStyle(
+          color: AppColors.buttonPurple,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
