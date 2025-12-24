@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../utils/constants.dart';
+import '../utils/layout_calculator.dart';
 import 'news_feed_widget.dart';
+import 'avatar_widget.dart';
 
 class AdaptiveLayout extends StatelessWidget {
   final bool isWideScreen;
@@ -40,18 +42,7 @@ class AdaptiveLayout extends StatelessWidget {
               Positioned(
                 left: AppDimens.paddingMedium,
                 bottom: -AppDimens.avatarSizeLarge / 2,
-                child: Container(
-                  width: AppDimens.avatarSizeLarge,
-                  height: AppDimens.avatarSizeLarge,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.avatarPurple,
-                    border: Border.all(
-                      color: AppColors.white,
-                      width: AppDimens.avatarBorderWidth,
-                    ),
-                  ),
-                ),
+                child: AvatarWidget(size: AppDimens.avatarSizeLarge),
               ),
               Positioned(
                 left: AppDimens.paddingMedium +
@@ -64,7 +55,7 @@ class AdaptiveLayout extends StatelessWidget {
             ],
           ),
           SizedBox(
-            height: _calculateStatsOffset(),
+            height: LayoutCalculator.calculateStatsOffset(),
           ),
           stats,
           const SizedBox(height: AppDimens.paddingLarge),
@@ -75,18 +66,6 @@ class AdaptiveLayout extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  double _calculateStatsOffset() {
-    const double userInfoHeight = AppDimens.userInfoHeight;
-    double userInfoBottom = AppDimens.avatarSizeLarge / 2 -
-        AppDimens.userInfoVerticalOffset +
-        userInfoHeight;
-    const double minGap = AppDimens.paddingMedium;
-    double baseOffset = AppDimens.avatarSizeLarge / 2;
-    double calculatedOffset = userInfoBottom + minGap;
-    return (calculatedOffset > baseOffset ? calculatedOffset : baseOffset) +
-        AppDimens.statsOffsetSafetyMargin;
   }
 
   // Вертикальная верстка (телефон)
