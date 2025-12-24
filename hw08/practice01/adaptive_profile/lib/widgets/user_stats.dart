@@ -3,12 +3,10 @@ import '../utils/constants.dart';
 import '../models/user_model.dart';
 
 class UserStatsWidget extends StatelessWidget {
-  final bool isWideScreen;
   final UserStats stats;
 
   const UserStatsWidget({
     super.key,
-    required this.isWideScreen,
     required this.stats,
   });
 

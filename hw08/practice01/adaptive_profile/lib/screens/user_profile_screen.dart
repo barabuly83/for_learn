@@ -7,14 +7,14 @@ import '../widgets/adaptive_layout.dart';
 import '../widgets/custom_floating_action_button.dart';
 import '../data/user_data.dart';
 import '../utils/constants.dart';
+import '../utils/screen_utils.dart';
 
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isWideScreen = screenWidth > AppDimens.breakpointWidth;
+    final isWideScreen = ScreenUtils.isWideScreen(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -29,21 +29,16 @@ class UserProfileScreen extends StatelessWidget {
                 user: UserData.currentUser,
               ),
               stats: UserStatsWidget(
-                isWideScreen: isWideScreen,
                 stats: UserData.currentUser.stats,
               ),
               actionButtons: const ActionButtons(),
             ),
           ),
-          SafeArea(
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.all(AppDimens.paddingMedium),
-                child: const CustomFloatingActionButton(
-                  onPressed: null,
-                ),
-              ),
+          Positioned(
+            right: AppDimens.paddingMedium,
+            bottom: AppDimens.paddingMedium,
+            child: const CustomFloatingActionButton(
+              onPressed: null,
             ),
           ),
         ],

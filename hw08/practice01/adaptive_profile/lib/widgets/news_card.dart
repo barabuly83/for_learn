@@ -47,7 +47,7 @@ class NewsCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppDimens.paddingSmall,
-                vertical: 6.0,
+                vertical: AppDimens.newsCardContentPaddingVertical,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

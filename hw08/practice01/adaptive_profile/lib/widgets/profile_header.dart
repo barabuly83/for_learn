@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utils/constants.dart';
+import 'avatar_widget.dart';
 
 class ProfileHeader extends StatelessWidget {
   final bool isWideScreen;
@@ -30,18 +31,7 @@ class ProfileHeader extends StatelessWidget {
             right: 0,
             child: Align(
               alignment: Alignment.center,
-              child: Container(
-                width: AppDimens.avatarSizeSmall,
-                height: AppDimens.avatarSizeSmall,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.avatarPurple,
-                  border: Border.all(
-                    color: AppColors.white,
-                    width: AppDimens.avatarBorderWidth,
-                  ),
-                ),
-              ),
+              child: AvatarWidget(size: AppDimens.avatarSizeSmall),
             ),
           ),
         Positioned(

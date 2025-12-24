@@ -150,6 +150,7 @@ class AppDimens {
   // Карточки
   static const double cardElevation = 2.0;
   static const double newsCardAspectRatio = 0.75;
+  static const double newsCardContentPaddingVertical = 6.0;
 
   // Иконки
   static const double iconSizeSmall = 10.0;
