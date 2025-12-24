@@ -9,17 +9,26 @@ class ActionButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildPrimaryButton(),
-        _buildSecondaryButton(),
+        _buildButton(
+          text: 'Редактировать',
+          backgroundColor: AppColors.buttonBackground,
+        ),
+        _buildButton(
+          text: 'Поделиться',
+          backgroundColor: AppColors.white,
+        ),
       ],
     );
   }
 
-  Widget _buildPrimaryButton() {
+  Widget _buildButton({
+    required String text,
+    required Color backgroundColor,
+  }) {
     return OutlinedButton(
       onPressed: () {},
       style: OutlinedButton.styleFrom(
-        backgroundColor: AppColors.buttonBackground,
+        backgroundColor: backgroundColor,
         side: const BorderSide(color: AppColors.buttonPurple, width: 1),
         padding: const EdgeInsets.symmetric(
           vertical: AppDimens.buttonPaddingVertical,
@@ -33,33 +42,8 @@ class ActionButtons extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppDimens.borderRadiusLarge),
         ),
       ),
-      child: const Text(
-        'Редактировать',
-        style: AppTextStyles.buttonText,
-      ),
-    );
-  }
-
-  Widget _buildSecondaryButton() {
-    return OutlinedButton(
-      onPressed: () {},
-      style: OutlinedButton.styleFrom(
-        backgroundColor: AppColors.white,
-        side: const BorderSide(color: AppColors.buttonPurple, width: 1),
-        padding: const EdgeInsets.symmetric(
-          vertical: AppDimens.buttonPaddingVertical,
-          horizontal: AppDimens.buttonPaddingHorizontal,
-        ),
-        minimumSize: const Size(
-          AppDimens.buttonMinWidth,
-          AppDimens.buttonMinHeight,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimens.borderRadiusLarge),
-        ),
-      ),
-      child: const Text(
-        'Поделиться',
+      child: Text(
+        text,
         style: AppTextStyles.buttonText,
       ),
     );
