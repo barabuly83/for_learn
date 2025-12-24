@@ -15,10 +15,12 @@ class ProfileHeader extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Container(
-          height: isWideScreen ? 130.0 : 110.0,
+          height: isWideScreen
+              ? AppDimens.bannerHeightWide
+              : AppDimens.bannerHeightNarrow,
           decoration: BoxDecoration(
             color: AppColors.bannerBlue,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppDimens.borderRadiusMedium),
           ),
         ),
         if (!isWideScreen)
@@ -36,7 +38,7 @@ class ProfileHeader extends StatelessWidget {
                   color: AppColors.avatarPurple,
                   border: Border.all(
                     color: AppColors.white,
-                    width: 4,
+                    width: AppDimens.avatarBorderWidth,
                   ),
                 ),
               ),
@@ -52,7 +54,7 @@ class ProfileHeader extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   color: AppColors.shadowLight,
-                  blurRadius: 4,
+                  blurRadius: AppDimens.shadowBlurSmall,
                 ),
               ],
             ),

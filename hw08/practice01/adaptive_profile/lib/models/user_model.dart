@@ -21,4 +21,3 @@ class UserStats {
     required this.posts,
   });
 }
-

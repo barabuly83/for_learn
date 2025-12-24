@@ -76,13 +76,88 @@ class AppTextStyles {
     fontSize: 14,
     color: AppColors.textSecondary,
   );
+
+  // Стили для новостей
+  static const TextStyle newsTitle = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle newsImageText = TextStyle(
+    fontSize: 16,
+    color: AppColors.imageText,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const TextStyle newsCardTitle = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle newsCardDate = TextStyle(
+    fontSize: 10,
+    color: AppColors.textSecondary,
+  );
+
+  // Стили для кнопок
+  static const TextStyle buttonText = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: AppColors.buttonPurple,
+  );
 }
 
 class AppDimens {
+  // Отступы
   static const double paddingSmall = 8.0;
   static const double paddingMedium = 16.0;
   static const double paddingLarge = 24.0;
+  static const double paddingXSmall = 4.0;
+
+  // Размеры аватаров
   static const double avatarSizeLarge = 120.0;
   static const double avatarSizeSmall = 100.0;
+  static const double avatarBorderWidth = 4.0;
+
+  // Размеры кнопок
+  static const double buttonMinWidth = 140.0;
+  static const double buttonMinHeight = 40.0;
+  static const double buttonPaddingVertical = 8.0;
+  static const double buttonPaddingHorizontal = 20.0;
+
+  // Радиусы скругления
+  static const double borderRadiusSmall = 12.0;
+  static const double borderRadiusMedium = 16.0;
+  static const double borderRadiusLarge = 30.0;
+
+  // Высоты баннеров
+  static const double bannerHeightWide = 130.0;
+  static const double bannerHeightNarrow = 110.0;
+
+  // Позиционирование и отступы
+  static const double userInfoVerticalOffset = 20.0;
+  static const double userInfoHeight = 40.0;
+  static const double statsOffsetSafetyMargin = 4.0;
+
+  // Тени
+  static const double shadowBlurSmall = 4.0;
+  static const double shadowBlurMedium = 8.0;
+  static const double shadowSpreadSmall = 1.0;
+  static const double shadowOffsetY = 4.0;
+
+  // Карточки
+  static const double cardElevation = 2.0;
+  static const double newsCardAspectRatio = 0.75;
+
+  // Иконки
+  static const double iconSizeSmall = 10.0;
+  static const double iconSizeMedium = 28.0;
+
+  // FAB
+  static const double fabSize = 56.0;
+
+  // Адаптивность
   static const double breakpointWidth = 600.0;
 }

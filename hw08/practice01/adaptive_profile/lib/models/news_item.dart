@@ -7,4 +7,3 @@ class NewsItem {
     required this.date,
   });
 }
-

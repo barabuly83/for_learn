@@ -16,9 +16,9 @@ class NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
+      elevation: AppDimens.cardElevation,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppDimens.borderRadiusSmall),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,19 +29,15 @@ class NewsCard extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: AppColors.bannerBlue,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(AppDimens.borderRadiusSmall),
+                  topRight: Radius.circular(AppDimens.borderRadiusSmall),
                 ),
               ),
               child: Center(
                 child: Text(
                   'Изображение ${imageIndex + 1}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: AppColors.imageText,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppTextStyles.newsImageText,
                 ),
               ),
             ),
@@ -49,8 +45,10 @@ class NewsCard extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDimens.paddingSmall,
+                vertical: 6.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -59,31 +57,24 @@ class NewsCard extends StatelessWidget {
                   Flexible(
                     child: Text(
                       title,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                      ),
+                      style: AppTextStyles.newsCardTitle,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppDimens.paddingXSmall),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Icon(
                         Icons.calendar_today,
-                        size: 10,
+                        size: AppDimens.iconSizeSmall,
                         color: AppColors.textSecondary,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppDimens.paddingXSmall),
                       Text(
                         date,
-                        style: const TextStyle(
-                          fontSize: 10,
-                          color: AppColors.textSecondary,
-                        ),
+                        style: AppTextStyles.newsCardDate,
                       ),
                     ],
                   ),
