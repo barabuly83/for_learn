@@ -11,95 +11,60 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double headerHeight = isWideScreen ? 200 : 150;
-    final double bannerHeight = isWideScreen ? 140 : 100;
-
-    return SizedBox(
-      height: headerHeight,
-      child: Stack(
-        children: [
-          // Фоновый баннер
-          _buildBanner(bannerHeight),
-          
-          // Кнопка "Назад"
-          _buildBackButton(),
-          
-          // Кнопка настроек
-          _buildSettingsButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBanner(double height) {
-    return Container(
-      height: height,
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF64B5F6), Color(0xFF1976D2)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-      ),
-    );
-  }
-
-  Widget _buildBackButton() {
-    return const Align(
-      alignment: Alignment.topLeft,
-      child: Padding(
-        padding: EdgeInsets.all(12.0),
-        child: CircleButton(
-          icon: Icons.arrow_back,
-          onPressed: null,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSettingsButton() {
-    return const Align(
-      alignment: Alignment.topRight,
-      child: Padding(
-        padding: EdgeInsets.all(12.0),
-        child: CircleButton(
-          icon: Icons.settings,
-          onPressed: null,
-        ),
-      ),
-    );
-  }
-}
-
-// Вспомогательный виджет для круглых кнопок
-class CircleButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback? onPressed;
-
-  const CircleButton({
-    super.key,
-    required this.icon,
-    this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          height: isWideScreen ? 130.0 : 110.0,
+          decoration: BoxDecoration(
+            color: AppColors.bannerBlue,
+            borderRadius: BorderRadius.circular(16),
           ),
-        ],
-      ),
-      child: IconButton(
-        icon: Icon(icon, color: Colors.black),
-        onPressed: onPressed,
-      ),
+        ),
+        if (!isWideScreen)
+          Positioned(
+            bottom: -AppDimens.avatarSizeSmall / 2,
+            left: 0,
+            right: 0,
+            child: Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: AppDimens.avatarSizeSmall,
+                height: AppDimens.avatarSizeSmall,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.avatarPurple,
+                  border: Border.all(
+                    color: AppColors.white,
+                    width: 4,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        Positioned(
+          top: AppDimens.paddingMedium,
+          left: AppDimens.paddingMedium,
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.shadowLight,
+                  blurRadius: 4,
+                ),
+              ],
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: AppColors.black),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

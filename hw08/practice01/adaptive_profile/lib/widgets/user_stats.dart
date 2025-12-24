@@ -1,49 +1,66 @@
 import 'package:flutter/material.dart';
 import '../utils/constants.dart';
+import '../models/user_model.dart';
 
-class UserStats extends StatelessWidget {
+class UserStatsWidget extends StatelessWidget {
   final bool isWideScreen;
+  final UserStats stats;
 
-  const UserStats({super.key, this.isWideScreen = false});
+  const UserStatsWidget({
+    super.key,
+    required this.isWideScreen,
+    required this.stats,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(AppDimens.paddingMedium),
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(
+        vertical: 24,
+        horizontal: 16,
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: AppColors.statsBackground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(color: AppColors.borderGrey),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadowVeryLight,
+            blurRadius: 8,
+            spreadRadius: 1,
+          ),
+        ],
       ),
       child: Row(
-        mainAxisAlignment: isWideScreen 
-            ? MainAxisAlignment.spaceAround 
-            : MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildStatItem('2.5K', 'Подписчики', Icons.people),
-          _buildDivider(),
-          _buildStatItem('348', 'Подписки', Icons.group),
-          _buildDivider(),
-          _buildStatItem('127', 'Посты', Icons.post_add),
+          Expanded(
+            child: Center(
+              child: _buildStatItem(stats.subscribers, 'Подписчики'),
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: _buildStatItem(stats.subscriptions, 'Подписки'),
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: _buildStatItem(stats.posts, 'Посты'),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildStatItem(String value, String label, IconData icon) {
+  Widget _buildStatItem(String value, String label) {
     return Column(
       children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 20, color: AppColors.primary),
-            const SizedBox(width: 6),
-            Text(
-              value,
-              style: AppTextStyles.statValue,
-            ),
-          ],
+        Text(
+          value,
+          style: AppTextStyles.statValue,
         ),
         const SizedBox(height: 4),
         Text(
@@ -51,14 +68,6 @@ class UserStats extends StatelessWidget {
           style: AppTextStyles.statLabel,
         ),
       ],
-    );
-  }
-
-  Widget _buildDivider() {
-    return Container(
-      width: 1,
-      height: 40,
-      color: Colors.grey[300],
     );
   }
 }
