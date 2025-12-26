@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import '../utils/constants.dart';
 import '../models/user_model.dart';
+import 'user_info_layouts/base_user_info_layout.dart';
+import 'user_info_layouts/user_info_wide_layout.dart';
+import 'user_info_layouts/user_info_narrow_layout.dart';
 
 class UserInfo extends StatelessWidget {
   final bool isWideScreen;
@@ -14,43 +16,10 @@ class UserInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isWideScreen ? _buildWideLayout() : _buildNarrowLayout();
-  }
+    final BaseUserInfoLayout layout = isWideScreen
+        ? UserInfoWideLayout(user: user)
+        : UserInfoNarrowLayout(user: user);
 
-  Widget _buildWideLayout() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          user.name,
-          style: AppTextStyles.titleLarge,
-        ),
-        const SizedBox(height: AppDimens.paddingSmall),
-        Text(
-          user.profession,
-          style: AppTextStyles.bodyMedium,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildNarrowLayout() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(height: AppDimens.avatarSizeSmall / 2),
-        Text(
-          user.name,
-          style: AppTextStyles.titleMedium,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: AppDimens.paddingSmall),
-        Text(
-          user.profession,
-          style: AppTextStyles.bodyMedium,
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
+    return layout;
   }
 }

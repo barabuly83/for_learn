@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/constants.dart';
 import '../models/user_model.dart';
+import 'stat_item.dart';
 
 class UserStatsWidget extends StatelessWidget {
   final UserStats stats;
@@ -35,37 +36,30 @@ class UserStatsWidget extends StatelessWidget {
         children: [
           Expanded(
             child: Center(
-              child: _buildStatItem(stats.subscribers, 'Подписчики'),
+              child: StatItem(
+                value: stats.subscribers,
+                label: 'Подписчики',
+              ),
             ),
           ),
           Expanded(
             child: Center(
-              child: _buildStatItem(stats.subscriptions, 'Подписки'),
+              child: StatItem(
+                value: stats.subscriptions,
+                label: 'Подписки',
+              ),
             ),
           ),
           Expanded(
             child: Center(
-              child: _buildStatItem(stats.posts, 'Посты'),
+              child: StatItem(
+                value: stats.posts,
+                label: 'Посты',
+              ),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildStatItem(String value, String label) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: AppTextStyles.statValue,
-        ),
-        const SizedBox(height: AppDimens.paddingXSmall),
-        Text(
-          label,
-          style: AppTextStyles.statLabel,
-        ),
-      ],
     );
   }
 }
