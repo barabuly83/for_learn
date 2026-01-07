@@ -2,7 +2,7 @@ class LoginCredentials {
   final String email;
   final String password;
 
-  LoginCredentials({
+  const LoginCredentials({
     required this.email,
     required this.password,
   });

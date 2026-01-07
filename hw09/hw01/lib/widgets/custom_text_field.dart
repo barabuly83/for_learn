@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/app_constants.dart';
+import 'input_border_builder.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -23,16 +23,6 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
   });
 
-  InputBorder _buildBorder(BuildContext context, {Color? color, double? width}) {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(AppConstants.borderRadius),
-      borderSide: BorderSide(
-        color: color ?? Colors.grey.shade300,
-        width: width ?? 1,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -44,19 +34,11 @@ class CustomTextField extends StatelessWidget {
         hintText: hintText,
         prefixIcon: Icon(prefixIcon),
         suffixIcon: suffixIcon,
-        border: _buildBorder(context),
-        enabledBorder: _buildBorder(context),
-        focusedBorder: _buildBorder(
-          context,
-          color: Theme.of(context).colorScheme.primary,
-          width: 2,
-        ),
-        errorBorder: _buildBorder(context, color: Colors.red),
-        focusedErrorBorder: _buildBorder(
-          context,
-          color: Colors.red,
-          width: 2,
-        ),
+        border: InputBorderBuilder.buildDefaultBorder(),
+        enabledBorder: InputBorderBuilder.buildDefaultBorder(),
+        focusedBorder: InputBorderBuilder.buildFocusedBorder(context),
+        errorBorder: InputBorderBuilder.buildErrorBorder(),
+        focusedErrorBorder: InputBorderBuilder.buildFocusedErrorBorder(),
       ),
       validator: validator,
     );

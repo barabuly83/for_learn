@@ -1,17 +1,19 @@
+import '../../models/validation_error.dart';
+
 abstract class PasswordValidator {
-  String? validate(String? password);
+  ValidationError? validate(String? password);
 }
 
-class PasswordValidatorImpl implements PasswordValidator {
+class DefaultPasswordValidator implements PasswordValidator {
   static const int minLength = 6;
 
   @override
-  String? validate(String? password) {
+  ValidationError? validate(String? password) {
     if (password == null || password.isEmpty) {
-      return 'Пожалуйста, введите пароль';
+      return ValidationError.empty;
     }
     if (password.length < minLength) {
-      return 'Пароль должен содержать минимум $minLength символов';
+      return ValidationError.passwordTooShort;
     }
     return null;
   }

@@ -1,15 +1,17 @@
+import '../../models/validation_error.dart';
+
 abstract class EmailValidator {
-  String? validate(String? email);
+  ValidationError? validate(String? email);
 }
 
-class EmailValidatorImpl implements EmailValidator {
+class DefaultEmailValidator implements EmailValidator {
   @override
-  String? validate(String? email) {
+  ValidationError? validate(String? email) {
     if (email == null || email.isEmpty) {
-      return 'Пожалуйста, введите email';
+      return ValidationError.empty;
     }
     if (!email.contains('@')) {
-      return 'Email должен содержать символ @';
+      return ValidationError.invalidEmail;
     }
     return null;
   }
