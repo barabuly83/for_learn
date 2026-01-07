@@ -7,6 +7,7 @@ import '../widgets/login_button.dart';
 import '../widgets/or_divider.dart';
 import '../widgets/link_text.dart';
 import '../constants/app_constants.dart';
+import '../services/error_message_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -112,7 +113,9 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: 'Email',
                           prefixIcon: Icons.email_outlined,
                           keyboardType: TextInputType.emailAddress,
-                          validator: viewModel.validateEmail,
+                          validator: (value) => ErrorMessageService.getEmailErrorMessage(
+                            viewModel.validateEmail(value),
+                          ),
                         ),
                         const SizedBox(height: AppConstants.spacingMedium),
 
@@ -132,7 +135,9 @@ class _LoginPageState extends State<LoginPage> {
                               viewModel.togglePasswordVisibility();
                             },
                           ),
-                          validator: viewModel.validatePassword,
+                          validator: (value) => ErrorMessageService.getPasswordErrorMessage(
+                            viewModel.validatePassword(value),
+                          ),
                         ),
                         const SizedBox(height: AppConstants.spacingSmall),
 

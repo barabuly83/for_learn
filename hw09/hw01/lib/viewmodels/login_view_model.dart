@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../models/login_credentials.dart';
+import '../models/validation_error.dart';
 import '../services/validators/email_validator.dart';
 import '../services/validators/password_validator.dart';
 
@@ -10,8 +11,8 @@ class LoginViewModel extends ChangeNotifier {
   LoginViewModel({
     EmailValidator? emailValidator,
     PasswordValidator? passwordValidator,
-  })  : _emailValidator = emailValidator ?? EmailValidatorImpl(),
-        _passwordValidator = passwordValidator ?? PasswordValidatorImpl();
+  })  : _emailValidator = emailValidator ?? DefaultEmailValidator(),
+        _passwordValidator = passwordValidator ?? DefaultPasswordValidator();
 
   bool _isPasswordVisible = false;
   bool get isPasswordVisible => _isPasswordVisible;
@@ -21,11 +22,11 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  String? validateEmail(String? email) {
+  ValidationError? validateEmail(String? email) {
     return _emailValidator.validate(email);
   }
 
-  String? validatePassword(String? password) {
+  ValidationError? validatePassword(String? password) {
     return _passwordValidator.validate(password);
   }
 
