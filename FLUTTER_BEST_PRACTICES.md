@@ -184,6 +184,169 @@ lib/
 
 ---
 
+## 8. Разделение виджетов на отдельные файлы
+
+❌ **НЕПРАВИЛЬНО:**
+```dart
+// main.dart
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget { ... }
+
+class TransitionAnimationScreen extends StatefulWidget { ... }
+```
+
+✅ **ПРАВИЛЬНО:**
+```dart
+// main.dart
+import 'package:flutter/material.dart';
+import 'app.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+// app.dart
+import 'package:flutter/material.dart';
+import 'views/transition_animation_screen.dart';
+
+class MyApp extends StatelessWidget { ... }
+
+// views/transition_animation_screen.dart
+import 'package:flutter/material.dart';
+
+class TransitionAnimationScreen extends StatefulWidget { ... }
+```
+
+**Правило:** Каждый виджет должен находиться в отдельном файле. Это улучшает читаемость кода, упрощает навигацию и поддерживает принцип единственной ответственности. Структура проекта должна следовать архитектуре MVVM:
+- `main.dart` - только точка входа приложения
+- `app.dart` - корневой виджет приложения (MaterialApp/CupertinoApp)
+- `views/` - страницы и экраны приложения
+- `widgets/` - переиспользуемые виджеты
+
+---
+
+## 9. Создание структуры папок только при необходимости
+
+❌ **НЕПРАВИЛЬНО:**
+```
+lib/
+├── main.dart
+├── app.dart
+├── models/          # Пустая папка
+├── viewmodels/      # Пустая папка
+├── views/
+│   └── home_screen.dart
+├── widgets/         # Пустая папка
+├── services/        # Пустая папка
+└── constants/       # Пустая папка
+```
+
+✅ **ПРАВИЛЬНО:**
+```
+lib/
+├── main.dart
+├── app.dart
+└── views/
+    └── home_screen.dart
+```
+
+**Правило:** 
+- Не создавайте пустые папки заранее "на будущее"
+- Создавайте папки только когда в них появляются файлы
+- Следуйте принципу YAGNI (You Aren't Gonna Need It) - не создавайте структуру, которая не используется
+- Папки можно добавить позже, когда появятся соответствующие файлы (модели, виджеты, сервисы и т.д.)
+
+---
+
+## 10. Избегание избыточных комментариев
+
+❌ **НЕПРАВИЛЬНО:**
+```dart
+class _MyWidgetState extends State<MyWidget> {
+  // Индекс текущего видимого контейнера (0 или 1)
+  int _currentIndex = 0;
+
+  void _toggleContainers() {
+    setState(() {
+      // Переключаем между контейнерами
+      _currentIndex = _currentIndex == 0 ? 1 : 0;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Комбинируем fade и scale анимации для плавного перехода
+    return FadeTransition(
+      opacity: animation,
+      child: ScaleTransition(...),
+    );
+  }
+}
+```
+
+✅ **ПРАВИЛЬНО:**
+```dart
+class _MyWidgetState extends State<MyWidget> {
+  int _currentIndex = 0;
+
+  void _toggleContainers() {
+    setState(() {
+      _currentIndex = _currentIndex == 0 ? 1 : 0;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: animation,
+      child: ScaleTransition(...),
+    );
+  }
+}
+```
+
+**Правило:** 
+- Удаляйте комментарии, которые дублируют код (описывают "что" делает код, а не "почему")
+- Код должен быть самодокументированным через понятные имена переменных, функций и классов
+- Оставляйте комментарии только для объяснения сложной бизнес-логики, неочевидных решений или предупреждений о потенциальных проблемах
+- Комментарии должны объяснять "почему", а не "что"
+
+---
+
+## 11. Проверка тестов после изменений в lib
+
+❌ **НЕПРАВИЛЬНО:**
+```dart
+// Изменили структуру проекта, переместили MyApp в app.dart
+// Но забыли обновить тесты
+
+// test/widget_test.dart
+import 'package:task03/main.dart'; // ❌ Импорт устарел
+```
+
+✅ **ПРАВИЛЬНО:**
+```dart
+// После изменения структуры проекта обновили тесты
+
+// test/widget_test.dart
+import 'package:task03/app.dart'; // ✅ Импорт обновлен
+```
+
+**Правило:** 
+- После любых изменений в файлах из папки `lib/` необходимо проверить и обновить соответствующие тесты в папке `test/`
+- Особенно важно проверять тесты при:
+  - Перемещении классов между файлами
+  - Изменении структуры проекта
+  - Переименовании классов или файлов
+  - Изменении импортов
+- Запускайте тесты после изменений: `flutter test`
+- Убедитесь, что все тесты проходят успешно перед коммитом
+
+---
+
 ## Чеклист перед коммитом
 
 - [ ] Все интерфейсы названы без префикса `I`
@@ -193,4 +356,9 @@ lib/
 - [ ] Соблюдена архитектура MVVM
 - [ ] Применены принципы SOLID
 - [ ] Нет дублирования кода (DRY)
+- [ ] Каждый виджет находится в отдельном файле
+- [ ] Созданы только те папки, в которых есть файлы (нет пустых папок)
+- [ ] Удалены избыточные комментарии, дублирующие код
+- [ ] После изменений в `lib/` проверены и обновлены тесты в `test/`
+- [ ] Все тесты проходят успешно (`flutter test`)
 
