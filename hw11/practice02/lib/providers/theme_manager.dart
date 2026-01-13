@@ -39,27 +39,3 @@ class ThemeManagerState extends State<ThemeManager> {
     );
   }
 }
-}
-
-class _ThemeManagerState extends State<ThemeManager> {
-  ThemeMode _themeMode = ThemeMode.light;
-
-  void toggleTheme() {
-    setState(() {
-      _themeMode = _themeMode == ThemeMode.light
-          ? ThemeMode.dark
-          : ThemeMode.light;
-    });
-  }
-
-  ThemeMode get themeMode => _themeMode;
-
-  @override
-  Widget build(BuildContext context) {
-    return ThemeProvider(
-      themeMode: _themeMode,
-      toggleTheme: toggleTheme,
-      child: widget.child,
-    );
-  }
-}

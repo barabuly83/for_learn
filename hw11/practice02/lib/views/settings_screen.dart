@@ -66,68 +66,7 @@ class SettingsScreen extends StatelessWidget {
                         color: isDarkMode ? Colors.blue : Colors.orange,
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    // Пример локальных изменений темы в настройках
-                    Theme(
-                      data: Theme.of(context).copyWith(
-                        dividerTheme: const DividerThemeData(
-                          color: Colors.red,
-                          thickness: 2,
-                        ),
-                      ),
-                      child: const Divider(),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Разделитель выше имеет локальные стили (красный цвет)',
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
                   ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            // Дополнительные настройки с локальной темой
-            Theme(
-              data: Theme.of(context).copyWith(
-                cardTheme: CardThemeData(
-                  color: Colors.grey[100],
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: const BorderSide(color: Colors.blue, width: 1),
-                  ),
-                ),
-              ),
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Дополнительные настройки',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Эта карточка имеет локальные стили:',
-                      ),
-                      const SizedBox(height: 5),
-                      const Text(
-                        '• Серый фон',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      const Text(
-                        '• Синяя рамка',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      const Text(
-                        '• Скругленные углы',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),

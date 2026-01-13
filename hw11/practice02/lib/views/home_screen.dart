@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../providers/theme_provider.dart';
+import '../widgets/locally_themed_button.dart';
 import 'settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -41,43 +42,16 @@ class HomeScreen extends StatelessWidget {
               child: const Text('Переключить тему'),
             ),
             const SizedBox(height: 30),
-            // Виджет с локальными изменениями темы
-            Theme(
-              data: Theme.of(context).copyWith(
-                elevatedButtonTheme: ElevatedButtonThemeData(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
+            // Отдельный виджет с локальными изменениями темы
+            LocallyThemedButton(
+              text: 'Кнопка с локальной темой',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Кнопка с локальной темой нажата!'),
                   ),
-                ),
-              ),
-              child: ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Кнопка с локальной темой нажата!'),
-                    ),
-                  );
-                },
-                child: const Text('Кнопка с локальной темой'),
-              ),
-            ),
-            const SizedBox(height: 20),
-            // Текст с локальными изменениями темы
-            Theme(
-              data: Theme.of(context).copyWith(
-                textTheme: Theme.of(context).textTheme.copyWith(
-                      bodyLarge: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.purple,
-                      ),
-                    ),
-              ),
-              child: const Text(
-                'Этот текст имеет локальные стили',
-                style: TextStyle(fontSize: 18),
-              ),
+                );
+              },
             ),
           ],
         ),

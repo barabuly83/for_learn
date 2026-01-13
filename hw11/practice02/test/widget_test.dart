@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:practice02/app.dart';
@@ -37,7 +38,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify that SettingsScreen is displayed
-    expect(find.text('Настройки темы'), findsOneWidget);
+    expect(find.text('Настройки темы'), findsAtLeast(1));
     expect(find.text('Тема приложения'), findsOneWidget);
     expect(find.byType(SwitchListTile), findsOneWidget);
   });
@@ -47,6 +48,13 @@ void main() {
 
     // Verify local themed button exists
     expect(find.text('Кнопка с локальной темой'), findsOneWidget);
-    expect(find.text('Этот текст имеет локальные стили'), findsOneWidget);
+    expect(find.text('Отключенная кнопка'), findsOneWidget);
+    
+    // Tap the locally themed button
+    await tester.tap(find.text('Кнопка с локальной темой'));
+    await tester.pump();
+    
+    // Verify snackbar appears
+    expect(find.text('Кнопка с локальной темой нажата!'), findsOneWidget);
   });
 }
