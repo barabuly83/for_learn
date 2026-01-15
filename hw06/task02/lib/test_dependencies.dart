@@ -21,6 +21,7 @@ void testImports() {
   // Тест http
   final client = http.Client();
   print('HTTP client создан');
+  client.close(); // Закрываем клиент после использования
 
   // Тест path
   final testPath = path.join('dir', 'file.txt');

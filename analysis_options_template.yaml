@@ -1,0 +1,313 @@
+# Analysis Options for Flutter Projects
+# Based on Flutter Best Practices from FLUTTER_BEST_PRACTICES.md
+# This file should be placed in the root of your Flutter project
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'
+    - '**/*.gr.dart'
+    - 'build/**'
+    - '.dart_tool/**'
+    - '.idea/**'
+    - '.vscode/**'
+  
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+  
+  language:
+    strict-raw-types: true
+    strict-inference: true
+    strict-casts: true
+  
+  errors:
+    # Architecture and Design Rules
+    avoid_private_typedef_functions: warning
+    
+    # Widget Composition Rules
+    avoid_private_typedef_functions: warning
+    
+    # Code Style Rules
+    prefer_const_constructors: error
+    prefer_const_constructors_in_immutables: error
+    prefer_final_fields: warning
+    prefer_final_locals: warning
+    unnecessary_const: warning
+    
+    # Naming Rules
+    non_constant_identifier_names: warning
+    constant_identifier_names: warning
+    
+    # Documentation Rules
+    slash_for_doc_comments: warning
+    
+    # Import Rules
+    avoid_relative_lib_imports: warning
+    
+    # Null Safety Rules
+    unnecessary_null_checks: warning
+    unnecessary_nullable_for_final_variable_declarations: warning
+
+linter:
+  rules:
+    # ============================================
+    # ARCHITECTURE & DESIGN RULES (from section 1)
+    # ============================================
+    
+    # MVVM Architecture - Single Responsibility
+    - avoid_classes_with_only_static_members  # Services should be instantiable
+    - avoid_void_async  # ViewModels should return typed results
+    
+    # SOLID Principles
+    - prefer_single_constructor_per_file  # Single Responsibility
+    - use_key_in_widget_constructors  # Proper widget composition
+    
+    # DRY Principle
+    - prefer_const_literals_to_create_immutables
+    - prefer_const_declarations
+    
+    # ============================================
+    # PROJECT STRUCTURE RULES (from section 2)
+    # ============================================
+    
+    # File Organization
+    - directives_ordering  # Consistent import ordering
+    - always_use_package_imports  # Avoid relative imports beyond one level
+    
+    # Naming Conventions
+    - file_names  # snake_case.dart for files
+    - library_names  # snake_case for libraries
+    - library_prefixes  # Consistent library prefixes
+    
+    # ============================================
+    # WIDGET DESIGN & COMPOSITION RULES (from section 3)
+    # ============================================
+    
+    # CRITICAL: Avoid methods that return widgets
+    - no_logic_in_create_state  # Business logic should be in ViewModel
+    - use_build_context_synchronously  # Proper async handling
+    
+    # Widget Composition Best Practices
+    - avoid_unnecessary_containers
+    - avoid_unnecessary_setstate
+    - use_decorated_box
+    - use_full_hex_values_for_flutter_colors
+    
+    # Const Constructors (VERY IMPORTANT)
+    - prefer_const_constructors
+    - prefer_const_constructors_in_immutables
+    - prefer_const_literals_to_create_immutables
+    
+    # ============================================
+    # CODE STYLE RULES (from section 4)
+    # ============================================
+    
+    # Naming Conventions
+    - camel_case_types  # Classes, enums, typedefs
+    - camel_case_extensions  # Extension names
+    - non_constant_identifier_names  # Variables, parameters
+    - constant_identifier_names  # Constants
+    
+    # Code Formatting
+    - curly_braces_in_flow_control_structures
+    - empty_statements
+    - lines_longer_than_80_chars
+    - no_adjacent_strings_in_list
+    - no_duplicate_case_values
+    
+    # Comments & Documentation
+    - slash_for_doc_comments  # Use /// for documentation
+    - prefer_adjacent_string_concatenation
+    - prefer_is_empty
+    - prefer_is_not_empty
+    
+    # ============================================
+    # NULL SAFETY & TYPE SAFETY RULES
+    # ============================================
+    
+    - avoid_init_to_null
+    - avoid_null_checks_in_equality_operators
+    - avoid_relative_lib_imports
+    - avoid_renaming_method_parameters
+    - avoid_return_types_on_setters
+    - avoid_types_as_parameter_names
+    - avoid_types_on_closure_parameters
+    
+    # ============================================
+    # PERFORMANCE RULES
+    # ============================================
+    
+    - avoid_print  # Use proper logging
+    - avoid_redundant_argument_values
+    - avoid_returning_null_for_future
+    - avoid_returning_null_for_void
+    - avoid_unused_constructor_parameters
+    
+    # ============================================
+    # SECURITY & BEST PRACTICES
+    # ============================================
+    
+    - avoid_web_libraries_in_flutter
+    - no_leading_underscores_for_local_identifiers  # Except for private members
+    - prefer_conditional_assignment
+    - prefer_contains
+    - prefer_equal_for_default_values
+    - prefer_for_elements_to_map_fromIterable
+    - prefer_if_null_operators
+    - prefer_inlined_adds
+    - prefer_iterable_whereType
+    - prefer_spread_collections
+    
+    # ============================================
+    # FLUTTER-SPECIFIC RULES
+    # ============================================
+    
+    - always_declare_return_types
+    - always_require_non_null_named_parameters
+    - always_specify_types
+    - annotate_overrides
+    - avoid_dynamic_calls
+    - avoid_function_literals_in_foreach_calls
+    - avoid_implementing_value_types
+    - avoid_positional_boolean_parameters
+    - avoid_private_typedef_functions
+    - avoid_redundant_async
+    - avoid_shadowing_type_parameters
+    - avoid_single_cascade_in_expression_statements
+    - avoid_type_to_string
+    - avoid_void_async
+    - cancel_subscriptions
+    - close_sinks
+    - comment_references
+    - control_flow_in_finally
+    - empty_catches
+    - invariant_booleans
+    - join_return_with_assignment
+    - literal_only_boolean_expressions
+    - no_adjacent_strings_in_list
+    - no_duplicate_case_values
+    - no_runtimeType_toString
+    - parameter_assignments
+    - prefer_asserts_in_initializer_lists
+    - prefer_collection_literals
+    - prefer_constructors_over_static_methods
+    - prefer_final_in_for_each
+    - prefer_initializing_formals
+    - prefer_interpolation_to_compose_strings
+    - prefer_null_aware_operators
+    - prefer_relative_imports
+    - prefer_typing_uninitialized_variables
+    - provide_deprecation_message
+    - recursive_getters
+    - require_trailing_commas
+    - sort_child_properties_last
+    - sort_constructors_first
+    - sort_pub_dependencies
+    - sort_unnamed_constructors_first
+    - test_types_in_equals
+    - throw_in_finally
+    - type_init_formals
+    - unawaited_futures
+    - unnecessary_brace_in_string_interps
+    - unnecessary_getters_setters
+    - unnecessary_lambdas
+    - unnecessary_new
+    - unnecessary_null_aware_assignments
+    - unnecessary_nullable_for_final_variable_declarations
+    - unnecessary_overrides
+    - unnecessary_parenthesis
+    - unnecessary_statements
+    - unnecessary_this
+    - unrelated_type_equality_checks
+    - use_full_hex_values_for_flutter_colors
+    - use_function_type_syntax_for_parameters
+    - use_named_constants
+    - use_rethrow_when_possible
+    - use_setters_to_change_properties
+    - use_string_buffers
+    - use_to_and_as_if_applicable
+    - valid_regexps
+
+# Custom lint rules based on our specific requirements
+custom_lint:
+  rules:
+    # Rule: No methods that return Widget (build methods only)
+    - no_widget_returning_methods:
+        severity: error
+        
+    # Rule: ViewModels must have const constructors
+    - viewmodel_const_constructor:
+        severity: warning
+        
+    # Rule: Services must have const constructors  
+    - service_const_constructor:
+        severity: warning
+        
+    # Rule: Models must be immutable (all fields final)
+    - model_immutability:
+        severity: warning
+        
+    # Rule: Business logic should not return strings for UI
+    - no_strings_in_business_logic:
+        severity: warning
+        
+    # Rule: Proper MVVM layer separation
+    - mvvm_layer_separation:
+        severity: warning
+
+# Additional analysis options for specific patterns
+# These help enforce our architectural decisions
+additional_analysis_options:
+  # Enforce that widget build methods are not too long (suggests extraction)
+  long_methods:
+    threshold: 50  # lines
+    severity: warning
+    
+  # Enforce that classes in viewmodels/ don't import UI packages
+  layer_violations:
+    viewmodel_imports_ui: error
+    service_imports_ui: error
+    model_imports_ui: error
+    
+  # Enforce proper file structure
+  file_structure:
+    pages_must_be_in_pages_folder: warning
+    widgets_must_be_in_widgets_folder: warning
+    viewmodels_must_be_in_viewmodels_folder: warning
+    
+  # Enforce naming conventions
+  naming:
+    pages_must_end_with_page: warning
+    viewmodels_must_end_with_viewmodel: warning
+    services_must_end_with_service: warning
+    models_must_be_singular: warning
+
+# Explanation of key rules from our best practices document:
+# 
+# 1. ARCHITECTURE RULES:
+#    - avoid_classes_with_only_static_members: Services should be instantiable for DI
+#    - avoid_void_async: ViewModels should return typed results, not void
+#    
+# 2. WIDGET COMPOSITION RULES:
+#    - prefer_const_constructors: Critical for performance
+#    - use_key_in_widget_constructors: Required for proper widget lifecycle
+#    
+# 3. CODE STYLE FROM OUR DOCUMENT:
+#    - prefer_final_fields: Models should be immutable
+#    - unnecessary_const: Avoid unnecessary const keywords
+#    
+# 4. PROJECT STRUCTURE:
+#    - always_use_package_imports: Clean imports
+#    - directives_ordering: Consistent import ordering
+
+# To use this file:
+# 1. Copy to your Flutter project root as analysis_options.yaml
+# 2. Run: flutter analyze
+# 3. Fix all errors and warnings
+# 4. Consider adding to pre-commit hooks
+
+# For even stricter checking, change warnings to errors
+# For more lenient checking, change errors to warnings or ignore
