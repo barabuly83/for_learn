@@ -12,7 +12,8 @@ class Weather with _$Weather {
     required String icon,
   }) = _Weather;
 
-  factory Weather.fromJson(Map<String, dynamic> json) => _$WeatherFromJson(json);
+  factory Weather.fromJson(Map<String, dynamic> json) =>
+      _$WeatherFromJson(json);
 }
 
 @freezed
@@ -31,10 +32,7 @@ class Main with _$Main {
 
 @freezed
 class Wind with _$Wind {
-  const factory Wind({
-    required double speed,
-    required int deg,
-  }) = _Wind;
+  const factory Wind({required double speed, required int deg}) = _Wind;
 
   factory Wind.fromJson(Map<String, dynamic> json) => _$WindFromJson(json);
 }
