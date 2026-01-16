@@ -4,7 +4,6 @@ import 'pages/weather_page.dart';
 import 'themes/app_theme.dart';
 import 'constants/app_strings.dart';
 import 'viewmodels/weather_viewmodel.dart';
-import 'services/weather_service.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

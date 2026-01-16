@@ -13,8 +13,7 @@ class AppStrings {
   static const String hPa = 'hPa';
 
   // API
-  static const String apiKey =
-      'eea1e2560dbaac566c2f7ca68ec040cc'; // Replace with your OpenWeatherMap API key
+  static const String apiKey = 'eea1e2560dbaac566c2f7ca68ec040cc';
   static const String baseUrl = 'https://api.openweathermap.org';
   static const String weatherEndpoint = '/data/2.5/weather';
   static const String defaultCity = 'London'; // Город по умолчанию
