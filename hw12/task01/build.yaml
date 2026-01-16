@@ -1,0 +1,13 @@
+targets:
+  $default:
+    builders:
+      retrofit_generator|retrofit:
+        generate_for:
+          - lib/services/weather_api_service.dart
+      freezed:
+        generate_for:
+          - lib/models/weather.dart
+      json_serializable:
+        generate_for:
+          - lib/models/weather.dart
+          - lib/services/weather_api_service.dart
