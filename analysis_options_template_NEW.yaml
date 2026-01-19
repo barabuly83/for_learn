@@ -1,0 +1,291 @@
+# Analysis Options for Flutter Projects
+# Based on Flutter Best Practices from FLUTTER_BEST_PRACTICES_NEW.md
+# This file should be placed in the root of your Flutter project as analysis_options.yaml
+
+# Include Flutter's recommended lints
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  # Exclude generated files and build directories
+  exclude:
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'
+    - '**/*.gr.dart'
+    - 'build/**'
+    - '.dart_tool/**'
+    - '.idea/**'
+    - '.vscode/**'
+  
+  # Enable strong mode for better type safety
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+  
+  # Strict language features
+  language:
+    strict-raw-types: true
+    strict-inference: true
+    strict-casts: true
+  
+  # Custom error levels for specific rules
+  errors:
+    # ============================================
+    # CRITICAL RULES (from FLUTTER_BEST_PRACTICES_NEW.md)
+    # ============================================
+    
+    # 1. Const Constructors (Section 3.2)
+    prefer_const_constructors: error
+    prefer_const_constructors_in_immutables: error
+    
+    # 2. Widget Composition (Section 3.1)
+    use_key_in_widget_constructors: error
+    
+    # 3. Type Safety (Section 1.3)
+    always_specify_types: warning
+    avoid_dynamic_calls: warning
+    
+    # 4. Architecture Rules
+    avoid_classes_with_only_static_members: warning  # Services should be instantiable
+    avoid_void_async: warning  # ViewModels should return typed results
+    
+    # 5. Code Quality
+    prefer_final_fields: warning
+    prefer_final_locals: warning
+    unnecessary_const: warning
+    
+    # 6. Naming Conventions (Section 2.2)
+    non_constant_identifier_names: warning
+    constant_identifier_names: warning
+    
+    # 7. Documentation (Section 3.4)
+    slash_for_doc_comments: warning
+    
+    # 8. Project Structure (Section 2.3)
+    avoid_relative_lib_imports: warning
+
+linter:
+  rules:
+    # ============================================
+    # 🎯 SECTION 1: BASIC PRINCIPLES
+    # ============================================
+    
+    # 1.1 SOLID Principles
+    - prefer_single_constructor_per_file      # Single Responsibility
+    - avoid_implementing_value_types         # Liskov Substitution
+    - avoid_positional_boolean_parameters    # Interface Segregation
+    - prefer_constructors_over_static_methods # Dependency Inversion
+    
+    # 1.2 DRY Principle
+    - prefer_const_literals_to_create_immutables
+    - prefer_const_declarations
+    - avoid_redundant_argument_values
+    
+    # 1.3 Interface Naming (NO 'I' prefix)
+    - camel_case_types                       # Classes like EmailValidator, not IEmailValidator
+    - camel_case_extensions
+    
+    # ============================================
+    # 🏗️ SECTION 2: ARCHITECTURE & STRUCTURE
+    # ============================================
+    
+    # 2.1 MVVM Architecture
+    - avoid_classes_with_only_static_members  # Services should be instantiable for DI
+    - avoid_void_async                        # ViewModels should return typed results
+    - prefer_initializing_formals            # Clean constructor syntax
+    
+    # 2.2 Project Structure Rules
+    - directives_ordering                    # Consistent import ordering
+    - always_use_package_imports             # Clean imports for MVVM layers
+    - file_names                             # snake_case.dart
+    - library_names                          # snake_case for libraries
+    
+    # 2.3 YAGNI Principle (Don't create empty folders)
+    # Note: This is more of a project structure guideline than a lint rule
+    
+    # ============================================
+    # 🔧 SECTION 3: CODING STYLE
+    # ============================================
+    
+    # 3.1 Widget Composition (CRITICAL)
+    - use_key_in_widget_constructors         # Required for widget lifecycle
+    - avoid_unnecessary_containers           # Keep widget tree clean
+    - avoid_unnecessary_setstate             # Use proper state management
+    - sort_child_properties_last             # Better widget readability
+    
+    # 3.2 Const Constructors (VERY IMPORTANT)
+    - prefer_const_constructors              # Models, StatelessWidgets
+    - prefer_const_constructors_in_immutables
+    - prefer_const_literals_to_create_immutables
+    
+    # 3.3 File Organization
+    - prefer_relative_imports                # For files in same directory
+    - avoid_relative_lib_imports             # For cross-layer imports
+    - sort_constructors_first                # Consistent class structure
+    - sort_unnamed_constructors_first
+    
+    # 3.4 Comments & Documentation
+    - slash_for_doc_comments                 # Use /// for documentation
+    - comment_references                     # Proper documentation
+    - provide_deprecation_message            # When deprecating code
+    
+    # ============================================
+    # 🧪 SECTION 4: TESTING & MAINTAINABILITY
+    # ============================================
+    
+    # 4.1 Testability Rules
+    - prefer_final_fields                    # Immutable models are easier to test
+    - avoid_private_typedef_functions        # Public APIs for testing
+    - use_named_constants                    # Magic numbers are hard to test
+    
+    # 4.2 Null Safety & Type Safety
+    - avoid_null_checks_in_equality_operators
+    - avoid_returning_null_for_future
+    - avoid_returning_null_for_void
+    - prefer_null_aware_operators
+    - prefer_if_null_operators
+    
+    # 4.3 Error Prevention
+    - control_flow_in_finally
+    - empty_catches
+    - throw_in_finally
+    - unawaited_futures
+    - cancel_subscriptions
+    - close_sinks
+    
+    # ============================================
+    # ⚡ PERFORMANCE RULES
+    # ============================================
+    
+    - avoid_print                            # Use proper logging in production
+    - prefer_for_elements_to_map_fromIterable
+    - prefer_spread_collections
+    - use_string_buffers                     # For string concatenation in loops
+    - avoid_function_literals_in_foreach_calls
+    
+    # ============================================
+    # 🔒 SECURITY & BEST PRACTICES
+    # ============================================
+    
+    - avoid_web_libraries_in_flutter
+    - no_leading_underscores_for_local_identifiers  # Except for private members
+    - prefer_contains                        # Over manual iteration
+    - prefer_equal_for_default_values
+    - prefer_iterable_whereType
+    
+    # ============================================
+    # 📝 CODE FORMATTING & READABILITY
+    # ============================================
+    
+    - curly_braces_in_flow_control_structures
+    - lines_longer_than_80_chars
+    - no_adjacent_strings_in_list
+    - no_duplicate_case_values
+    - prefer_adjacent_string_concatenation
+    - prefer_is_empty
+    - prefer_is_not_empty
+    - require_trailing_commas                # Better git diffs
+    
+    # ============================================
+    # 🎨 FLUTTER-SPECIFIC RULES
+    # ============================================
+    
+    - always_declare_return_types
+    - always_require_non_null_named_parameters
+    - annotate_overrides
+    - avoid_shadowing_type_parameters
+    - avoid_single_cascade_in_expression_statements
+    - avoid_type_to_string
+    - invariant_booleans
+    - join_return_with_assignment
+    - literal_only_boolean_expressions
+    - no_runtimeType_toString
+    - parameter_assignments
+    - prefer_asserts_in_initializer_lists
+    - prefer_collection_literals
+    - prefer_final_in_for_each
+    - prefer_interpolation_to_compose_strings
+    - prefer_typing_uninitialized_variables
+    - recursive_getters
+    - test_types_in_equals
+    - type_init_formals
+    - unnecessary_brace_in_string_interps
+    - unnecessary_getters_setters
+    - unnecessary_lambdas
+    - unnecessary_new
+    - unnecessary_null_aware_assignments
+    - unnecessary_nullable_for_final_variable_declarations
+    - unnecessary_overrides
+    - unnecessary_parenthesis
+    - unnecessary_statements
+    - unnecessary_this
+    - unrelated_type_equality_checks
+    - use_full_hex_values_for_flutter_colors
+    - use_function_type_syntax_for_parameters
+    - use_rethrow_when_possible
+    - use_setters_to_change_properties
+    - use_to_and_as_if_applicable
+    - valid_regexps
+
+# Custom lint rules commentary based on our best practices:
+# 
+# KEY RULES FROM FLUTTER_BEST_PRACTICES_NEW.md:
+# 
+# 1. SECTION 1.2: No 'I' prefix for interfaces
+#    - Enforced by: camel_case_types
+#    - Example: EmailValidator ✓, IEmailValidator ✗
+# 
+# 2. SECTION 1.3: Business logic returns typed objects, not strings
+#    - Enforced by: avoid_void_async, always_specify_types
+#    - Example: Future<LoginResult> ✓, Future<String> ✗
+# 
+# 3. SECTION 2.1: MVVM Architecture
+#    - Enforced by: avoid_classes_with_only_static_members
+#    - Services should be instantiable for Dependency Injection
+# 
+# 4. SECTION 3.1: No methods returning widgets
+#    - Enforced by: Code review and architecture
+#    - Extract to separate widget classes instead
+# 
+# 5. SECTION 3.2: Const constructors everywhere possible
+#    - Enforced by: prefer_const_constructors (ERROR level)
+#    - Critical for performance
+# 
+# 6. SECTION 3.4: Avoid redundant comments
+#    - Enforced by: Code review
+#    - Comments should explain 'why', not 'what'
+# 
+# 7. SECTION 4.1: Test everything after lib/ changes
+#    - Enforced by: CI/CD pipeline
+#    - Run: flutter test
+
+# How to use this configuration:
+# 
+# 1. Copy this file to your Flutter project root as 'analysis_options.yaml'
+# 2. Run analysis: flutter analyze
+# 3. Fix all errors first, then warnings
+# 4. Consider adding to pre-commit hooks:
+#    - flutter analyze .
+#    - flutter test
+# 
+# 5. For team projects, commit this file to enforce consistent code quality
+# 
+# 6. Adjust severity levels as needed:
+#    - Change 'error' to 'warning' for less strict enforcement
+#    - Change 'warning' to 'ignore' to disable specific rules
+# 
+# 7. Rules are grouped by sections from FLUTTER_BEST_PRACTICES_NEW.md
+#    for easy reference and maintenance
+
+# Additional recommendations:
+# 
+# 1. Use `dart format .` to automatically format code
+# 2. Use `flutter pub run dart_code_metrics:metrics analyze lib` for additional metrics
+# 3. Consider using `very_good_analysis` for even stricter rules
+# 4. Add custom_lint package for project-specific rules
+
+# Remember: The goal is not to have zero warnings,
+# but to maintain consistent, readable, and maintainable code.
+# Fix warnings that matter for your project's quality.
+
+# Last updated based on: FLUTTER_BEST_PRACTICES_NEW.md
+# Date: 2024
