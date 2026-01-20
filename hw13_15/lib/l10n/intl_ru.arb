@@ -1,0 +1,93 @@
+{
+  "@@locale": "ru",
+  "authorization": "Авторизация",
+  "@authorization": {
+    "description": "Заголовок страницы авторизации"
+  },
+  "email": "Почта",
+  "@email": {
+    "description": "Поле ввода email"
+  },
+  "register": "Зарегистрироваться",
+  "@register": {
+    "description": "Кнопка регистрации"
+  },
+  "login": "Войти",
+  "@login": {
+    "description": "Кнопка входа"
+  },
+  "cannot_be_empty": "Значение не может быть пустым",
+  "@cannot_be_empty": {
+    "description": "Сообщение об ошибке валидации"
+  },
+  "password": "Пароль",
+  "@password": {
+    "description": "Поле ввода пароля"
+  },
+  "back": "Назад",
+  "@back": {
+    "description": "Кнопка назад"
+  },
+  "main": "Главная",
+  "@main": {
+    "description": "Заголовок главной страницы"
+  },
+  "start": "Начать",
+  "@start": {
+    "description": "Кнопка начала викторины"
+  },
+  "logout": "Выйти",
+  "@logout": {
+    "description": "Кнопка выхода"
+  },
+  "profile": "Профиль",
+  "@profile": {
+    "description": "Заголовок страницы профиля"
+  },
+  "select_category": "Выберите категорию",
+  "@select_category": {
+    "description": "Заголовок страницы выбора категории"
+  },
+  "question": "Вопрос {firstValue}/{secondValue}",
+  "@question": {
+    "description": "Заголовок вопроса с номером",
+    "placeholders": {
+      "firstValue": {
+        "type": "String",
+        "example": "1"
+      },
+      "secondValue": {
+        "type": "String",
+        "example": "10"
+      }
+    }
+  },
+  "results": "Результаты",
+  "@results": {
+    "description": "Заголовок страницы результатов"
+  },
+  "go_back": "Вернуться назад",
+  "@go_back": {
+    "description": "Кнопка возврата назад"
+  },
+  "count_correct_answers": "Количество верных ответов: {value}",
+  "@count_correct_answers": {
+    "description": "Текст с количеством правильных ответов",
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "5"
+      }
+    }
+  },
+  "category": "Категория: {value}",
+  "@category": {
+    "description": "Текст с названием категории",
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "Linux"
+      }
+    }
+  }
+}
