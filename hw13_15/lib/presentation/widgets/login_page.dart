@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../domain/auth_service.dart';
-import '../l10n/l10n.dart';
+import '../../domain/models/app_services.dart';
+import '../../l10n/l10n.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _login() async {
+    final AppServices appServices = AppServices.of(context);
     final bool isValidate = _formState.currentState?.validate() ?? false;
 
     if (isValidate) {
@@ -36,10 +37,7 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       try {
-        final authService = AuthServiceImpl(
-          firebaseAuth: FirebaseAuth.instance,
-        );
-        await authService.signInWithEmailAndPassword(
+        await appServices.authService.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
@@ -48,15 +46,11 @@ class _LoginPageState extends State<LoginPage> {
         }
       } on FirebaseAuthException catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.message ?? 'Ошибка авторизации')),
-          );
+          appServices.snackBarDispatcher(context, e.message ?? '');
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.toString())),
-          );
+          appServices.snackBarDispatcher(context, e.toString());
         }
       } finally {
         if (mounted) {
@@ -64,6 +58,35 @@ class _LoginPageState extends State<LoginPage> {
             _isLoading = false;
           });
         }
+      }
+    }
+  }
+
+  Future<void> _loginWithGoogle() async {
+    final AppServices appServices = AppServices.of(context);
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await appServices.authService.signInWithGoogle();
+      if (mounted) {
+        context.go('/');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        appServices.snackBarDispatcher(context, e.message ?? '');
+      }
+    } catch (e) {
+      if (mounted) {
+        appServices.snackBarDispatcher(context, e.toString());
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }
@@ -124,6 +147,16 @@ class _LoginPageState extends State<LoginPage> {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : Text(l10n.login),
+                ),
+                const SizedBox(height: 16),
+                // Кнопка входа через Google
+                OutlinedButton.icon(
+                  onPressed: _isLoading ? null : _loginWithGoogle,
+                  icon: const Icon(Icons.g_mobiledata, size: 20),
+                  label: const Text('Войти через Google'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 TextButton(

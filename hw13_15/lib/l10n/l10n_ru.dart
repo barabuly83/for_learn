@@ -64,4 +64,34 @@ class SRu extends S {
   String category(String value) {
     return 'Категория: $value';
   }
+
+  @override
+  String get refresh => 'Обновить';
+
+  @override
+  String get user_info => 'Информация о пользователе';
+
+  @override
+  String get uid => 'Идентификатор пользователя';
+
+  @override
+  String get name => 'Имя';
+
+  @override
+  String get phone => 'Телефон';
+
+  @override
+  String get not_specified => 'Не указано';
+
+  @override
+  String get error_loading_categories => 'Ошибка загрузки категорий';
+
+  @override
+  String get categories_not_found => 'Категории не найдены';
+
+  @override
+  String get retry => 'Повторить';
+
+  @override
+  String get logout_error => 'Ошибка выхода';
 }

@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'l10n_en.dart';
 import 'l10n_ru.dart';
 
 // ignore_for_file: type=lint
@@ -91,7 +92,10 @@ abstract class S {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('ru')];
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('ru'),
+  ];
 
   /// Заголовок страницы авторизации
   ///
@@ -194,6 +198,66 @@ abstract class S {
   /// In ru, this message translates to:
   /// **'Категория: {value}'**
   String category(String value);
+
+  /// Кнопка обновления
+  ///
+  /// In ru, this message translates to:
+  /// **'Обновить'**
+  String get refresh;
+
+  /// Заголовок раздела информации о пользователе
+  ///
+  /// In ru, this message translates to:
+  /// **'Информация о пользователе'**
+  String get user_info;
+
+  /// Метка идентификатора пользователя
+  ///
+  /// In ru, this message translates to:
+  /// **'Идентификатор пользователя'**
+  String get uid;
+
+  /// Метка имени
+  ///
+  /// In ru, this message translates to:
+  /// **'Имя'**
+  String get name;
+
+  /// Метка телефона
+  ///
+  /// In ru, this message translates to:
+  /// **'Телефон'**
+  String get phone;
+
+  /// Значение не указано
+  ///
+  /// In ru, this message translates to:
+  /// **'Не указано'**
+  String get not_specified;
+
+  /// Сообщение об ошибке при загрузке категорий
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка загрузки категорий'**
+  String get error_loading_categories;
+
+  /// Сообщение когда категории недоступны
+  ///
+  /// In ru, this message translates to:
+  /// **'Категории не найдены'**
+  String get categories_not_found;
+
+  /// Кнопка повтора
+  ///
+  /// In ru, this message translates to:
+  /// **'Повторить'**
+  String get retry;
+
+  /// Сообщение об ошибке при выходе
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка выхода'**
+  String get logout_error;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {
@@ -206,7 +270,7 @@ class _SDelegate extends LocalizationsDelegate<S> {
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['ru'].contains(locale.languageCode);
+      <String>['en', 'ru'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_SDelegate old) => false;
@@ -215,6 +279,8 @@ class _SDelegate extends LocalizationsDelegate<S> {
 S lookupS(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'en':
+      return SEn();
     case 'ru':
       return SRu();
   }

@@ -1,17 +1,24 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'category.freezed.dart';
-part 'category.g.dart';
-
 /// Модель категории викторины
-@freezed
-class Category with _$Category {
-  const factory Category({
-    required int id,
-    required String name,
-    String? description,
-  }) = _Category;
+class Category {
+  const Category({
+    required this.id,
+    required this.name,
+    this.description,
+  });
 
-  factory Category.fromJson(Map<String, dynamic> json) =>
-      _$CategoryFromJson(json);
+  final int id;
+  final String name;
+  final String? description;
+
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
+        id: json['id'] as int,
+        name: json['name'] as String,
+        description: json['description'] as String?,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'description': description,
+      };
 }

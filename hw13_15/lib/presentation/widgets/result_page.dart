@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../app/router/routes/result_route.dart';
-import '../app/router/routes/result_argument.dart';
+import '../../app/router/routes/result_route.dart';
+import '../../app/router/routes/result_argument.dart';
 
 class ResultPage extends StatelessWidget {
   final GoRouterState state;

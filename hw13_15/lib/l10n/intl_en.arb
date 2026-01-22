@@ -1,0 +1,133 @@
+{
+  "@@locale": "en",
+  "authorization": "Authorization",
+  "@authorization": {
+    "description": "Authorization page title"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email input field"
+  },
+  "register": "Register",
+  "@register": {
+    "description": "Register button"
+  },
+  "login": "Login",
+  "@login": {
+    "description": "Login button"
+  },
+  "cannot_be_empty": "Value cannot be empty",
+  "@cannot_be_empty": {
+    "description": "Validation error message"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password input field"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back button"
+  },
+  "main": "Main",
+  "@main": {
+    "description": "Main page title"
+  },
+  "start": "Start",
+  "@start": {
+    "description": "Start quiz button"
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout button"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile page title"
+  },
+  "select_category": "Select Category",
+  "@select_category": {
+    "description": "Category selection page title"
+  },
+  "question": "Question {firstValue}/{secondValue}",
+  "@question": {
+    "description": "Question title with number",
+    "placeholders": {
+      "firstValue": {
+        "type": "String",
+        "example": "1"
+      },
+      "secondValue": {
+        "type": "String",
+        "example": "10"
+      }
+    }
+  },
+  "results": "Results",
+  "@results": {
+    "description": "Results page title"
+  },
+  "go_back": "Go Back",
+  "@go_back": {
+    "description": "Go back button"
+  },
+  "count_correct_answers": "Correct answers: {value}",
+  "@count_correct_answers": {
+    "description": "Text with number of correct answers",
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "5"
+      }
+    }
+  },
+  "category": "Category: {value}",
+  "@category": {
+    "description": "Text with category name",
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "Linux"
+      }
+    }
+  },
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Refresh button"
+  },
+  "user_info": "User Information",
+  "@user_info": {
+    "description": "User information section title"
+  },
+  "uid": "User ID",
+  "@uid": {
+    "description": "User ID label"
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Name label"
+  },
+  "phone": "Phone",
+  "@phone": {
+    "description": "Phone label"
+  },
+  "not_specified": "Not specified",
+  "@not_specified": {
+    "description": "Not specified value"
+  },
+  "error_loading_categories": "Error loading categories",
+  "@error_loading_categories": {
+    "description": "Error message when categories fail to load"
+  },
+  "categories_not_found": "Categories not found",
+  "@categories_not_found": {
+    "description": "Message when no categories are available"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button"
+  },
+  "logout_error": "Logout error",
+  "@logout_error": {
+    "description": "Error message when logout fails"
+  }
+}

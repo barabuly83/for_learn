@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 /// Интерфейс сервиса аутентификации
 abstract class AuthService {
@@ -28,11 +29,15 @@ abstract class AuthService {
 
   /// Выход
   Future<void> signOut();
+
+  /// Вход через Google
+  Future<UserCredential> signInWithGoogle();
 }
 
 /// Реализация сервиса аутентификации
 class AuthServiceImpl implements AuthService {
   final FirebaseAuth _auth;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   AuthServiceImpl({required FirebaseAuth firebaseAuth}) : _auth = firebaseAuth;
 
@@ -83,5 +88,35 @@ class AuthServiceImpl implements AuthService {
   @override
   Future<void> signOut() async {
     await _auth.signOut();
+    await _googleSignIn.signOut();
+  }
+
+  @override
+  Future<UserCredential> signInWithGoogle() async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      if (googleUser == null) {
+        throw FirebaseAuthException(
+          code: 'ERROR_ABORTED_BY_USER',
+          message: 'Sign in aborted by user',
+        );
+      }
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      return await _auth.signInWithCredential(credential);
+    } catch (e) {
+      rethrow;
+    }
   }
 }
