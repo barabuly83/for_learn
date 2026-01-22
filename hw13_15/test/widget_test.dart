@@ -7,18 +7,29 @@
 
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:hw13_15/app/router/routes/quiz_app.dart';
+import 'package:hw13_15/app/router/quiz_app.dart';
 import 'package:hw13_15/app/router/routes/app_router.dart';
-import 'package:hw13_15/domain/auth_service.dart';
-import 'package:hw13_15/domain/quiz_service.dart';
+import 'package:hw13_15/domain/models/auth_service.dart';
+import 'package:hw13_15/domain/models/quiz_service.dart';
+import 'package:hw13_15/firebase_options.dart';
 
 void main() {
-  testWidgets('Home page smoke test', (WidgetTester tester) async {
+  setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  });
+
+  testWidgets('Login page smoke test', (WidgetTester tester) async {
     // Создаем моки для теста
     final authService = AuthServiceImpl(firebaseAuth: FirebaseAuth.instance);
     final quizService = QuizServiceImpl(dio: Dio());
+    final storage = FirebaseStorage.instance;
     final router = createRouter(authService);
 
     // Build our app and trigger a frame.
@@ -26,11 +37,19 @@ void main() {
       QuizApp(
         authService: authService,
         quizService: quizService,
+        storage: storage,
         router: router,
       ),
     );
 
+    // Wait for the widget tree to build
+    await tester.pumpAndSettle();
+
     // Verify that login page is displayed (initial route)
-    expect(find.text('Login Page'), findsOneWidget);
+    // Check for localized text "Авторизация" (ru) or "Authorization" (en)
+    expect(
+      anyOf(find.text('Авторизация'), find.text('Authorization')),
+      findsOneWidget,
+    );
   });
 }

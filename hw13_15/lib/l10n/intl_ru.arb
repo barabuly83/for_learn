@@ -89,5 +89,45 @@
         "example": "Linux"
       }
     }
+  },
+  "refresh": "Обновить",
+  "@refresh": {
+    "description": "Кнопка обновления"
+  },
+  "user_info": "Информация о пользователе",
+  "@user_info": {
+    "description": "Заголовок раздела информации о пользователе"
+  },
+  "uid": "Идентификатор пользователя",
+  "@uid": {
+    "description": "Метка идентификатора пользователя"
+  },
+  "name": "Имя",
+  "@name": {
+    "description": "Метка имени"
+  },
+  "phone": "Телефон",
+  "@phone": {
+    "description": "Метка телефона"
+  },
+  "not_specified": "Не указано",
+  "@not_specified": {
+    "description": "Значение не указано"
+  },
+  "error_loading_categories": "Ошибка загрузки категорий",
+  "@error_loading_categories": {
+    "description": "Сообщение об ошибке при загрузке категорий"
+  },
+  "categories_not_found": "Категории не найдены",
+  "@categories_not_found": {
+    "description": "Сообщение когда категории недоступны"
+  },
+  "retry": "Повторить",
+  "@retry": {
+    "description": "Кнопка повтора"
+  },
+  "logout_error": "Ошибка выхода",
+  "@logout_error": {
+    "description": "Сообщение об ошибке при выходе"
   }
 }

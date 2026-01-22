@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../app/services/app_services.dart';
+import '../../domain/models/app_services.dart';
 import '../../app/router/routes/result_route.dart';
 import '../../l10n/l10n.dart';
 import '../../models/model.dart';
+import 'answer_option_widget.dart';
 
 class QuestionsPage extends StatefulWidget {
   final GoRouterState state;
@@ -22,20 +23,28 @@ class _QuestionsPageState extends State<QuestionsPage> {
   bool _isLoading = true;
   String? _error;
   int _currentQuestionIndex = 0;
-  Map<int, Set<String>> _selectedAnswers = {};
+  final Map<int, Set<String>> _selectedAnswers = {};
   String? _category;
+  bool _hasLoaded = false;
 
   @override
   void initState() {
     super.initState();
     _category = widget.state.uri.queryParameters['category'];
-    if (_category != null) {
-      _loadQuestions();
-    } else {
+    if (_category == null) {
       setState(() {
         _error = 'Категория не указана';
         _isLoading = false;
       });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_hasLoaded && _category != null) {
+      _hasLoaded = true;
+      _loadQuestions();
     }
   }
 
@@ -204,14 +213,50 @@ class _QuestionsPageState extends State<QuestionsPage> {
               ),
             ],
             const SizedBox(height: 24),
-            _buildAnswerOption('answer_a', question.answers.answerA),
-            _buildAnswerOption('answer_b', question.answers.answerB),
-            _buildAnswerOption('answer_c', question.answers.answerC),
-            _buildAnswerOption('answer_d', question.answers.answerD),
+            AnswerOptionWidget(
+              answerKey: 'answer_a',
+              answerText: question.answers.answerA,
+              isSelected: _isAnswerSelected('answer_a'),
+              isMultiple: question.multipleCorrectAnswers == 'true',
+              onTap: () => _onAnswerSelected('answer_a'),
+            ),
+            AnswerOptionWidget(
+              answerKey: 'answer_b',
+              answerText: question.answers.answerB,
+              isSelected: _isAnswerSelected('answer_b'),
+              isMultiple: question.multipleCorrectAnswers == 'true',
+              onTap: () => _onAnswerSelected('answer_b'),
+            ),
+            AnswerOptionWidget(
+              answerKey: 'answer_c',
+              answerText: question.answers.answerC,
+              isSelected: _isAnswerSelected('answer_c'),
+              isMultiple: question.multipleCorrectAnswers == 'true',
+              onTap: () => _onAnswerSelected('answer_c'),
+            ),
+            AnswerOptionWidget(
+              answerKey: 'answer_d',
+              answerText: question.answers.answerD,
+              isSelected: _isAnswerSelected('answer_d'),
+              isMultiple: question.multipleCorrectAnswers == 'true',
+              onTap: () => _onAnswerSelected('answer_d'),
+            ),
             if (question.answers.answerE != null)
-              _buildAnswerOption('answer_e', question.answers.answerE!),
+              AnswerOptionWidget(
+                answerKey: 'answer_e',
+                answerText: question.answers.answerE!,
+                isSelected: _isAnswerSelected('answer_e'),
+                isMultiple: question.multipleCorrectAnswers == 'true',
+                onTap: () => _onAnswerSelected('answer_e'),
+              ),
             if (question.answers.answerF != null)
-              _buildAnswerOption('answer_f', question.answers.answerF!),
+              AnswerOptionWidget(
+                answerKey: 'answer_f',
+                answerText: question.answers.answerF!,
+                isSelected: _isAnswerSelected('answer_f'),
+                isMultiple: question.multipleCorrectAnswers == 'true',
+                onTap: () => _onAnswerSelected('answer_f'),
+              ),
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -235,50 +280,4 @@ class _QuestionsPageState extends State<QuestionsPage> {
     );
   }
 
-  Widget _buildAnswerOption(String answerKey, String answerText) {
-    final isSelected = _isAnswerSelected(answerKey);
-    final question = _questions[_currentQuestionIndex];
-    final isMultiple = question.multipleCorrectAnswers == 'true';
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: () => _onAnswerSelected(answerKey),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: isSelected ? Colors.blue : Colors.grey,
-              width: isSelected ? 2 : 1,
-            ),
-            borderRadius: BorderRadius.circular(8),
-            color: isSelected ? Colors.blue.withOpacity(0.1) : null,
-          ),
-          child: Row(
-            children: [
-              isMultiple
-                  ? Checkbox(
-                      value: isSelected,
-                      onChanged: (_) => _onAnswerSelected(answerKey),
-                    )
-                  : Radio<bool>(
-                      value: true,
-                      groupValue: isSelected,
-                      onChanged: (_) => _onAnswerSelected(answerKey),
-                    ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  answerText,
-                  style: TextStyle(
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

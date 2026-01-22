@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import '../models/model.dart';
+import '../../models/model.dart';
 
 /// Интерфейс сервиса викторин
 abstract interface class QuizService {

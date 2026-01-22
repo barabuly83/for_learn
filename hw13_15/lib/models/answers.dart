@@ -1,20 +1,36 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'answers.freezed.dart';
-part 'answers.g.dart';
-
 /// Модель ответов на вопрос викторины
-@freezed
-class Answers with _$Answers {
-  const factory Answers({
-    @JsonKey(name: 'answer_a') required String answerA,
-    @JsonKey(name: 'answer_b') required String answerB,
-    @JsonKey(name: 'answer_c') required String answerC,
-    @JsonKey(name: 'answer_d') required String answerD,
-    @JsonKey(name: 'answer_e') String? answerE,
-    @JsonKey(name: 'answer_f') String? answerF,
-  }) = _Answers;
+class Answers {
+  const Answers({
+    required this.answerA,
+    required this.answerB,
+    required this.answerC,
+    required this.answerD,
+    this.answerE,
+    this.answerF,
+  });
 
-  factory Answers.fromJson(Map<String, dynamic> json) =>
-      _$AnswersFromJson(json);
+  final String answerA;
+  final String answerB;
+  final String answerC;
+  final String answerD;
+  final String? answerE;
+  final String? answerF;
+
+  factory Answers.fromJson(Map<String, dynamic> json) => Answers(
+        answerA: json['answer_a'] as String,
+        answerB: json['answer_b'] as String,
+        answerC: json['answer_c'] as String,
+        answerD: json['answer_d'] as String,
+        answerE: json['answer_e'] as String?,
+        answerF: json['answer_f'] as String?,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'answer_a': answerA,
+        'answer_b': answerB,
+        'answer_c': answerC,
+        'answer_d': answerD,
+        'answer_e': answerE,
+        'answer_f': answerF,
+      };
 }

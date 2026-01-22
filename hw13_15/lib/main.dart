@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'firebase_options.dart';
-import 'app/router/routes/quiz_app.dart';
+import 'app/router/quiz_app.dart';
 import 'app/router/routes/app_router.dart';
-import 'domain/auth_service.dart';
-import 'domain/quiz_service.dart';
+import 'domain/models/auth_service.dart';
+import 'domain/models/quiz_service.dart';
 
 // Инициализация сервисов
 final Dio dio = _createDio();
@@ -15,6 +16,7 @@ final QuizServiceImpl _quizService = QuizServiceImpl(dio: dio);
 final AuthServiceImpl _authService = AuthServiceImpl(
   firebaseAuth: FirebaseAuth.instance,
 );
+final FirebaseStorage _storage = FirebaseStorage.instance;
 final GoRouter _router = createRouter(_authService);
 
 void main() async {
@@ -22,10 +24,17 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Настройка Firebase Storage эмулятора (только для тестирования Storage)
+  if (const bool.fromEnvironment('USE_STORAGE_EMULATOR', defaultValue: false)) {
+    await FirebaseStorage.instance.useStorageEmulator('127.0.0.1', 9199);
+  }
+
   final QuizApp quizApp = QuizApp(
     authService: _authService,
     router: _router,
     quizService: _quizService,
+    storage: _storage,
   );
   runApp(quizApp);
 }
@@ -38,12 +47,25 @@ Dio _createDio() {
     ),
   );
   
-  // Добавляем API ключ через interceptor для всех запросов
+  // Добавляем interceptor для аутентификации и API ключа
   dio.interceptors.add(
     InterceptorsWrapper(
-      onRequest: (options, handler) {
+      onRequest: (options, handler) async {
+        // Добавляем токен аутентификации Firebase, если пользователь авторизован
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          try {
+            final token = await user.getIdToken();
+            options.headers['Authorization'] = 'Bearer $token';
+          } catch (e) {
+            // Если не удалось получить токен, продолжаем без него
+          }
+        }
+        
         // Добавляем API ключ к каждому запросу
+        // TODO: Замените на реальный API ключ от quizapi.io или используйте переменную окружения
         options.queryParameters['apiKey'] = 'YOUR_API_KEY_HERE';
+        
         handler.next(options);
       },
     ),
