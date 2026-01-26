@@ -141,7 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return l10n.cannot_be_empty;
                     }
                     if (value.length < 6) {
-                      return 'Пароль должен содержать минимум 6 символов';
+                      return l10n.password_min_length;
                     }
                     return null;
                   },
@@ -151,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _confirmPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'Подтвердите пароль',
+                    labelText: l10n.confirm_password,
                     border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
@@ -159,7 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return l10n.cannot_be_empty;
                     }
                     if (value != _passwordController.text) {
-                      return 'Пароли не совпадают';
+                      return l10n.passwords_do_not_match;
                     }
                     return null;
                   },
@@ -180,9 +180,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 OutlinedButton.icon(
                   onPressed: _isLoading ? null : _registerWithGoogle,
                   icon: const Icon(Icons.g_mobiledata, size: 20),
-                  label: const Text('Регистрация через Google'),
+                  label: Text(l10n.register_with_google),
                   style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 16,
+                    ),
                   ),
                 ),
               ],

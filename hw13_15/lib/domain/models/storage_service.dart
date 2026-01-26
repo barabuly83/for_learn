@@ -30,8 +30,31 @@ class StorageServiceImpl implements StorageService {
   Future<String> uploadFile(String path, File file) async {
     try {
       final ref = _storage.ref().child(path);
-      await ref.putFile(file);
-      return await ref.getDownloadURL();
+      final uploadTask = ref.putFile(file);
+
+      // Ждем завершения загрузки с таймаутом
+      final taskSnapshot = await uploadTask.timeout(
+        const Duration(seconds: 60),
+        onTimeout: () {
+          uploadTask.cancel();
+          throw Exception('Upload timeout after 60 seconds');
+        },
+      );
+
+      // Проверяем, что загрузка успешна
+      if (taskSnapshot.state == TaskState.success) {
+        // Используем ref из taskSnapshot для получения URL с таймаутом
+        return await taskSnapshot.ref.getDownloadURL().timeout(
+          const Duration(seconds: 10),
+          onTimeout: () {
+            throw Exception('Failed to get download URL: timeout');
+          },
+        );
+      } else {
+        throw Exception('Upload failed with state: ${taskSnapshot.state}');
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Failed to upload file: ${e.code} - ${e.message}');
     } catch (e) {
       throw Exception('Failed to upload file: $e');
     }
@@ -41,8 +64,48 @@ class StorageServiceImpl implements StorageService {
   Future<String> uploadBytes(String path, Uint8List bytes) async {
     try {
       final ref = _storage.ref().child(path);
-      await ref.putData(bytes);
-      return await ref.getDownloadURL();
+      final uploadTask = ref.putData(
+        bytes,
+        SettableMetadata(contentType: 'text/plain'),
+      );
+
+      // Ждем завершения загрузки с таймаутом
+      final taskSnapshot = await uploadTask.timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          uploadTask.cancel();
+          throw Exception('Upload timeout after 30 seconds');
+        },
+      );
+
+      // Проверяем, что загрузка успешна
+      if (taskSnapshot.state == TaskState.success) {
+        // Используем ref из taskSnapshot для получения URL с таймаутом
+        try {
+          return await taskSnapshot.ref.getDownloadURL().timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              throw Exception('Failed to get download URL: timeout');
+            },
+          );
+        } on FirebaseException catch (e) {
+          // Если не удалось получить URL сразу после загрузки, пробуем через небольшую задержку
+          if (e.code == 'object-not-found') {
+            await Future.delayed(const Duration(milliseconds: 500));
+            return await taskSnapshot.ref.getDownloadURL().timeout(
+              const Duration(seconds: 10),
+              onTimeout: () {
+                throw Exception('Failed to get download URL: timeout after retry');
+              },
+            );
+          }
+          rethrow;
+        }
+      } else {
+        throw Exception('Upload failed with state: ${taskSnapshot.state}');
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Failed to upload bytes: ${e.code} - ${e.message}');
     } catch (e) {
       throw Exception('Failed to upload bytes: $e');
     }

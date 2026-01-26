@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../domain/models/app_services.dart';
 import '../../app/router/routes/app_screens.dart';
 import '../../l10n/l10n.dart';
+import 'info_row_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -20,6 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _handleLogout(BuildContext context) async {
     final authService = AppServices.of(context).authService;
+    final l10n = S.of(context);
     try {
       await authService.signOut();
       if (context.mounted) {
@@ -29,7 +31,10 @@ class _ProfilePageState extends State<ProfilePage> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ошибка при выходе: $e'),
+            content: Text(
+              l10n?.logout_error_message(e.toString()) ??
+                  'Ошибка при выходе: $e',
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -44,15 +49,13 @@ class _ProfilePageState extends State<ProfilePage> {
     final User? user = authService.currentUser;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n?.profile ?? 'Профиль'),
-      ),
+      appBar: AppBar(title: Text(l10n?.profile ?? 'Профиль')),
       body: user == null
           ? Center(
-          child: Text(
-            'Пользователь не авторизован',
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
+              child: Text(
+                l10n?.user_not_authorized ?? 'Пользователь не авторизован',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
             )
           : SingleChildScrollView(
               padding: const EdgeInsets.all(24.0),
@@ -88,44 +91,38 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Информация о пользователе',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            l10n?.user_info ?? 'Информация о пользователе',
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 16),
-                          _buildInfoRow(
-                            context,
-                            Icons.email,
-                            l10n?.email ?? 'Почта',
-                            user.email ?? 'Не указано',
+                          InfoRow(
+                            icon: Icons.email,
+                            label: l10n?.email ?? 'Почта',
+                            value:
+                                user.email ??
+                                (l10n?.not_specified ?? 'Не указано'),
                           ),
                           const SizedBox(height: 12),
-                          _buildInfoRow(
-                            context,
-                            Icons.person,
-                            'UID',
-                            user.uid,
+                          InfoRow(
+                            icon: Icons.person,
+                            label: l10n?.uid ?? 'UID',
+                            value: user.uid,
                           ),
                           if (user.displayName != null) ...[
                             const SizedBox(height: 12),
-                            _buildInfoRow(
-                              context,
-                              Icons.badge,
-                              'Имя',
-                              user.displayName!,
+                            InfoRow(
+                              icon: Icons.badge,
+                              label: l10n?.name ?? 'Имя',
+                              value: user.displayName!,
                             ),
                           ],
                           if (user.phoneNumber != null) ...[
                             const SizedBox(height: 12),
-                            _buildInfoRow(
-                              context,
-                              Icons.phone,
-                              'Телефон',
-                              user.phoneNumber!,
+                            InfoRow(
+                              icon: Icons.phone,
+                              label: l10n?.phone ?? 'Телефон',
+                              value: user.phoneNumber!,
                             ),
                           ],
                         ],
@@ -145,25 +142,30 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Тестирование Storage',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            l10n?.storage_testing ?? 'Тестирование Storage',
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 16),
                           Row(
                             children: [
                               Expanded(
                                 child: ElevatedButton.icon(
-                                  onPressed: _isUploading ? null : _testStorageUpload,
+                                  onPressed: _isUploading
+                                      ? null
+                                      : _testStorageUpload,
                                   icon: _isUploading
                                       ? const SizedBox(
                                           width: 20,
                                           height: 20,
-                                          child: CircularProgressIndicator(strokeWidth: 2),
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
                                         )
                                       : const Icon(Icons.cloud_upload),
-                                  label: const Text('Загрузить тест'),
+                                  label: Text(
+                                    l10n?.upload_test ?? 'Загрузить тест',
+                                  ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.green,
                                     foregroundColor: Colors.white,
@@ -175,7 +177,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: OutlinedButton.icon(
                                   onPressed: _testStorageDownload,
                                   icon: const Icon(Icons.cloud_download),
-                                  label: const Text('Проверить файлы'),
+                                  label: Text(
+                                    l10n?.check_files ?? 'Проверить файлы',
+                                  ),
                                 ),
                               ),
                             ],
@@ -186,9 +190,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: OutlinedButton.icon(
                               onPressed: _isUploading ? null : _uploadImage,
                               icon: const Icon(Icons.image),
-                              label: const Text('Загрузить изображение'),
+                              label: Text(
+                                l10n?.upload_image ?? 'Загрузить изображение',
+                              ),
                               style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
                               ),
                             ),
                           ),
@@ -244,46 +252,22 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildInfoRow(
-    BuildContext context,
-    IconData icon,
-    String label,
-    String value,
-  ) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                value,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   Future<void> _testStorageUpload() async {
     final appServices = AppServices.of(context);
+    final l10n = S.of(context);
     final user = appServices.authService.currentUser;
 
-    if (user == null) return;
+    if (user == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n?.user_not_authorized ?? 'Пользователь не авторизован'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+      return;
+    }
 
     setState(() {
       _isUploading = true;
@@ -295,23 +279,52 @@ class _ProfilePageState extends State<ProfilePage> {
       final bytes = Uint8List.fromList(testContent.codeUnits);
 
       // Загружаем в Storage
-      final path = 'test/${user.uid}/test_file_${DateTime.now().millisecondsSinceEpoch}.txt';
-      final downloadUrl = await appServices.storageService.uploadBytes(path, bytes);
+      final path =
+          'test/${user.uid}/test_file_${DateTime.now().millisecondsSinceEpoch}.txt';
+      
+      // Выполняем загрузку с таймаутом на уровне UI
+      final downloadUrl = await appServices.storageService.uploadBytes(
+        path,
+        bytes,
+      ).timeout(
+        const Duration(seconds: 35),
+        onTimeout: () {
+          throw Exception('Upload operation timed out. Please check your internet connection and Firebase Storage configuration.');
+        },
+      );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Файл загружен! URL: ${downloadUrl.substring(0, 50)}...'),
+            content: Text(
+              l10n?.file_uploaded('${downloadUrl.substring(0, 50)}...') ??
+                  'Файл загружен! URL: ${downloadUrl.substring(0, 50)}...',
+            ),
             backgroundColor: Colors.green,
+            duration: const Duration(seconds: 4),
           ),
         );
       }
     } catch (e) {
       if (mounted) {
+        String errorMessage = e.toString();
+        
+        // Более понятные сообщения об ошибках
+        if (errorMessage.contains('timeout')) {
+          errorMessage = 'Превышено время ожидания. Проверьте подключение к интернету и настройки Firebase Storage.';
+        } else if (errorMessage.contains('permission-denied')) {
+          errorMessage = 'Нет доступа к Firebase Storage. Проверьте правила безопасности.';
+        } else if (errorMessage.contains('object-not-found')) {
+          errorMessage = 'Объект не найден. Возможно, проблема с правилами безопасности Firebase Storage.';
+        }
+        
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ошибка загрузки: $e'),
+            content: Text(
+              l10n?.upload_error(errorMessage) ?? 'Ошибка загрузки: $errorMessage',
+            ),
             backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
           ),
         );
       }
@@ -326,6 +339,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _testStorageDownload() async {
     final appServices = AppServices.of(context);
+    final l10n = S.of(context);
     final user = appServices.authService.currentUser;
 
     if (user == null) return;
@@ -341,7 +355,10 @@ class _ProfilePageState extends State<ProfilePage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Последний файл: ${lastItem.name}'),
+              content: Text(
+                l10n?.last_file(lastItem.name) ??
+                    'Последний файл: ${lastItem.name}',
+              ),
               backgroundColor: Colors.blue,
             ),
           );
@@ -349,8 +366,8 @@ class _ProfilePageState extends State<ProfilePage> {
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Файлы не найдены'),
+            SnackBar(
+              content: Text(l10n?.files_not_found ?? 'Файлы не найдены'),
               backgroundColor: Colors.orange,
             ),
           );
@@ -360,7 +377,7 @@ class _ProfilePageState extends State<ProfilePage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ошибка: $e'),
+            content: Text(l10n?.error(e.toString()) ?? 'Ошибка: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -370,6 +387,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _uploadImage() async {
     final appServices = AppServices.of(context);
+    final l10n = S.of(context);
     final user = appServices.authService.currentUser;
 
     if (user == null) return;
@@ -385,13 +403,14 @@ class _ProfilePageState extends State<ProfilePage> {
       });
 
       final file = File(image.path);
-      final path = 'images/${user.uid}/profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final path =
+          'images/${user.uid}/profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
       await appServices.storageService.uploadFile(path, file);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Изображение загружено!'),
+            content: Text(l10n?.image_uploaded ?? 'Изображение загружено!'),
             backgroundColor: Colors.green,
           ),
         );
@@ -400,7 +419,10 @@ class _ProfilePageState extends State<ProfilePage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ошибка загрузки изображения: $e'),
+            content: Text(
+              l10n?.image_upload_error(e.toString()) ??
+                  'Ошибка загрузки изображения: $e',
+            ),
             backgroundColor: Colors.red,
           ),
         );

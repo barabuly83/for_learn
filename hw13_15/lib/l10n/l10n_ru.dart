@@ -94,4 +94,83 @@ class SRu extends S {
 
   @override
   String get logout_error => 'Ошибка выхода';
+
+  @override
+  String get user_not_authorized => 'Пользователь не авторизован';
+
+  @override
+  String logout_error_message(String error) {
+    return 'Ошибка при выходе: $error';
+  }
+
+  @override
+  String get storage_testing => 'Тестирование Storage';
+
+  @override
+  String get upload_test => 'Загрузить тест';
+
+  @override
+  String get check_files => 'Проверить файлы';
+
+  @override
+  String get upload_image => 'Загрузить изображение';
+
+  @override
+  String file_uploaded(String url) {
+    return 'Файл загружен! URL: $url';
+  }
+
+  @override
+  String upload_error(String error) {
+    return 'Ошибка загрузки: $error';
+  }
+
+  @override
+  String last_file(String filename) {
+    return 'Последний файл: $filename';
+  }
+
+  @override
+  String get files_not_found => 'Файлы не найдены';
+
+  @override
+  String error(String error) {
+    return 'Ошибка: $error';
+  }
+
+  @override
+  String get image_uploaded => 'Изображение загружено!';
+
+  @override
+  String image_upload_error(String error) {
+    return 'Ошибка загрузки изображения: $error';
+  }
+
+  @override
+  String get category_not_specified => 'Категория не указана';
+
+  @override
+  String get questions_not_found => 'Вопросы не найдены';
+
+  @override
+  String get next => 'Далее';
+
+  @override
+  String get finish => 'Завершить';
+
+  @override
+  String get login_with_google => 'Войти через Google';
+
+  @override
+  String get register_with_google => 'Регистрация через Google';
+
+  @override
+  String get confirm_password => 'Подтвердите пароль';
+
+  @override
+  String get password_min_length =>
+      'Пароль должен содержать минимум 6 символов';
+
+  @override
+  String get passwords_do_not_match => 'Пароли не совпадают';
 }

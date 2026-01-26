@@ -129,5 +129,129 @@
   "logout_error": "Logout error",
   "@logout_error": {
     "description": "Error message when logout fails"
+  },
+  "user_not_authorized": "User not authorized",
+  "@user_not_authorized": {
+    "description": "Message when user is not authorized"
+  },
+  "logout_error_message": "Logout error: {error}",
+  "@logout_error_message": {
+    "description": "Logout error message with details",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "storage_testing": "Storage Testing",
+  "@storage_testing": {
+    "description": "Storage testing section title"
+  },
+  "upload_test": "Upload Test",
+  "@upload_test": {
+    "description": "Upload test file button"
+  },
+  "check_files": "Check Files",
+  "@check_files": {
+    "description": "Check files button"
+  },
+  "upload_image": "Upload Image",
+  "@upload_image": {
+    "description": "Upload image button"
+  },
+  "file_uploaded": "File uploaded! URL: {url}",
+  "@file_uploaded": {
+    "description": "Message when file is successfully uploaded",
+    "placeholders": {
+      "url": {
+        "type": "String",
+        "example": "https://..."
+      }
+    }
+  },
+  "upload_error": "Upload error: {error}",
+  "@upload_error": {
+    "description": "Upload error message",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "last_file": "Last file: {filename}",
+  "@last_file": {
+    "description": "Message about last file",
+    "placeholders": {
+      "filename": {
+        "type": "String",
+        "example": "test.txt"
+      }
+    }
+  },
+  "files_not_found": "Files not found",
+  "@files_not_found": {
+    "description": "Message when files are not found"
+  },
+  "error": "Error: {error}",
+  "@error": {
+    "description": "General error message",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "image_uploaded": "Image uploaded!",
+  "@image_uploaded": {
+    "description": "Message when image is successfully uploaded"
+  },
+  "image_upload_error": "Image upload error: {error}",
+  "@image_upload_error": {
+    "description": "Image upload error message",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "category_not_specified": "Category not specified",
+  "@category_not_specified": {
+    "description": "Message when category is not specified"
+  },
+  "questions_not_found": "Questions not found",
+  "@questions_not_found": {
+    "description": "Message when questions are not found"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next question button"
+  },
+  "finish": "Finish",
+  "@finish": {
+    "description": "Finish quiz button"
+  },
+  "login_with_google": "Sign in with Google",
+  "@login_with_google": {
+    "description": "Sign in with Google button"
+  },
+  "register_with_google": "Sign up with Google",
+  "@register_with_google": {
+    "description": "Sign up with Google button"
+  },
+  "confirm_password": "Confirm Password",
+  "@confirm_password": {
+    "description": "Confirm password field"
+  },
+  "password_min_length": "Password must be at least 6 characters",
+  "@password_min_length": {
+    "description": "Password validation error message"
+  },
+  "passwords_do_not_match": "Passwords do not match",
+  "@passwords_do_not_match": {
+    "description": "Message when passwords do not match"
   }
 }

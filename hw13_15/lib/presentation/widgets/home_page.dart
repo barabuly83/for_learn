@@ -9,6 +9,7 @@ class HomePage extends StatelessWidget {
 
   Future<void> _handleLogout(BuildContext context) async {
     final authService = AppServices.of(context).authService;
+    final l10n = S.of(context);
     try {
       await authService.signOut();
       if (context.mounted) {
@@ -18,7 +19,10 @@ class HomePage extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ошибка при выходе: $e'),
+            content: Text(
+              l10n?.logout_error_message(e.toString()) ??
+                  'Ошибка при выходе: $e',
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -54,17 +58,13 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.quiz,
-                size: 120,
-                color: Colors.deepPurple,
-              ),
+              const Icon(Icons.quiz, size: 120, color: Colors.deepPurple),
               const SizedBox(height: 32),
               Text(
                 l10n?.main ?? 'Главная',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 48),
               SizedBox(

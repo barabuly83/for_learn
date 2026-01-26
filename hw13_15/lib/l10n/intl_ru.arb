@@ -129,5 +129,129 @@
   "logout_error": "Ошибка выхода",
   "@logout_error": {
     "description": "Сообщение об ошибке при выходе"
+  },
+  "user_not_authorized": "Пользователь не авторизован",
+  "@user_not_authorized": {
+    "description": "Сообщение когда пользователь не авторизован"
+  },
+  "logout_error_message": "Ошибка при выходе: {error}",
+  "@logout_error_message": {
+    "description": "Сообщение об ошибке при выходе с деталями",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Ошибка сети"
+      }
+    }
+  },
+  "storage_testing": "Тестирование Storage",
+  "@storage_testing": {
+    "description": "Заголовок раздела тестирования Storage"
+  },
+  "upload_test": "Загрузить тест",
+  "@upload_test": {
+    "description": "Кнопка загрузки тестового файла"
+  },
+  "check_files": "Проверить файлы",
+  "@check_files": {
+    "description": "Кнопка проверки файлов"
+  },
+  "upload_image": "Загрузить изображение",
+  "@upload_image": {
+    "description": "Кнопка загрузки изображения"
+  },
+  "file_uploaded": "Файл загружен! URL: {url}",
+  "@file_uploaded": {
+    "description": "Сообщение об успешной загрузке файла",
+    "placeholders": {
+      "url": {
+        "type": "String",
+        "example": "https://..."
+      }
+    }
+  },
+  "upload_error": "Ошибка загрузки: {error}",
+  "@upload_error": {
+    "description": "Сообщение об ошибке загрузки",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Ошибка сети"
+      }
+    }
+  },
+  "last_file": "Последний файл: {filename}",
+  "@last_file": {
+    "description": "Сообщение о последнем файле",
+    "placeholders": {
+      "filename": {
+        "type": "String",
+        "example": "test.txt"
+      }
+    }
+  },
+  "files_not_found": "Файлы не найдены",
+  "@files_not_found": {
+    "description": "Сообщение когда файлы не найдены"
+  },
+  "error": "Ошибка: {error}",
+  "@error": {
+    "description": "Общее сообщение об ошибке",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Ошибка сети"
+      }
+    }
+  },
+  "image_uploaded": "Изображение загружено!",
+  "@image_uploaded": {
+    "description": "Сообщение об успешной загрузке изображения"
+  },
+  "image_upload_error": "Ошибка загрузки изображения: {error}",
+  "@image_upload_error": {
+    "description": "Сообщение об ошибке загрузки изображения",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Ошибка сети"
+      }
+    }
+  },
+  "category_not_specified": "Категория не указана",
+  "@category_not_specified": {
+    "description": "Сообщение когда категория не указана"
+  },
+  "questions_not_found": "Вопросы не найдены",
+  "@questions_not_found": {
+    "description": "Сообщение когда вопросы не найдены"
+  },
+  "next": "Далее",
+  "@next": {
+    "description": "Кнопка перехода к следующему вопросу"
+  },
+  "finish": "Завершить",
+  "@finish": {
+    "description": "Кнопка завершения викторины"
+  },
+  "login_with_google": "Войти через Google",
+  "@login_with_google": {
+    "description": "Кнопка входа через Google"
+  },
+  "register_with_google": "Регистрация через Google",
+  "@register_with_google": {
+    "description": "Кнопка регистрации через Google"
+  },
+  "confirm_password": "Подтвердите пароль",
+  "@confirm_password": {
+    "description": "Поле подтверждения пароля"
+  },
+  "password_min_length": "Пароль должен содержать минимум 6 символов",
+  "@password_min_length": {
+    "description": "Сообщение об ошибке валидации пароля"
+  },
+  "passwords_do_not_match": "Пароли не совпадают",
+  "@passwords_do_not_match": {
+    "description": "Сообщение когда пароли не совпадают"
   }
 }

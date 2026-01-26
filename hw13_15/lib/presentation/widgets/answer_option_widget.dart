@@ -45,7 +45,9 @@ class AnswerOptionWidget extends StatelessWidget {
                 child: Text(
                   answerText,
                   style: TextStyle(
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: isSelected
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                   ),
                 ),
               ),
