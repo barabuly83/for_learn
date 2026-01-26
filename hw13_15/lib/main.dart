@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'firebase_options.dart';
@@ -27,7 +29,18 @@ void main() async {
 
   // Настройка Firebase Storage эмулятора (только для тестирования Storage)
   if (const bool.fromEnvironment('USE_STORAGE_EMULATOR', defaultValue: false)) {
-    await FirebaseStorage.instance.useStorageEmulator('127.0.0.1', 9199);
+    // Для Android эмулятора используем 10.0.2.2, для остальных платформ - 127.0.0.1
+    String emulatorHost = '127.0.0.1';
+    if (!kIsWeb) {
+      try {
+        if (Platform.isAndroid) {
+          emulatorHost = '10.0.2.2';
+        }
+      } catch (e) {
+        // Platform недоступен, используем значение по умолчанию
+      }
+    }
+    await FirebaseStorage.instance.useStorageEmulator(emulatorHost, 9199);
   }
 
   final QuizApp quizApp = QuizApp(

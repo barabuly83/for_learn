@@ -9,10 +9,7 @@ import 'answer_option_widget.dart';
 class QuestionsPage extends StatefulWidget {
   final GoRouterState state;
 
-  const QuestionsPage({
-    super.key,
-    required this.state,
-  });
+  const QuestionsPage({super.key, required this.state});
 
   @override
   State<QuestionsPage> createState() => _QuestionsPageState();
@@ -32,8 +29,9 @@ class _QuestionsPageState extends State<QuestionsPage> {
     super.initState();
     _category = widget.state.uri.queryParameters['category'];
     if (_category == null) {
+      final l10n = S.of(context);
       setState(() {
-        _error = 'Категория не указана';
+        _error = l10n?.category_not_specified ?? 'Категория не указана';
         _isLoading = false;
       });
     }
@@ -76,7 +74,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
       final questionIndex = _currentQuestionIndex;
       _selectedAnswers.putIfAbsent(questionIndex, () => <String>{});
       final question = _questions[questionIndex];
-      
+
       if (question.multipleCorrectAnswers == 'true') {
         // Множественный выбор
         if (_selectedAnswers[questionIndex]!.contains(answerKey)) {
@@ -93,7 +91,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
   }
 
   bool _isAnswerSelected(String answerKey) {
-    return _selectedAnswers[_currentQuestionIndex]?.contains(answerKey) ?? false;
+    return _selectedAnswers[_currentQuestionIndex]?.contains(answerKey) ??
+        false;
   }
 
   void _onNextQuestion() {
@@ -116,25 +115,25 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
   void _finishQuiz() {
     int correctCount = 0;
-    
+
     for (int i = 0; i < _questions.length; i++) {
       final question = _questions[i];
       final selected = _selectedAnswers[i] ?? <String>{};
       final correctAnswers = question.correctAnswers;
-      
+
       bool isCorrect = true;
       for (var entry in correctAnswers.entries) {
         final key = entry.key;
         final value = entry.value;
         final shouldBeSelected = value == 'true';
         final isSelected = selected.contains(key);
-        
+
         if (shouldBeSelected != isSelected) {
           isCorrect = false;
           break;
         }
       }
-      
+
       if (isCorrect) {
         correctCount++;
       }
@@ -154,30 +153,26 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
     if (_isLoading) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text(l10n?.question('1', '1') ?? 'Вопрос'),
-        ),
+        appBar: AppBar(title: Text(l10n?.question('1', '1') ?? 'Вопрос')),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     if (_error != null || _questions.isEmpty) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text(l10n?.question('1', '1') ?? 'Вопрос'),
-        ),
+        appBar: AppBar(title: Text(l10n?.question('1', '1') ?? 'Вопрос')),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                _error ?? 'Вопросы не найдены',
+                _error ?? (l10n?.questions_not_found ?? 'Вопросы не найдены'),
                 style: const TextStyle(color: Colors.red),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _loadQuestions,
-                child: const Text('Повторить'),
+                child: Text(l10n?.retry ?? 'Повторить'),
               ),
             ],
           ),
@@ -191,10 +186,13 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n?.question(
-          questionNumber.toString(),
-          totalQuestions.toString(),
-        ) ?? 'Вопрос $questionNumber/$totalQuestions'),
+        title: Text(
+          l10n?.question(
+                questionNumber.toString(),
+                totalQuestions.toString(),
+              ) ??
+              'Вопрос $questionNumber/$totalQuestions',
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -262,15 +260,18 @@ class _QuestionsPageState extends State<QuestionsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
-                  onPressed:
-                      _currentQuestionIndex > 0 ? _onPreviousQuestion : null,
+                  onPressed: _currentQuestionIndex > 0
+                      ? _onPreviousQuestion
+                      : null,
                   child: Text(l10n?.back ?? 'Назад'),
                 ),
                 ElevatedButton(
                   onPressed: _onNextQuestion,
-                  child: Text(_currentQuestionIndex < _questions.length - 1
-                      ? 'Далее'
-                      : 'Завершить'),
+                  child: Text(
+                    _currentQuestionIndex < _questions.length - 1
+                        ? (l10n?.next ?? 'Далее')
+                        : (l10n?.finish ?? 'Завершить'),
+                  ),
                 ),
               ],
             ),
@@ -279,5 +280,4 @@ class _QuestionsPageState extends State<QuestionsPage> {
       ),
     );
   }
-
 }

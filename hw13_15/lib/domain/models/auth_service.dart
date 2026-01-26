@@ -48,9 +48,8 @@ class AuthServiceImpl implements AuthService {
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   @override
-  Stream<bool> get authStatusChanged => _auth.authStateChanges().map(
-        (user) => user != null,
-      );
+  Stream<bool> get authStatusChanged =>
+      _auth.authStateChanges().map((user) => user != null);
 
   @override
   bool get isAuthenticated => _auth.currentUser != null;
@@ -105,7 +104,8 @@ class AuthServiceImpl implements AuthService {
       }
 
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       // Create a new credential
       final credential = GoogleAuthProvider.credential(

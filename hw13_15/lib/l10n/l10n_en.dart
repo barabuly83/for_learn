@@ -94,4 +94,82 @@ class SEn extends S {
 
   @override
   String get logout_error => 'Logout error';
+
+  @override
+  String get user_not_authorized => 'User not authorized';
+
+  @override
+  String logout_error_message(String error) {
+    return 'Logout error: $error';
+  }
+
+  @override
+  String get storage_testing => 'Storage Testing';
+
+  @override
+  String get upload_test => 'Upload Test';
+
+  @override
+  String get check_files => 'Check Files';
+
+  @override
+  String get upload_image => 'Upload Image';
+
+  @override
+  String file_uploaded(String url) {
+    return 'File uploaded! URL: $url';
+  }
+
+  @override
+  String upload_error(String error) {
+    return 'Upload error: $error';
+  }
+
+  @override
+  String last_file(String filename) {
+    return 'Last file: $filename';
+  }
+
+  @override
+  String get files_not_found => 'Files not found';
+
+  @override
+  String error(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get image_uploaded => 'Image uploaded!';
+
+  @override
+  String image_upload_error(String error) {
+    return 'Image upload error: $error';
+  }
+
+  @override
+  String get category_not_specified => 'Category not specified';
+
+  @override
+  String get questions_not_found => 'Questions not found';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get finish => 'Finish';
+
+  @override
+  String get login_with_google => 'Sign in with Google';
+
+  @override
+  String get register_with_google => 'Sign up with Google';
+
+  @override
+  String get confirm_password => 'Confirm Password';
+
+  @override
+  String get password_min_length => 'Password must be at least 6 characters';
+
+  @override
+  String get passwords_do_not_match => 'Passwords do not match';
 }

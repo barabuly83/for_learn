@@ -22,8 +22,8 @@ class AppServices extends InheritedWidget {
 
   /// Получить сервисы из контекста
   static AppServices of(BuildContext context) {
-    final AppServices? result =
-        context.dependOnInheritedWidgetOfExactType<AppServices>();
+    final AppServices? result = context
+        .dependOnInheritedWidgetOfExactType<AppServices>();
     assert(result != null, 'No AppServices found in context');
     return result!;
   }
@@ -31,9 +31,9 @@ class AppServices extends InheritedWidget {
   /// Показать SnackBar с сообщением
   void snackBarDispatcher(BuildContext context, String message) {
     if (message.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
     }
   }
 

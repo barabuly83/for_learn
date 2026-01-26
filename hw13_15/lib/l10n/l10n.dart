@@ -258,6 +258,138 @@ abstract class S {
   /// In ru, this message translates to:
   /// **'Ошибка выхода'**
   String get logout_error;
+
+  /// Сообщение когда пользователь не авторизован
+  ///
+  /// In ru, this message translates to:
+  /// **'Пользователь не авторизован'**
+  String get user_not_authorized;
+
+  /// Сообщение об ошибке при выходе с деталями
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка при выходе: {error}'**
+  String logout_error_message(String error);
+
+  /// Заголовок раздела тестирования Storage
+  ///
+  /// In ru, this message translates to:
+  /// **'Тестирование Storage'**
+  String get storage_testing;
+
+  /// Кнопка загрузки тестового файла
+  ///
+  /// In ru, this message translates to:
+  /// **'Загрузить тест'**
+  String get upload_test;
+
+  /// Кнопка проверки файлов
+  ///
+  /// In ru, this message translates to:
+  /// **'Проверить файлы'**
+  String get check_files;
+
+  /// Кнопка загрузки изображения
+  ///
+  /// In ru, this message translates to:
+  /// **'Загрузить изображение'**
+  String get upload_image;
+
+  /// Сообщение об успешной загрузке файла
+  ///
+  /// In ru, this message translates to:
+  /// **'Файл загружен! URL: {url}'**
+  String file_uploaded(String url);
+
+  /// Сообщение об ошибке загрузки
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка загрузки: {error}'**
+  String upload_error(String error);
+
+  /// Сообщение о последнем файле
+  ///
+  /// In ru, this message translates to:
+  /// **'Последний файл: {filename}'**
+  String last_file(String filename);
+
+  /// Сообщение когда файлы не найдены
+  ///
+  /// In ru, this message translates to:
+  /// **'Файлы не найдены'**
+  String get files_not_found;
+
+  /// Общее сообщение об ошибке
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка: {error}'**
+  String error(String error);
+
+  /// Сообщение об успешной загрузке изображения
+  ///
+  /// In ru, this message translates to:
+  /// **'Изображение загружено!'**
+  String get image_uploaded;
+
+  /// Сообщение об ошибке загрузки изображения
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка загрузки изображения: {error}'**
+  String image_upload_error(String error);
+
+  /// Сообщение когда категория не указана
+  ///
+  /// In ru, this message translates to:
+  /// **'Категория не указана'**
+  String get category_not_specified;
+
+  /// Сообщение когда вопросы не найдены
+  ///
+  /// In ru, this message translates to:
+  /// **'Вопросы не найдены'**
+  String get questions_not_found;
+
+  /// Кнопка перехода к следующему вопросу
+  ///
+  /// In ru, this message translates to:
+  /// **'Далее'**
+  String get next;
+
+  /// Кнопка завершения викторины
+  ///
+  /// In ru, this message translates to:
+  /// **'Завершить'**
+  String get finish;
+
+  /// Кнопка входа через Google
+  ///
+  /// In ru, this message translates to:
+  /// **'Войти через Google'**
+  String get login_with_google;
+
+  /// Кнопка регистрации через Google
+  ///
+  /// In ru, this message translates to:
+  /// **'Регистрация через Google'**
+  String get register_with_google;
+
+  /// Поле подтверждения пароля
+  ///
+  /// In ru, this message translates to:
+  /// **'Подтвердите пароль'**
+  String get confirm_password;
+
+  /// Сообщение об ошибке валидации пароля
+  ///
+  /// In ru, this message translates to:
+  /// **'Пароль должен содержать минимум 6 символов'**
+  String get password_min_length;
+
+  /// Сообщение когда пароли не совпадают
+  ///
+  /// In ru, this message translates to:
+  /// **'Пароли не совпадают'**
+  String get passwords_do_not_match;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

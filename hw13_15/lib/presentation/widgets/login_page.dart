@@ -153,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                 OutlinedButton.icon(
                   onPressed: _isLoading ? null : _loginWithGoogle,
                   icon: const Icon(Icons.g_mobiledata, size: 20),
-                  label: const Text('Войти через Google'),
+                  label: Text(l10n.login_with_google),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                   ),

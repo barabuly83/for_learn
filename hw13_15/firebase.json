@@ -1,1 +1,15 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"hw13-15","appId":"1:133988075968:android:7bfc9f68f7f78007a9e025","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"hw13-15","appId":"1:133988075968:ios:ada7b63cf1c53e7aa9e025","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"hw13-15","appId":"1:133988075968:ios:ada7b63cf1c53e7aa9e025","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"hw13-15","configurations":{"android":"1:133988075968:android:7bfc9f68f7f78007a9e025","ios":"1:133988075968:ios:ada7b63cf1c53e7aa9e025","macos":"1:133988075968:ios:ada7b63cf1c53e7aa9e025","web":"1:133988075968:web:68120161b94b30f8a9e025","windows":"1:133988075968:web:c5e4150c3240814ea9e025"}}}}}}
+{
+  "emulators": {
+    "storage": {
+      "port": 9199,
+      "host": "127.0.0.1"
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4000
+    }
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}
