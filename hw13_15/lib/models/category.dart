@@ -1,24 +1,20 @@
 /// Модель категории викторины
 class Category {
-  const Category({
-    required this.id,
-    required this.name,
-    this.description,
-  });
+  const Category({required this.id, required this.name, this.description});
 
   final int id;
   final String name;
   final String? description;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json['id'] as int,
-        name: json['name'] as String,
-        description: json['description'] as String?,
-      );
+    id: json['id'] as int,
+    name: json['name'] as String,
+    description: json['description'] as String?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'description': description,
-      };
+    'id': id,
+    'name': name,
+    'description': description,
+  };
 }
