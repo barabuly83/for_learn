@@ -5,7 +5,7 @@ import '../../domain/models/auth_service.dart';
 import '../../domain/models/quiz_service.dart';
 import '../../domain/models/storage_service.dart';
 import '../../l10n/l10n.dart';
-import 'package:hw13_15/domain/models/app_services.dart';
+import '../../domain/models/app_services.dart';
 
 class QuizApp extends StatelessWidget {
   final AuthService authService;
@@ -38,6 +38,7 @@ class QuizApp extends StatelessWidget {
         ),
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
+        // debugShowPerformanceOverlay: true, // Недоступно для MaterialApp.router
       ),
     );
   }

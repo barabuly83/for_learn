@@ -22,12 +22,14 @@ class _QuestionsPageState extends State<QuestionsPage> {
   int _currentQuestionIndex = 0;
   final Map<int, Set<String>> _selectedAnswers = {};
   String? _category;
+  String? _difficulty;
   bool _hasLoaded = false;
 
   @override
   void initState() {
     super.initState();
     _category = widget.state.uri.queryParameters['category'];
+    _difficulty = widget.state.uri.queryParameters['difficulty'];
     if (_category == null) {
       final l10n = S.of(context);
       setState(() {
@@ -56,14 +58,64 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
     try {
       final quizService = AppServices.of(context).quizService;
-      final questions = await quizService.fetchQuestions(_category!);
+
+      // Используем новый метод с фильтрами для получения вопросов по категории
+      // Нам больше не нужно получать список категорий здесь, так как API принимает имя категории
+      final questions = await quizService.fetchQuestionsWithFilters(
+        categoryName: _category!,
+        limit:
+            10, // Можно запрашивать 10, так как теперь фильтрация на стороне API
+        difficulty: _difficulty == 'All' ? null : _difficulty,
+      );
+
+      if (questions.isEmpty) {
+        throw Exception(
+          'NO_QUESTIONS_FOUND:$_category:${_difficulty ?? 'any'}',
+        );
+      }
+
       setState(() {
         _questions = questions;
         _isLoading = false;
       });
     } catch (e) {
+      // print('Error loading questions: $e');
+      String errorMessage = 'Ошибка загрузки вопросов';
+
+      // Пытаемся разобрать ошибку для более понятного сообщения
+      final errorString = e.toString();
+      if (errorString.contains('NO_QUESTIONS_FOUND:')) {
+        // Специальная ошибка для пустого списка вопросов
+        final parts = errorString.split(':');
+        if (parts.length >= 3) {
+          final category = parts[1];
+          final difficulty = parts[2];
+          final l10n = mounted ? S.of(context) : null;
+          errorMessage =
+              (l10n?.no_questions_found ??
+                      'No questions found for category "$category" with difficulty "$difficulty"')
+                  .toString();
+        }
+      } else if (errorString.contains('Rate limit exceeded')) {
+        errorMessage =
+            'Превышен лимит запросов к API. Подождите 1 минуту и попробуйте снова.';
+      } else if (errorString.contains('QuizAPI Error:')) {
+        errorMessage =
+            'Ошибка QuizAPI: ${errorString.replaceFirst('QuizAPI Error:', '').trim()}';
+      } else if (errorString.contains('404')) {
+        errorMessage =
+            'Вопросы для выбранной категории и сложности не найдены. Попробуйте другую комбинацию.';
+      } else if (errorString.contains('401') || errorString.contains('403')) {
+        errorMessage = 'Ошибка аутентификации API. Проверьте API ключ.';
+      } else if (errorString.contains('429')) {
+        errorMessage =
+            'Слишком много запросов. Подождите немного и попробуйте снова.';
+      } else if (errorString.contains('500')) {
+        errorMessage = 'Ошибка сервера QuizAPI. Попробуйте позже.';
+      }
+
       setState(() {
-        _error = e.toString();
+        _error = errorMessage;
         _isLoading = false;
       });
     }
@@ -91,8 +143,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
   }
 
   bool _isAnswerSelected(String answerKey) {
-    return _selectedAnswers[_currentQuestionIndex]?.contains(answerKey) ??
-        false;
+    final selectedForCurrentQuestion = _selectedAnswers[_currentQuestionIndex];
+    return selectedForCurrentQuestion?.contains(answerKey) ?? false;
   }
 
   void _onNextQuestion() {
@@ -139,11 +191,98 @@ class _QuestionsPageState extends State<QuestionsPage> {
       }
     }
 
-    final resultRoute = ResultRoute();
+    const resultRoute = ResultRoute();
     resultRoute.push(
       GoRouter.of(context),
       category: _category ?? '',
       countCorrectAnswers: correctCount.toString(),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(S? l10n, int questionNumber, int totalQuestions) {
+    return AppBar(
+      title: Text(
+        l10n?.question(questionNumber.toString(), totalQuestions.toString()) ??
+            'Вопрос $questionNumber/$totalQuestions',
+      ),
+    );
+  }
+
+  Widget _buildBody(Question question, S? l10n) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            question.question,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          if (question.description?.isNotEmpty == true) ...[
+            const SizedBox(height: 8),
+            Text(
+              question.description!,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+          const SizedBox(height: 24),
+          ..._buildAnswerOptions(question),
+          const SizedBox(height: 24),
+          _buildNavigationButtons(l10n),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildAnswerOptions(Question question) {
+    final options = <Widget>[];
+
+    final answerKeys = ['answer_a', 'answer_b', 'answer_c', 'answer_d', 'answer_e', 'answer_f'];
+    final answers = [
+      question.answers.answerA,
+      question.answers.answerB,
+      question.answers.answerC,
+      question.answers.answerD,
+      question.answers.answerE,
+      question.answers.answerF,
+    ];
+
+    for (var i = 0; i < answerKeys.length; i++) {
+      final answer = answers[i];
+      if (answer != null) {
+        options.add(
+          AnswerOptionWidget(
+            key: ValueKey(answerKeys[i]), // Добавляем key для оптимизации
+            answerKey: answerKeys[i],
+            answerText: answer,
+            isSelected: _isAnswerSelected(answerKeys[i]),
+            isMultiple: question.multipleCorrectAnswers == 'true',
+            onTap: () => _onAnswerSelected(answerKeys[i]),
+          ),
+        );
+      }
+    }
+
+    return options;
+  }
+
+  Widget _buildNavigationButtons(S? l10n) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton(
+          onPressed: _currentQuestionIndex > 0 ? _onPreviousQuestion : null,
+          child: Text(l10n?.back ?? 'Назад'),
+        ),
+        ElevatedButton(
+          onPressed: _onNextQuestion,
+          child: Text(
+            _currentQuestionIndex < _questions.length - 1
+                ? (l10n?.next ?? 'Далее')
+                : (l10n?.finish ?? 'Завершить'),
+          ),
+        ),
+      ],
     );
   }
 
@@ -160,21 +299,13 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
     if (_error != null || _questions.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: Text(l10n?.question('1', '1') ?? 'Вопрос')),
+        appBar: AppBar(
+          title: Text(l10n?.question('1', '1') ?? 'Вопрос'),
+        ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                _error ?? (l10n?.questions_not_found ?? 'Вопросы не найдены'),
-                style: const TextStyle(color: Colors.red),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _loadQuestions,
-                child: Text(l10n?.retry ?? 'Повторить'),
-              ),
-            ],
+          child: _ErrorView(
+            error: _error,
+            onRetry: _loadQuestions,
           ),
         ),
       );
@@ -185,99 +316,51 @@ class _QuestionsPageState extends State<QuestionsPage> {
     final totalQuestions = _questions.length;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          l10n?.question(
-                questionNumber.toString(),
-                totalQuestions.toString(),
-              ) ??
-              'Вопрос $questionNumber/$totalQuestions',
+      appBar: _buildAppBar(l10n, questionNumber, totalQuestions),
+      body: _buildBody(question, l10n),
+    );
+  }
+}
+
+class _ErrorView extends StatelessWidget {
+  final String? error;
+  final VoidCallback onRetry;
+
+  const _ErrorView({
+    required this.error,
+    required this.onRetry,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = S.of(context);
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          error ?? (l10n?.questions_not_found ?? 'Вопросы не найдены'),
+          style: const TextStyle(color: Colors.red),
+          textAlign: TextAlign.center,
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              question.question,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            if (question.description.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Text(
-                question.description,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ],
-            const SizedBox(height: 24),
-            AnswerOptionWidget(
-              answerKey: 'answer_a',
-              answerText: question.answers.answerA,
-              isSelected: _isAnswerSelected('answer_a'),
-              isMultiple: question.multipleCorrectAnswers == 'true',
-              onTap: () => _onAnswerSelected('answer_a'),
-            ),
-            AnswerOptionWidget(
-              answerKey: 'answer_b',
-              answerText: question.answers.answerB,
-              isSelected: _isAnswerSelected('answer_b'),
-              isMultiple: question.multipleCorrectAnswers == 'true',
-              onTap: () => _onAnswerSelected('answer_b'),
-            ),
-            AnswerOptionWidget(
-              answerKey: 'answer_c',
-              answerText: question.answers.answerC,
-              isSelected: _isAnswerSelected('answer_c'),
-              isMultiple: question.multipleCorrectAnswers == 'true',
-              onTap: () => _onAnswerSelected('answer_c'),
-            ),
-            AnswerOptionWidget(
-              answerKey: 'answer_d',
-              answerText: question.answers.answerD,
-              isSelected: _isAnswerSelected('answer_d'),
-              isMultiple: question.multipleCorrectAnswers == 'true',
-              onTap: () => _onAnswerSelected('answer_d'),
-            ),
-            if (question.answers.answerE != null)
-              AnswerOptionWidget(
-                answerKey: 'answer_e',
-                answerText: question.answers.answerE!,
-                isSelected: _isAnswerSelected('answer_e'),
-                isMultiple: question.multipleCorrectAnswers == 'true',
-                onTap: () => _onAnswerSelected('answer_e'),
-              ),
-            if (question.answers.answerF != null)
-              AnswerOptionWidget(
-                answerKey: 'answer_f',
-                answerText: question.answers.answerF!,
-                isSelected: _isAnswerSelected('answer_f'),
-                isMultiple: question.multipleCorrectAnswers == 'true',
-                onTap: () => _onAnswerSelected('answer_f'),
-              ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: _currentQuestionIndex > 0
-                      ? _onPreviousQuestion
-                      : null,
-                  child: Text(l10n?.back ?? 'Назад'),
-                ),
-                ElevatedButton(
-                  onPressed: _onNextQuestion,
-                  child: Text(
-                    _currentQuestionIndex < _questions.length - 1
-                        ? (l10n?.next ?? 'Далее')
-                        : (l10n?.finish ?? 'Завершить'),
-                  ),
-                ),
-              ],
-            ),
-          ],
+        const SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: () async {
+            if (error?.contains('Rate limit') == true ||
+                error?.contains('429') == true) {
+              // Ждем 10 секунд перед повтором при rate limit
+              await Future<void>.delayed(const Duration(seconds: 10));
+            }
+            onRetry();
+          },
+          child: Text(
+            (error?.contains('Rate limit') == true ||
+                    error?.contains('429') == true)
+                ? 'Повторить через 10 сек'
+                : (l10n?.retry ?? 'Повторить'),
+          ),
         ),
-      ),
+      ],
     );
   }
 }

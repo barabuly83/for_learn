@@ -3,8 +3,8 @@ import 'categories_route.dart';
 import 'profile_route.dart';
 
 class HomeRoute extends AppRoute {
-  static const String _routePath = "/home";
-  static const String _routeName = "home";
+  static const String _routePath = '/home';
+  static const String _routeName = 'home';
 
   late final ProfileRoute profile = ProfileRoute(
     routePath: routePath,

@@ -172,4 +172,49 @@ class SEn extends S {
 
   @override
   String get passwords_do_not_match => 'Passwords do not match';
+
+  @override
+  String get quiz_history => 'Quiz History';
+
+  @override
+  String get no_quiz_history => 'No Quiz History';
+
+  @override
+  String get no_quiz_history_desc => 'Take your first quiz to see results here';
+
+  @override
+  String get select_difficulty => 'Select Difficulty';
+
+  @override
+  String get all_difficulties => 'All Difficulties';
+
+  @override
+  String get all_difficulties_desc => 'Show questions of all difficulty levels';
+
+  @override
+  String get easy_questions => 'Easy questions';
+
+  @override
+  String get medium_questions => 'Medium difficulty questions';
+
+  @override
+  String get hard_questions => 'Hard questions';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get pageNotFound => 'Page Not Found';
+
+  @override
+  String get pageNotFoundDescription =>
+      'The page you\'re looking for doesn\'t exist.';
+
+  @override
+  String get goHome => 'Go Home';
+
+  @override
+  String no_questions_found(String category, String difficulty) {
+    return 'No questions found for category \'$category\' with difficulty \'$difficulty\'';
+  }
 }

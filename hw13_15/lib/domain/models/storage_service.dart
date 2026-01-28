@@ -72,8 +72,15 @@ class StorageServiceImpl implements StorageService {
       // Ждем завершения загрузки с таймаутом
       final taskSnapshot = await uploadTask.timeout(
         const Duration(seconds: 30),
-        onTimeout: () {
-          uploadTask.cancel();
+        onTimeout: () async {
+          // Проверяем состояние перед отменой
+          if (uploadTask.snapshot.state == TaskState.running) {
+            try {
+              await uploadTask.cancel();
+            } catch (e) {
+              // print('Warning: Failed to cancel upload task: $e');
+            }
+          }
           throw Exception('Upload timeout after 30 seconds');
         },
       );
@@ -91,11 +98,13 @@ class StorageServiceImpl implements StorageService {
         } on FirebaseException catch (e) {
           // Если не удалось получить URL сразу после загрузки, пробуем через небольшую задержку
           if (e.code == 'object-not-found') {
-            await Future.delayed(const Duration(milliseconds: 500));
+            await Future<void>.delayed(const Duration(milliseconds: 500));
             return await taskSnapshot.ref.getDownloadURL().timeout(
               const Duration(seconds: 10),
               onTimeout: () {
-                throw Exception('Failed to get download URL: timeout after retry');
+                throw Exception(
+                  'Failed to get download URL: timeout after retry',
+                );
               },
             );
           }

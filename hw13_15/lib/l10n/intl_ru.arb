@@ -253,5 +253,71 @@
   "passwords_do_not_match": "Пароли не совпадают",
   "@passwords_do_not_match": {
     "description": "Сообщение когда пароли не совпадают"
+  },
+  "quiz_history": "История викторин",
+  "@quiz_history": {
+    "description": "Quiz history page title"
+  },
+  "no_quiz_history": "История викторин пуста",
+  "@no_quiz_history": {
+    "description": "Message when no quiz history is available"
+  },
+  "no_quiz_history_desc": "Пройдите свою первую викторину, чтобы увидеть результаты здесь",
+  "@no_quiz_history_desc": {
+    "description": "Description message for empty quiz history"
+  },
+  "select_difficulty": "Выберите сложность",
+  "@select_difficulty": {
+    "description": "Difficulty selection dialog title"
+  },
+  "all_difficulties": "Все сложности",
+  "@all_difficulties": {
+    "description": "All difficulties option"
+  },
+  "all_difficulties_desc": "Показать вопросы всех уровней сложности",
+  "@all_difficulties_desc": {
+    "description": "Description for all difficulties option"
+  },
+  "easy_questions": "Простые вопросы",
+  "@easy_questions": {
+    "description": "Easy difficulty description"
+  },
+  "medium_questions": "Вопросы средней сложности",
+  "@medium_questions": {
+    "description": "Medium difficulty description"
+  },
+  "hard_questions": "Сложные вопросы",
+  "@hard_questions": {
+    "description": "Hard difficulty description"
+  },
+  "cancel": "Отмена",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+  "pageNotFound": "Страница не найдена",
+  "@pageNotFound": {
+    "description": "404 error page title"
+  },
+  "pageNotFoundDescription": "Страница, которую вы ищете, не существует.",
+  "@pageNotFoundDescription": {
+    "description": "404 error page description"
+  },
+  "goHome": "На главную",
+  "@goHome": {
+    "description": "Go home button on 404 page"
+  },
+  "no_questions_found": "Вопросы для категории '{category}' со сложностью '{difficulty}' не найдены",
+  "@no_questions_found": {
+    "description": "Message when no questions are found for selected filters",
+    "placeholders": {
+      "category": {
+        "type": "String",
+        "example": "Linux"
+      },
+      "difficulty": {
+        "type": "String",
+        "example": "easy"
+      }
+    }
   }
 }

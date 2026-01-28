@@ -29,7 +29,7 @@ class AnswerOptionWidget extends StatelessWidget {
               color: isSelected ? Colors.blue : Colors.grey,
               width: isSelected ? 2 : 1,
             ),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
             color: isSelected ? Colors.blue.withValues(alpha: 0.1) : null,
           ),
           child: Row(

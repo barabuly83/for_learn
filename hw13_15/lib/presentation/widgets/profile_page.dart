@@ -205,6 +205,27 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(height: 24),
+                  // Кнопка истории викторин
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: OutlinedButton.icon(
+                      icon: const Icon(Icons.history),
+                      label: Text(
+                        l10n?.quiz_history ?? 'История викторин',
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      onPressed: () {
+                        context.push(AppScreens.results.routePath);
+                      },
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   // Кнопка выхода
                   SizedBox(
                     width: double.infinity,
@@ -261,7 +282,9 @@ class _ProfilePageState extends State<ProfilePage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n?.user_not_authorized ?? 'Пользователь не авторизован'),
+            content: Text(
+              l10n?.user_not_authorized ?? 'Пользователь не авторизован',
+            ),
             backgroundColor: Colors.orange,
           ),
         );
@@ -281,17 +304,18 @@ class _ProfilePageState extends State<ProfilePage> {
       // Загружаем в Storage
       final path =
           'test/${user.uid}/test_file_${DateTime.now().millisecondsSinceEpoch}.txt';
-      
+
       // Выполняем загрузку с таймаутом на уровне UI
-      final downloadUrl = await appServices.storageService.uploadBytes(
-        path,
-        bytes,
-      ).timeout(
-        const Duration(seconds: 35),
-        onTimeout: () {
-          throw Exception('Upload operation timed out. Please check your internet connection and Firebase Storage configuration.');
-        },
-      );
+      final downloadUrl = await appServices.storageService
+          .uploadBytes(path, bytes)
+          .timeout(
+            const Duration(seconds: 35),
+            onTimeout: () {
+              throw Exception(
+                'Upload operation timed out. Please check your internet connection and Firebase Storage configuration.',
+              );
+            },
+          );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -301,27 +325,30 @@ class _ProfilePageState extends State<ProfilePage> {
                   'Файл загружен! URL: ${downloadUrl.substring(0, 50)}...',
             ),
             backgroundColor: Colors.green,
-            duration: const Duration(seconds: 4),
           ),
         );
       }
     } catch (e) {
       if (mounted) {
         String errorMessage = e.toString();
-        
+
         // Более понятные сообщения об ошибках
         if (errorMessage.contains('timeout')) {
-          errorMessage = 'Превышено время ожидания. Проверьте подключение к интернету и настройки Firebase Storage.';
+          errorMessage =
+              'Превышено время ожидания. Проверьте подключение к интернету и настройки Firebase Storage.';
         } else if (errorMessage.contains('permission-denied')) {
-          errorMessage = 'Нет доступа к Firebase Storage. Проверьте правила безопасности.';
+          errorMessage =
+              'Нет доступа к Firebase Storage. Проверьте правила безопасности.';
         } else if (errorMessage.contains('object-not-found')) {
-          errorMessage = 'Объект не найден. Возможно, проблема с правилами безопасности Firebase Storage.';
+          errorMessage =
+              'Объект не найден. Возможно, проблема с правилами безопасности Firebase Storage.';
         }
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              l10n?.upload_error(errorMessage) ?? 'Ошибка загрузки: $errorMessage',
+              l10n?.upload_error(errorMessage) ??
+                  'Ошибка загрузки: $errorMessage',
             ),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 5),

@@ -6,7 +6,9 @@ import '../../../presentation/widgets/register_page.dart';
 import '../../../presentation/widgets/categories_page.dart';
 import '../../../presentation/widgets/questions_page.dart';
 import '../../../presentation/widgets/result_page.dart';
+import '../../../presentation/widgets/results_page.dart';
 import '../../../presentation/widgets/profile_page.dart';
+import '../../../presentation/widgets/not_found_page.dart';
 import 'app_screens.dart';
 import 'go_router_refresh_stream.dart';
 
@@ -14,16 +16,38 @@ import 'go_router_refresh_stream.dart';
 GoRouter createRouter(AuthService authService) => GoRouter(
       initialLocation: AppScreens.login.routePath,
       refreshListenable: GoRouterRefreshStream(authService.authStatusChanged),
+      errorBuilder: (context, state) => const NotFoundPage(),
       redirect: (context, state) {
         final fullPath = state.uri.path;
         final isAuthenticated = authService.isAuthenticated;
-        final isAuthPath = fullPath.startsWith(AppScreens.login.routePath);
+        final isAuthPath = fullPath.startsWith(AppScreens.login.routePath) ||
+                          fullPath.startsWith(AppScreens.loginRegister.routePath);
 
-        if (!isAuthenticated && !isAuthPath) {
+        // Защищенные маршруты - требуют аутентификации
+        final protectedRoutes = [
+          AppScreens.home.routePath,
+          AppScreens.categories.routePath,
+          AppScreens.questions.routePath,
+          AppScreens.result.routePath,
+          AppScreens.results.routePath,
+          AppScreens.profile.routePath,
+        ];
+
+        final isProtectedRoute = protectedRoutes.any((route) => fullPath.startsWith(route));
+
+        // Если пользователь не авторизован и пытается зайти на защищенный маршрут
+        if (!isAuthenticated && isProtectedRoute) {
           return AppScreens.login.routePath;
-        } else if (isAuthenticated && isAuthPath) {
+        }
+
+        // Если пользователь авторизован и находится на странице аутентификации
+        if (isAuthenticated && isAuthPath) {
           return AppScreens.home.routePath;
         }
+
+        // Дополнительные проверки можно добавить здесь
+        // Например, проверка ролей, разрешений и т.д.
+
         return null;
       },
       routes: [
@@ -58,6 +82,11 @@ GoRouter createRouter(AuthService authService) => GoRouter(
           name: AppScreens.result.routeName,
           path: AppScreens.result.routePath,
           builder: (context, state) => ResultPage(state: state),
+        ),
+        GoRoute(
+          name: AppScreens.results.routeName,
+          path: AppScreens.results.routePath,
+          builder: (context, state) => const ResultsPage(),
         ),
         GoRoute(
           name: AppScreens.profile.routeName,

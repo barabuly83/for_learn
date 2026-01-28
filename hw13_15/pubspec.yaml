@@ -38,8 +38,19 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # Firebase
-  firebase_auth: ^6.1.4
-  firebase_core: ^4.4.0
+  firebase_auth: ^5.7.0
+  firebase_core: ^3.0.0
+  cloud_firestore: ^5.0.0
+  firebase_app_check: ^0.3.2+10
+
+  # HTTP клиент для QuizAPI
+  http: ^1.1.0
+
+  # Для удобства работы с API
+  dio: ^5.3.3
+
+  # Для управления состоянием (опционально)
+  provider: ^6.1.1
 
   # Навигация
   go_router: ^14.0.1
@@ -50,10 +61,7 @@ dependencies:
   # Кодогенерация
   freezed_annotation: ^3.0.0
   json_annotation: ^4.9.0
-
-  # HTTP клиент
-  dio: 5.8.0+1
-  firebase_storage: ^13.0.6
+  firebase_storage: ^12.4.10
   image_picker: ^1.2.1
   google_sign_in: ^5.4.4
 

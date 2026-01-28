@@ -253,5 +253,71 @@
   "passwords_do_not_match": "Passwords do not match",
   "@passwords_do_not_match": {
     "description": "Message when passwords do not match"
+  },
+  "quiz_history": "Quiz History",
+  "@quiz_history": {
+    "description": "Quiz history page title"
+  },
+  "no_quiz_history": "No Quiz History",
+  "@no_quiz_history": {
+    "description": "Message when no quiz history is available"
+  },
+  "no_quiz_history_desc": "Take your first quiz to see results here",
+  "@no_quiz_history_desc": {
+    "description": "Description message for empty quiz history"
+  },
+  "select_difficulty": "Select Difficulty",
+  "@select_difficulty": {
+    "description": "Difficulty selection dialog title"
+  },
+  "all_difficulties": "All Difficulties",
+  "@all_difficulties": {
+    "description": "All difficulties option"
+  },
+  "all_difficulties_desc": "Show questions of all difficulty levels",
+  "@all_difficulties_desc": {
+    "description": "Description for all difficulties option"
+  },
+  "easy_questions": "Easy questions",
+  "@easy_questions": {
+    "description": "Easy difficulty description"
+  },
+  "medium_questions": "Medium difficulty questions",
+  "@medium_questions": {
+    "description": "Medium difficulty description"
+  },
+  "hard_questions": "Hard questions",
+  "@hard_questions": {
+    "description": "Hard difficulty description"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+  "pageNotFound": "Page Not Found",
+  "@pageNotFound": {
+    "description": "404 error page title"
+  },
+  "pageNotFoundDescription": "The page you're looking for doesn't exist.",
+  "@pageNotFoundDescription": {
+    "description": "404 error page description"
+  },
+  "goHome": "Go Home",
+  "@goHome": {
+    "description": "Go home button on 404 page"
+  },
+  "no_questions_found": "No questions found for category '{category}' with difficulty '{difficulty}'",
+  "@no_questions_found": {
+    "description": "Message when no questions are found for selected filters",
+    "placeholders": {
+      "category": {
+        "type": "String",
+        "example": "Linux"
+      },
+      "difficulty": {
+        "type": "String",
+        "example": "easy"
+      }
+    }
   }
 }
