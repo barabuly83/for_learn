@@ -1,5 +1,9 @@
 {
   "emulators": {
+    "firestore": {
+      "port": 8080,
+      "host": "127.0.0.1"
+    },
     "storage": {
       "port": 9199,
       "host": "127.0.0.1"
@@ -8,6 +12,9 @@
       "enabled": true,
       "port": 4000
     }
+  },
+  "firestore": {
+    "rules": "firestore.rules"
   },
   "storage": {
     "rules": "storage.rules"

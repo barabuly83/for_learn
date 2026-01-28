@@ -173,4 +173,50 @@ class SRu extends S {
 
   @override
   String get passwords_do_not_match => 'Пароли не совпадают';
+
+  @override
+  String get quiz_history => 'История викторин';
+
+  @override
+  String get no_quiz_history => 'История викторин пуста';
+
+  @override
+  String get no_quiz_history_desc =>
+      'Пройдите свою первую викторину, чтобы увидеть результаты здесь';
+
+  @override
+  String get select_difficulty => 'Выберите сложность';
+
+  @override
+  String get all_difficulties => 'Все сложности';
+
+  @override
+  String get all_difficulties_desc => 'Показать вопросы всех уровней сложности';
+
+  @override
+  String get easy_questions => 'Простые вопросы';
+
+  @override
+  String get medium_questions => 'Вопросы средней сложности';
+
+  @override
+  String get hard_questions => 'Сложные вопросы';
+
+  @override
+  String get cancel => 'Отмена';
+
+  @override
+  String get pageNotFound => 'Страница не найдена';
+
+  @override
+  String get pageNotFoundDescription =>
+      'Страница, которую вы ищете, не существует.';
+
+  @override
+  String get goHome => 'На главную';
+
+  @override
+  String no_questions_found(String category, String difficulty) {
+    return 'Вопросы для категории \'$category\' со сложностью \'$difficulty\' не найдены';
+  }
 }

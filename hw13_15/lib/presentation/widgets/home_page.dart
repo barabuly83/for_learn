@@ -91,6 +91,26 @@ class HomePage extends StatelessWidget {
                 width: double.infinity,
                 height: 56,
                 child: OutlinedButton.icon(
+                  icon: const Icon(Icons.history),
+                  label: Text(
+                    l10n?.quiz_history ?? 'История викторин',
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  onPressed: () {
+                    context.push(AppScreens.results.routePath);
+                  },
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: OutlinedButton.icon(
                   icon: const Icon(Icons.person),
                   label: Text(
                     l10n?.profile ?? 'Профиль',

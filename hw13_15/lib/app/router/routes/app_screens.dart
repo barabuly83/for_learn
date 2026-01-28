@@ -5,6 +5,7 @@ enum AppScreens {
   categories('/categories'),
   questions('/questions'),
   result('/result'),
+  results('/results'),
   profile('/profile');
 
   const AppScreens(this.routePath);

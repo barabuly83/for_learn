@@ -390,6 +390,90 @@ abstract class S {
   /// In ru, this message translates to:
   /// **'Пароли не совпадают'**
   String get passwords_do_not_match;
+
+  /// Quiz history page title
+  ///
+  /// In ru, this message translates to:
+  /// **'История викторин'**
+  String get quiz_history;
+
+  /// Message when no quiz history is available
+  ///
+  /// In ru, this message translates to:
+  /// **'История викторин пуста'**
+  String get no_quiz_history;
+
+  /// Description message for empty quiz history
+  ///
+  /// In ru, this message translates to:
+  /// **'Пройдите свою первую викторину, чтобы увидеть результаты здесь'**
+  String get no_quiz_history_desc;
+
+  /// Difficulty selection dialog title
+  ///
+  /// In ru, this message translates to:
+  /// **'Выберите сложность'**
+  String get select_difficulty;
+
+  /// All difficulties option
+  ///
+  /// In ru, this message translates to:
+  /// **'Все сложности'**
+  String get all_difficulties;
+
+  /// Description for all difficulties option
+  ///
+  /// In ru, this message translates to:
+  /// **'Показать вопросы всех уровней сложности'**
+  String get all_difficulties_desc;
+
+  /// Easy difficulty description
+  ///
+  /// In ru, this message translates to:
+  /// **'Простые вопросы'**
+  String get easy_questions;
+
+  /// Medium difficulty description
+  ///
+  /// In ru, this message translates to:
+  /// **'Вопросы средней сложности'**
+  String get medium_questions;
+
+  /// Hard difficulty description
+  ///
+  /// In ru, this message translates to:
+  /// **'Сложные вопросы'**
+  String get hard_questions;
+
+  /// Cancel button
+  ///
+  /// In ru, this message translates to:
+  /// **'Отмена'**
+  String get cancel;
+
+  /// 404 error page title
+  ///
+  /// In ru, this message translates to:
+  /// **'Страница не найдена'**
+  String get pageNotFound;
+
+  /// 404 error page description
+  ///
+  /// In ru, this message translates to:
+  /// **'Страница, которую вы ищете, не существует.'**
+  String get pageNotFoundDescription;
+
+  /// Go home button on 404 page
+  ///
+  /// In ru, this message translates to:
+  /// **'На главную'**
+  String get goHome;
+
+  /// Message when no questions are found for selected filters
+  ///
+  /// In ru, this message translates to:
+  /// **'Вопросы для категории \'{category}\' со сложностью \'{difficulty}\' не найдены'**
+  String no_questions_found(String category, String difficulty);
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

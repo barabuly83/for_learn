@@ -1,20 +1,16 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'result_argument.freezed.dart';
+part 'result_argument.g.dart';
+
 /// Аргументы для маршрута результата викторины
-class ResultArgument {
-  const ResultArgument({
-    required this.category,
-    required this.correctAnswers,
-  });
+@freezed
+abstract class ResultArgument with _$ResultArgument {
+  const factory ResultArgument({
+    required String category,
+    required String correctAnswers,
+  }) = _ResultArgument;
 
-  final String category;
-  final String correctAnswers;
-
-  factory ResultArgument.fromJson(Map<String, dynamic> json) => ResultArgument(
-        category: json['category'] as String,
-        correctAnswers: json['correctAnswers'] as String,
-      );
-
-  Map<String, dynamic> toJson() => {
-        'category': category,
-        'correctAnswers': correctAnswers,
-      };
+  factory ResultArgument.fromJson(Map<String, dynamic> json) =>
+      _$ResultArgumentFromJson(json);
 }

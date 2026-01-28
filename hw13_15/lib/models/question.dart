@@ -1,62 +1,78 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'answers.dart';
 
+part 'question.g.dart';
+
 /// Модель вопроса викторины
+@JsonSerializable()
 class Question {
+  final int id;
+  final String question;
+  final String? description;
+
+  @JsonKey(name: 'answers')
+  final Answers answers;
+
+  @JsonKey(name: 'multiple_correct_answers')
+  final String multipleCorrectAnswers;
+
+  @JsonKey(fromJson: _correctAnswersFromJson)
+  final Map<String, String> correctAnswers;
+
+  @JsonKey(name: 'correct_answer')
+  final String? correctAnswer;
+
+  final String? explanation;
+  final String? tip;
+
+  @JsonKey(fromJson: _tagsFromJson)
+  final List<String> tags;
+
+  final String category;
+  final String difficulty;
+
   const Question({
     required this.id,
     required this.question,
-    required this.description,
+    this.description,
     required this.answers,
     required this.multipleCorrectAnswers,
     required this.correctAnswers,
     this.correctAnswer,
-    required this.explanation,
+    this.explanation,
     this.tip,
     required this.tags,
     required this.category,
     required this.difficulty,
   });
 
-  final int id;
-  final String question;
-  final String description;
-  final Answers answers;
-  final String multipleCorrectAnswers;
-  final Map<String, String> correctAnswers;
-  final String? correctAnswer;
-  final String explanation;
-  final String? tip;
-  final List<String> tags;
-  final String category;
-  final String difficulty;
+  factory Question.fromJson(Map<String, dynamic> json) =>
+      _$QuestionFromJson(json);
 
-  factory Question.fromJson(Map<String, dynamic> json) => Question(
-        id: json['id'] as int,
-        question: json['question'] as String,
-        description: json['description'] as String,
-        answers: Answers.fromJson(json['answers'] as Map<String, dynamic>),
-        multipleCorrectAnswers: json['multiple_correct_answers'] as String,
-        correctAnswers: Map<String, String>.from(json['correct_answers'] as Map),
-        correctAnswer: json['correct_answer'] as String?,
-        explanation: json['explanation'] as String,
-        tip: json['tip'] as String?,
-        tags: List<String>.from(json['tags'] as List),
-        category: json['category'] as String,
-        difficulty: json['difficulty'] as String,
+  Map<String, dynamic> toJson() => _$QuestionToJson(this);
+
+  static Map<String, String> _correctAnswersFromJson(dynamic json) {
+    if (json is Map<String, dynamic>) {
+      return json.map(
+        (key, value) => MapEntry(
+          key,
+          value == true ? 'true' : value == false ? 'false' : value.toString(),
+        ),
       );
+    }
+    return {};
+  }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'question': question,
-        'description': description,
-        'answers': answers.toJson(),
-        'multiple_correct_answers': multipleCorrectAnswers,
-        'correct_answers': correctAnswers,
-        'correct_answer': correctAnswer,
-        'explanation': explanation,
-        'tip': tip,
-        'tags': tags,
-        'category': category,
-        'difficulty': difficulty,
-      };
+  static List<String> _tagsFromJson(dynamic json) {
+    if (json is List) {
+      return json.map<String>((tag) {
+        if (tag is String) return tag;
+        if (tag is Map && tag.containsKey('name')) {
+          return tag['name'] as String;
+        }
+        return tag.toString();
+      }).toList();
+    }
+    return [];
+  }
 }

@@ -3,8 +3,8 @@ import 'app_route.dart';
 import 'result_argument.dart';
 
 class ResultRoute extends AppRoute {
-  static const String _routePath = "/result";
-  static const String _routeName = "result";
+  static const String _routePath = '/result';
+  static const String _routeName = 'result';
 
   const ResultRoute({
     String? routePath,
