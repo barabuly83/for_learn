@@ -4,7 +4,8 @@ import '../../domain/models/app_services.dart';
 import '../../app/router/routes/result_route.dart';
 import '../../l10n/l10n.dart';
 import '../../models/model.dart';
-import 'answer_option_widget.dart';
+import 'question_app_bar.dart';
+import 'question_body.dart';
 
 class QuestionsPage extends StatefulWidget {
   final GoRouterState state;
@@ -199,92 +200,6 @@ class _QuestionsPageState extends State<QuestionsPage> {
     );
   }
 
-  PreferredSizeWidget _buildAppBar(S? l10n, int questionNumber, int totalQuestions) {
-    return AppBar(
-      title: Text(
-        l10n?.question(questionNumber.toString(), totalQuestions.toString()) ??
-            'Вопрос $questionNumber/$totalQuestions',
-      ),
-    );
-  }
-
-  Widget _buildBody(Question question, S? l10n) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            question.question,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          if (question.description?.isNotEmpty == true) ...[
-            const SizedBox(height: 8),
-            Text(
-              question.description!,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ],
-          const SizedBox(height: 24),
-          ..._buildAnswerOptions(question),
-          const SizedBox(height: 24),
-          _buildNavigationButtons(l10n),
-        ],
-      ),
-    );
-  }
-
-  List<Widget> _buildAnswerOptions(Question question) {
-    final options = <Widget>[];
-
-    final answerKeys = ['answer_a', 'answer_b', 'answer_c', 'answer_d', 'answer_e', 'answer_f'];
-    final answers = [
-      question.answers.answerA,
-      question.answers.answerB,
-      question.answers.answerC,
-      question.answers.answerD,
-      question.answers.answerE,
-      question.answers.answerF,
-    ];
-
-    for (var i = 0; i < answerKeys.length; i++) {
-      final answer = answers[i];
-      if (answer != null) {
-        options.add(
-          AnswerOptionWidget(
-            key: ValueKey(answerKeys[i]), // Добавляем key для оптимизации
-            answerKey: answerKeys[i],
-            answerText: answer,
-            isSelected: _isAnswerSelected(answerKeys[i]),
-            isMultiple: question.multipleCorrectAnswers == 'true',
-            onTap: () => _onAnswerSelected(answerKeys[i]),
-          ),
-        );
-      }
-    }
-
-    return options;
-  }
-
-  Widget _buildNavigationButtons(S? l10n) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        ElevatedButton(
-          onPressed: _currentQuestionIndex > 0 ? _onPreviousQuestion : null,
-          child: Text(l10n?.back ?? 'Назад'),
-        ),
-        ElevatedButton(
-          onPressed: _onNextQuestion,
-          child: Text(
-            _currentQuestionIndex < _questions.length - 1
-                ? (l10n?.next ?? 'Далее')
-                : (l10n?.finish ?? 'Завершить'),
-          ),
-        ),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -292,15 +207,21 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
     if (_isLoading) {
       return Scaffold(
-        appBar: AppBar(title: Text(l10n?.question('1', '1') ?? 'Вопрос')),
+        appBar: QuestionAppBar(
+          l10n: l10n,
+          questionNumber: 1,
+          totalQuestions: 1,
+        ),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     if (_error != null || _questions.isEmpty) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text(l10n?.question('1', '1') ?? 'Вопрос'),
+        appBar: QuestionAppBar(
+          l10n: l10n,
+          questionNumber: 1,
+          totalQuestions: 1,
         ),
         body: Center(
           child: _ErrorView(
@@ -316,8 +237,22 @@ class _QuestionsPageState extends State<QuestionsPage> {
     final totalQuestions = _questions.length;
 
     return Scaffold(
-      appBar: _buildAppBar(l10n, questionNumber, totalQuestions),
-      body: _buildBody(question, l10n),
+      appBar: QuestionAppBar(
+        l10n: l10n,
+        questionNumber: questionNumber,
+        totalQuestions: totalQuestions,
+      ),
+      body: QuestionBody(
+        question: question,
+        l10n: l10n,
+        currentQuestionIndex: _currentQuestionIndex,
+        totalQuestions: totalQuestions,
+        selectedAnswers: _selectedAnswers,
+        onAnswerSelected: _onAnswerSelected,
+        isAnswerSelected: _isAnswerSelected,
+        onPreviousQuestion: _onPreviousQuestion,
+        onNextQuestion: _onNextQuestion,
+      ),
     );
   }
 }

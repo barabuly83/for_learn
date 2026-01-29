@@ -1,5 +1,11 @@
 # Flutter Quiz App - Analysis Options
 # Настроен для обеспечения качества кода и лучших практик Flutter
+#
+# АРХИТЕКТУРНОЕ ПРАВИЛО FLUTTER:
+# Избегайте создания методов, возвращающих виджеты (Widget)!
+# Вместо этого оформляйте такие фрагменты как самостоятельные классы виджеты,
+# наследники StatelessWidget. Это обеспечивает лучшую читаемость, переиспользование
+# и тестируемость кода. Пример рефакторинга проведен в виджетах приложения.
 
 include: package:flutter_lints/flutter.yaml
 
@@ -58,6 +64,14 @@ linter:
     avoid_redundant_argument_values: info
     prefer_if_null_operators: info
     prefer_null_aware_operators: info
+
+    # ===== FLUTTER АРХИТЕКТУРНЫЕ РЕКОМЕНДАЦИИ =====
+    # ВАЖНО: Избегайте создания методов, возвращающих виджеты!
+    # Вместо этого создавайте отдельные классы виджетов, наследующие StatelessWidget.
+    # Это правило не может быть автоматически проверено линтером, но является
+    # ключевой практикой Flutter разработки для лучшей читаемости и переиспользования.
+    avoid_types_on_closure_parameters: info
+    prefer_function_declarations_over_variables: info  # Поощряет именованные функции вместо анонимных
 
     # Производительность
     prefer_const_constructors_in_immutables: info

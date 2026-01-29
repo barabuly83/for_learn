@@ -25,7 +25,7 @@ void main() {
     );
   });
 
-  testWidgets('Login page smoke test', (WidgetTester tester) async {
+  testWidgets('Login page smoke test', (tester) async {
     // Создаем моки для теста
     final authService = AuthServiceImpl(firebaseAuth: FirebaseAuth.instance);
     final quizService = QuizServiceImpl(dio: Dio());
