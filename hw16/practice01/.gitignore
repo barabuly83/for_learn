@@ -1,7 +1,3 @@
-# Default ignored files
-.idea/
-*.iml
-
 # Flutter/Dart
 .dart_tool/
 .packages
@@ -62,3 +58,14 @@ logs/
 *.tmp
 *.temp
 .cache/
+
+# Coverage
+coverage/
+
+# Test results
+test-results/
+
+# Generated files
+*.g.dart
+*.freezed.dart
+*.gr.dart
