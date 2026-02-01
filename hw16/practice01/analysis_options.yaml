@@ -5,7 +5,10 @@
 # Избегайте создания методов, возвращающих виджеты (Widget)!
 # Вместо этого оформляйте такие фрагменты как самостоятельные классы виджеты,
 # наследники StatelessWidget. Это обеспечивает лучшую читаемость, переиспользование
-# и тестируемость кода. Пример рефакторинга проведен в виджетах приложения.
+# и тестируемость кода.
+#
+# ПРАВИЛО ПРИМЕНЕНО: Методы _buildDecrementButton, _buildIncrementButton, _buildResetButton
+# заменены на отдельный виджет CounterButtons (lib/widgets/counter_buttons.dart)
 
 include: package:flutter_lints/flutter.yaml
 
@@ -68,8 +71,9 @@ linter:
     # ===== FLUTTER АРХИТЕКТУРНЫЕ РЕКОМЕНДАЦИИ =====
     # ВАЖНО: Избегайте создания методов, возвращающих виджеты!
     # Вместо этого создавайте отдельные классы виджетов, наследующие StatelessWidget.
-    # Это правило не может быть автоматически проверено линтером, но является
-    # ключевой практикой Flutter разработки для лучшей читаемости и переиспользования.
+    # Это правило документировано здесь как ключевая практика Flutter разработки.
+    # Пример рефакторинга: методы _buildDecrementButton, _buildIncrementButton, _buildResetButton
+    # заменены на отдельный виджет CounterButtons в файле lib/widgets/counter_buttons.dart
     avoid_types_on_closure_parameters: info
     prefer_function_declarations_over_variables: info  # Поощряет именованные функции вместо анонимных
 
