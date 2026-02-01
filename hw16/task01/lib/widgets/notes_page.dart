@@ -55,9 +55,7 @@ class _NotesPageState extends State<NotesPage> {
             ),
             const SizedBox(height: 16),
             // Список заметок
-            const Expanded(
-              child: NotesList(),
-            ),
+            const Expanded(child: NotesList()),
           ],
         ),
       ),
