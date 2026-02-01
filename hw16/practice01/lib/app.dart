@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'pages/counter_bloc_page.dart';
 import 'pages/counter_cubit_page.dart';
 
@@ -36,7 +35,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  MaterialPageRoute<Widget>(
                     builder: (context) => const CounterBlocPage(),
                   ),
                 );
@@ -48,7 +47,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  MaterialPageRoute<Widget>(
                     builder: (context) => const CounterCubitPage(),
                   ),
                 );

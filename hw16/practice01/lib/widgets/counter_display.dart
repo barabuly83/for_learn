@@ -23,7 +23,7 @@ class CounterDisplay extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(40),
           decoration: BoxDecoration(
-            color: Colors.deepPurple.withOpacity(0.1),
+            color: Colors.deepPurple.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
