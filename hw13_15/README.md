@@ -27,7 +27,9 @@ To run this application, you need to configure both environment variables and Fi
 
 API keys are **free** for development, open-source, and non-commercial use.
 
-**Important:** The application will not work without a valid API key in the `.env` file.
+**Important:**
+- The application will not work without a valid API key in the `.env` file.
+- **CRITICAL SECURITY NOTICE:** Firebase API keys have been removed from version control. If you cloned this repository, you MUST regenerate Firebase configuration files using `flutterfire configure`.
 
 #### 2. Firebase Configuration
 
@@ -57,6 +59,24 @@ API keys are **free** for development, open-source, and non-commercial use.
    - Copy `ios/Runner/GoogleService-Info-template.plist` to `ios/Runner/GoogleService-Info.plist`
    - Copy `macos/Runner/GoogleService-Info-template.plist` to `macos/Runner/GoogleService-Info.plist`
    - Replace placeholder values with your Firebase project settings from Firebase Console (Project Settings > General > Your apps)
+
+#### ⚠️ CRITICAL SECURITY: API Key Rotation Required
+
+**Google Cloud Platform has detected exposed API keys in the public repository.** You must immediately rotate all Firebase API keys:
+
+1. **Go to Google Cloud Console**: https://console.cloud.google.com/
+2. **Navigate to**: APIs & Services → Credentials
+3. **For each exposed API key**:
+   - Click on the key
+   - Click "Regenerate key" or create a new key
+   - Update restrictions if needed (recommended)
+4. **Update your local Firebase configuration**:
+   ```bash
+   flutterfire configure --project your-project-id --platforms android,ios,macos,web,windows --overwrite-firebase-options
+   ```
+5. **Test your application** to ensure it still works with new keys
+
+**Failure to rotate keys may result in unauthorized access to your Firebase project and potential security breaches.**
 
 ### Running the Application
 
