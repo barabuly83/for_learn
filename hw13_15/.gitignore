@@ -36,8 +36,11 @@ migrate_working_dir/
 # Environment variables
 .env
 
-# Firebase configuration (contains public API keys, but safer to ignore)
+# Firebase configuration (contains public API keys - exclude from version control)
 lib/firebase_options.dart
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+macos/Runner/GoogleService-Info.plist
 
 # Symbolication related
 app.*.symbols

@@ -43,14 +43,20 @@ API keys are **free** for development, open-source, and non-commercial use.
 
 3. **Configure Firebase for your project**:
    ```bash
-   flutterfire configure
+   flutterfire configure --project your-project-id --platforms android,ios,macos,web,windows
    ```
-   This will create `lib/firebase_options.dart` with your Firebase project configuration.
+   This will create:
+   - `lib/firebase_options.dart` with your Firebase project configuration
+   - `android/app/google-services.json` for Android
+   - `ios/Runner/GoogleService-Info.plist` for iOS
+   - `macos/Runner/GoogleService-Info.plist` for macOS
 
-4. **Or manually create `lib/firebase_options.dart`**:
+4. **Or manually configure each platform**:
    - Copy `lib/firebase_options_template.dart` to `lib/firebase_options.dart`
-   - Replace placeholder values with your Firebase project settings
-   - Get these values from your Firebase Console (Project Settings > General > Your apps)
+   - Copy `android/app/google-services-template.json` to `android/app/google-services.json`
+   - Copy `ios/Runner/GoogleService-Info-template.plist` to `ios/Runner/GoogleService-Info.plist`
+   - Copy `macos/Runner/GoogleService-Info-template.plist` to `macos/Runner/GoogleService-Info.plist`
+   - Replace placeholder values with your Firebase project settings from Firebase Console (Project Settings > General > Your apps)
 
 ### Running the Application
 
