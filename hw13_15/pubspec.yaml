@@ -64,6 +64,7 @@ dependencies:
   firebase_storage: ^12.4.10
   image_picker: ^1.2.1
   google_sign_in: ^5.4.4
+  flutter_dotenv: ^6.0.0
 
 dev_dependencies:
   flutter_test:
