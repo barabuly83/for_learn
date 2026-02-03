@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'firebase_options.dart';
 import 'app/router/quiz_app.dart';
@@ -15,6 +16,9 @@ import 'domain/models/quiz_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Загружаем переменные окружения
+  await dotenv.load();
 
   // Инициализация Firebase ДО создания сервисов
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -105,10 +109,7 @@ Dio _createDio() {
           // Добавляем API ключ только для QuizAPI запросов
           if (isQuizApiRequest) {
             // Получаем API ключ из переменных окружения или используем значение по умолчанию
-            const apiKey = String.fromEnvironment(
-              'QUIZ_API_KEY',
-              defaultValue: 'pOJOi46QclykSxaoHTdnAmpDPzMO3qjgw2nToUg5',
-            );
+            final apiKey = dotenv.env['QUIZ_API_KEY'] ?? 'pOJOi46QclykSxaoHTdnAmpDPzMO3qjgw2nToUg5';
 
             options.queryParameters['apiKey'] = apiKey;
           }
