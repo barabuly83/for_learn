@@ -108,21 +108,27 @@ Dio _createDio() {
 
           // Добавляем API ключ только для QuizAPI запросов
           if (isQuizApiRequest) {
-            // Получаем API ключ из переменных окружения или используем значение по умолчанию
-            final apiKey = dotenv.env['QUIZ_API_KEY'] ?? 'pOJOi46QclykSxaoHTdnAmpDPzMO3qjgw2nToUg5';
+            // Получаем API ключ из переменных окружения
+            final apiKey = dotenv.env['QUIZ_API_KEY'];
 
-            options.queryParameters['apiKey'] = apiKey;
+            if (apiKey != null && apiKey.isNotEmpty) {
+              options.queryParameters['apiKey'] = apiKey;
+            } else {
+              // Если API ключ не найден, отклоняем запрос
+              handler.reject(
+                DioException(
+                  requestOptions: options,
+                  error: 'QUIZ_API_KEY environment variable is not set',
+                ),
+              );
+              return;
+            }
           }
 
           handler.next(options);
         } catch (e) {
           // print('❌ Request interceptor error: $e');
-          handler.reject(
-            DioException(
-              requestOptions: options,
-              error: e,
-            ),
-          );
+          handler.reject(DioException(requestOptions: options, error: e));
         }
       },
       onResponse: (response, handler) {
