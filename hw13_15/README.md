@@ -6,49 +6,71 @@ A new Flutter project.
 
 This project is a starting point for a Flutter application.
 
-### Getting QuizAPI Key
+### Environment Setup
 
-To avoid rate limiting issues, it's **strongly recommended** to use your own API key:
+To run this application, you need to configure both environment variables and Firebase:
+
+#### 1. QuizAPI Configuration
+
+1. **Create a `.env` file** in the root directory of the project
+2. **Add your QuizAPI key** (required - no default value):
+   ```
+   QUIZ_API_KEY=your_api_key_here
+   ```
+
+##### Getting QuizAPI Key
 
 1. **Register** at [https://quizapi.io/register](https://quizapi.io/register)
 2. **Login** and go to [https://quizapi.io/clientarea/settings/token](https://quizapi.io/clientarea/settings/token)
 3. **Copy** your API key
-4. Use it when running the app (see below)
+4. **Paste** it into your `.env` file
 
 API keys are **free** for development, open-source, and non-commercial use.
 
+**Important:** The application will not work without a valid API key in the `.env` file.
+
+#### 2. Firebase Configuration
+
+1. **Install FlutterFire CLI** (if not already installed):
+   ```bash
+   dart pub global activate flutterfire_cli
+   ```
+
+2. **Login to Firebase** (if not already logged in):
+   ```bash
+   firebase login
+   ```
+
+3. **Configure Firebase for your project**:
+   ```bash
+   flutterfire configure
+   ```
+   This will create `lib/firebase_options.dart` with your Firebase project configuration.
+
+4. **Or manually create `lib/firebase_options.dart`**:
+   - Copy `lib/firebase_options_template.dart` to `lib/firebase_options.dart`
+   - Replace placeholder values with your Firebase project settings
+   - Get these values from your Firebase Console (Project Settings > General > Your apps)
+
 ### Running the Application
 
-#### Basic Run (Uses Default Key - Not Recommended)
 ```bash
 flutter run
 ```
-⚠️ **Warning:** The default key may be rate-limited due to shared usage.
-
-#### With Your QuizAPI Key (Recommended)
-```bash
-flutter run --dart-define=QUIZ_API_KEY=your_api_key_here
-```
 
 #### With Firebase Emulators
-```bash
-flutter run --dart-define=USE_STORAGE_EMULATOR=true
-```
 
-#### With Both Emulators and API Key
 ```bash
 flutter run \
   --dart-define=USE_STORAGE_EMULATOR=true \
-  --dart-define=QUIZ_API_KEY=your_api_key_here
+  --dart-define=USE_FIRESTORE_EMULATOR=true
 ```
-
-**Note:** Always use your own API key to avoid rate limiting issues. The default key is shared and may be blocked or limited.
 
 ### Configuration
 
-The app supports the following environment variables via `--dart-define`:
+The app supports the following environment variables:
 
-- `QUIZ_API_KEY` - Your QuizAPI.io API key (recommended to set)
+- `QUIZ_API_KEY` - Your QuizAPI.io API key (**required** - set in `.env` file)
 - `USE_STORAGE_EMULATOR` - Enable Firebase Storage emulator
 - `USE_FIRESTORE_EMULATOR` - Enable Firestore emulator
 
