@@ -1,0 +1,72 @@
+# Настроен для обеспечения качества кода и лучших практик Flutter
+# ===== FLUTTER АРХИТЕКТУРНЫЕ ПРАВИЛА =====
+# ПРИМЕЧАНИЕ: Правило "не возвращать виджеты из методов" не может быть
+# автоматически проверено встроенными линтерами Flutter.
+# Рекомендуется следовать этому правилу во время code review и рефакторинга.
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gr.dart"
+    - "**/generated/**"
+    - "**/build/**"
+    - "ios/**"
+    - "android/**"
+    - "web/**"
+    - "macos/**"
+    - "windows/**"
+    - "linux/**"
+
+linter:
+  rules:
+    # ===== КРИТИЧЕСКИ ВАЖНЫЕ (ошибки) =====
+    use_key_in_widget_constructors: error
+    prefer_relative_imports: error
+    camel_case_types: error
+    annotate_overrides: error
+    # avoid_print: error  # Временно отключено для разработки
+
+    # ===== ВАЖНЫЕ (предупреждения) =====
+    prefer_const_constructors: warning
+    avoid_classes_with_only_static_members: warning
+    prefer_final_fields: warning
+    unnecessary_null_checks: warning
+    sized_box_for_whitespace: warning
+    avoid_unnecessary_containers: warning
+    no_logic_in_create_state: warning
+    avoid_types_on_closure_parameters: info
+    prefer_function_declarations_over_variables: info
+
+    # ===== РЕКОМЕНДАЦИИ (информация) =====
+    prefer_const_declarations: info
+    prefer_const_literals_to_create_immutables: info
+    prefer_final_locals: info
+    avoid_dynamic_calls: info
+    library_names: info
+    file_names: info
+
+    # ===== ДОПОЛНИТЕЛЬНЫЕ ПРАВИЛА =====
+    # Flutter специфичные
+    use_build_context_synchronously: warning
+    avoid_redundant_argument_values: info
+    prefer_if_null_operators: info
+    prefer_null_aware_operators: info
+
+    # Производительность
+    prefer_const_constructors_in_immutables: info
+
+    # Читаемость кода
+    prefer_single_quotes: info
+    require_trailing_commas: info
