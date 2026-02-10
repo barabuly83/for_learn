@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "945624688833",
+    "project_id": "hw18-20",
+    "storage_bucket": "hw18-20.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945624688833:android:8b447afa0b7547566c0c40",
+        "android_client_info": {
+          "package_name": "com.example.hw18_20"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "945624688833-9c41km0dibrcj9rp36004p4kpb7bd8sl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqhWIi7z7h3ZHW3WRHfukhY2A-sMCcXQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "945624688833-9c41km0dibrcj9rp36004p4kpb7bd8sl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
