@@ -21,9 +21,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthBloc>(
-          create: (context) => di.sl<AuthBloc>(),
-        ),
+        BlocProvider<AuthBloc>(create: (context) => di.sl<AuthBloc>()),
         BlocProvider<TodoBloc>(create: (context) => di.sl<TodoBloc>()),
       ],
       child: BlocListener<AuthBloc, AuthState>(
@@ -31,19 +29,15 @@ class _MyAppState extends State<MyApp> {
           final wasAuthenticated = _isAuthenticated;
           final isNowAuthenticated = state is Authenticated;
 
-          // Обновляем состояние
           if (_isAuthenticated != isNowAuthenticated) {
             setState(() {
               _isAuthenticated = isNowAuthenticated;
             });
           }
 
-          // Навигация в зависимости от текущего состояния
           if (isNowAuthenticated && !wasAuthenticated) {
-            // Только что вошли в систему
             AppRouter.router.go('/home');
           } else if (!isNowAuthenticated && wasAuthenticated) {
-            // Только что вышли из системы
             AppRouter.router.go('/login');
           }
         },

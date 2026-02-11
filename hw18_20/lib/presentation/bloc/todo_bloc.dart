@@ -37,12 +37,9 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   ) async {
     emit(TodoLoading());
 
-    // Get the current user ID from auth state
     final currentState = authBloc.state;
-    print('TodoBloc: Auth state = $currentState');
 
     if (currentState is! Authenticated) {
-      print('TodoBloc: User not authenticated, current state: $currentState');
       emit(const TodoError('Пользователь должен быть авторизован'));
       return;
     }
@@ -107,16 +104,18 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     emit(TodosLoaded(updatedTodos));
 
     // Perform the actual toggle operation in background
-    toggleTodoComplete(
-      ToggleTodoCompleteParams(id: event.todoId),
-    ).then((result) {
+    toggleTodoComplete(ToggleTodoCompleteParams(id: event.todoId)).then((
+      result,
+    ) {
       result.fold(
         (failure) {
           // Revert the optimistic update on failure and show error
-          add(ToggleTodoCompleteErrorEvent(
-            todoId: event.todoId,
-            errorMessage: _mapFailureToMessage(failure),
-          ));
+          add(
+            ToggleTodoCompleteErrorEvent(
+              todoId: event.todoId,
+              errorMessage: _mapFailureToMessage(failure),
+            ),
+          );
         },
         (updatedTodo) {
           // Update with the server response (in case it differs)

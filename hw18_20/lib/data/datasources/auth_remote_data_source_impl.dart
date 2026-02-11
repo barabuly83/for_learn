@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_remote_data_source.dart';
 import '../models/user_model.dart';
 
-/// Реализация удаленного источника данных аутентификации с использованием Firebase Auth
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -46,7 +45,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('Не удалось создать пользователя');
       }
 
-      // Обновляем displayName пользователя
       await userCredential.user?.updateDisplayName(name);
       await userCredential.user?.reload();
 

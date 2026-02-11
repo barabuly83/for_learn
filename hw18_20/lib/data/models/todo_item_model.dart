@@ -84,11 +84,14 @@ class TodoItemModel extends TodoItem {
       'description': description,
       'userId': userId,
       'isCompleted': isCompleted,
-      'createdAt': createdAt != null ? Timestamp.fromDate(createdAt!) : FieldValue.serverTimestamp(),
+      'createdAt': createdAt != null
+          ? Timestamp.fromDate(createdAt!)
+          : FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
     };
   }
 
+  @override
   TodoItemModel copyWith({
     String? id,
     String? title,

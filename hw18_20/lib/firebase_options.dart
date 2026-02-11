@@ -52,12 +52,20 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCqhWIi7z7h3ZHW3WRHfukhY2A-sMCcXQg',
-    appId: '1:945624688833:android:8b447afa0b7547566c0c40',
-    messagingSenderId: '945624688833',
-    projectId: 'hw18-20',
-    storageBucket: 'hw18-20.firebasestorage.app',
-  );
+  static FirebaseOptions get android {
+    // Значения будут загружены из .env файла в main.dart
+    const apiKey = 'AIzaSyCqhWIi7z7h3ZHW3WRHfukhY2A-sMCcXQg';
+    const appId = '1:945624688833:android:8b447afa0b7547566c0c40';
+    const messagingSenderId = '945624688833';
+    const projectId = 'hw18-20';
+    const storageBucket = 'hw18-20.firebasestorage.app';
 
+    return FirebaseOptions(
+      apiKey: apiKey,
+      appId: appId,
+      messagingSenderId: messagingSenderId,
+      projectId: projectId,
+      storageBucket: storageBucket,
+    );
+  }
 }
