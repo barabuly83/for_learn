@@ -32,6 +32,30 @@ class ToggleTodoCompleteEvent extends TodoEvent {
   List<Object?> get props => [todoId];
 }
 
+class DeleteTodoEvent extends TodoEvent {
+  const DeleteTodoEvent({required this.todoId});
+
+  final String todoId;
+
+  @override
+  List<Object?> get props => [todoId];
+}
+
+class UpdateTodoEvent extends TodoEvent {
+  const UpdateTodoEvent({
+    required this.todoId,
+    required this.title,
+    required this.description,
+  });
+
+  final String todoId;
+  final String title;
+  final String description;
+
+  @override
+  List<Object?> get props => [todoId, title, description];
+}
+
 class TodoErrorEvent extends TodoEvent {
   const TodoErrorEvent(this.message);
 

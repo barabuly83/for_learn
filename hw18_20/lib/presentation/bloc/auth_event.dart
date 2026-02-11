@@ -47,6 +47,32 @@ class PasswordResetEvent extends AuthEvent {
   List<Object?> get props => [email];
 }
 
+class ChangePasswordEvent extends AuthEvent {
+  const ChangePasswordEvent({
+    required this.currentPassword,
+    required this.newPassword,
+  });
+
+  final String currentPassword;
+  final String newPassword;
+
+  @override
+  List<Object?> get props => [currentPassword, newPassword];
+}
+
+class UpdateAvatarEvent extends AuthEvent {
+  const UpdateAvatarEvent({
+    required this.userId,
+    required this.avatarUrl,
+  });
+
+  final String userId;
+  final String avatarUrl;
+
+  @override
+  List<Object?> get props => [userId, avatarUrl];
+}
+
 class AuthStateUpdateEvent extends AuthEvent {
   const AuthStateUpdateEvent(this.user);
 

@@ -18,6 +18,8 @@ class Authenticated extends AuthState {
 
   final User user;
 
+  String? get avatarUrl => user.avatarUrl;
+
   @override
   List<Object?> get props => [user];
 }
@@ -35,4 +37,17 @@ class AuthError extends AuthState {
 
 class PasswordResetSuccess extends AuthState {
   const PasswordResetSuccess();
+}
+
+class PasswordChangedSuccess extends AuthState {
+  const PasswordChangedSuccess();
+}
+
+class AvatarUpdatedSuccess extends AuthState {
+  const AvatarUpdatedSuccess(this.updatedUser);
+
+  final User updatedUser;
+
+  @override
+  List<Object?> get props => [updatedUser];
 }

@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../core/error/failures.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/user_repository.dart';
+import '../../domain/usecases/register.dart';
 import '../datasources/user_local_data_source.dart';
 import '../datasources/user_remote_data_source.dart';
 import '../models/user_model.dart';
@@ -113,6 +114,25 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
+  Future<Either<Failure, void>> updateUserAvatar(String userId, String avatarUrl) async {
+    try {
+      final userModel = UserModel(
+        id: userId,
+        name: '', // Эти поля не обновляем
+        email: '',
+        password: '',
+        avatarUrl: avatarUrl,
+      );
+
+      await remoteDataSource.updateUser(userModel);
+      print('✅ Аватарка пользователя обновлена: $userId');
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> deleteUser(String id) async {
     try {
       // Удаляем пользователя через API
@@ -140,10 +160,13 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, User>> register(User user) async {
+  Future<Either<Failure, User>> register(RegisterParams params) async {
     try {
-      final userModel = UserModel.fromEntity(user);
-      final registeredUser = await remoteDataSource.register(userModel);
+      final registeredUser = await remoteDataSource.register(
+        params.name,
+        params.email,
+        params.password,
+      );
       // Сохраняем нового пользователя в кэш
       await localDataSource.cacheCurrentUser(registeredUser);
       return Right(registeredUser.toEntity());
@@ -191,6 +214,16 @@ class UserRepositoryImpl implements UserRepository {
   Future<Either<Failure, void>> sendPasswordResetEmail(String email) async {
     try {
       await remoteDataSource.sendPasswordResetEmail(email);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> changePassword(String currentPassword, String newPassword) async {
+    try {
+      await remoteDataSource.changePassword(currentPassword, newPassword);
       return const Right(null);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));

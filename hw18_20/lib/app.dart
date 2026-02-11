@@ -6,6 +6,7 @@ import 'core/app_router.dart';
 import 'core/injection_container.dart' as di;
 import 'presentation/bloc/auth_bloc.dart';
 import 'presentation/bloc/auth_state.dart';
+import 'presentation/bloc/login_form_cubit.dart';
 import 'presentation/bloc/todo_bloc.dart';
 
 class MyApp extends StatefulWidget {
@@ -24,6 +25,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider<AuthBloc>(create: (context) => di.sl<AuthBloc>()),
         BlocProvider<TodoBloc>(create: (context) => di.sl<TodoBloc>()),
+        BlocProvider<LoginFormCubit>(create: (context) => di.sl<LoginFormCubit>()),
       ],
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -39,6 +41,8 @@ class _MyAppState extends State<MyApp> {
           if (isNowAuthenticated && !wasAuthenticated) {
             AppRouter.router.go('/home');
           } else if (!isNowAuthenticated && wasAuthenticated) {
+            // Reset login form state when user logs out
+            context.read<LoginFormCubit>().reset();
             AppRouter.router.go('/login');
           }
         },

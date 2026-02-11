@@ -39,3 +39,21 @@ class TodosLoaded extends TodoState {
   @override
   List<Object?> get props => [todos];
 }
+
+class TodoDeleted extends TodoState {
+  const TodoDeleted(this.todoId);
+
+  final String todoId;
+
+  @override
+  List<Object?> get props => [todoId];
+}
+
+class TodoUpdated extends TodoState {
+  const TodoUpdated(this.todo);
+
+  final TodoItem todo;
+
+  @override
+  List<Object?> get props => [todo];
+}

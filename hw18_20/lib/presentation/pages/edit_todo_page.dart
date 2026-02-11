@@ -6,17 +6,28 @@ import '../bloc/todo_bloc.dart';
 import '../bloc/todo_event.dart';
 import '../bloc/todo_state.dart';
 
-class AddTodoPage extends StatefulWidget {
-  const AddTodoPage({super.key});
+class EditTodoPage extends StatefulWidget {
+  const EditTodoPage({super.key, required this.todoId});
+
+  final String todoId;
 
   @override
-  State<AddTodoPage> createState() => _AddTodoPageState();
+  State<EditTodoPage> createState() => _EditTodoPageState();
 }
 
-class _AddTodoPageState extends State<AddTodoPage> {
+class _EditTodoPageState extends State<EditTodoPage> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Load the todo data when the page initializes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadTodoData();
+    });
+  }
 
   @override
   void dispose() {
@@ -25,28 +36,40 @@ class _AddTodoPageState extends State<AddTodoPage> {
     super.dispose();
   }
 
+  void _loadTodoData() {
+    final currentState = context.read<TodoBloc>().state;
+    if (currentState is TodosLoaded) {
+      final todo = currentState.todos.firstWhere(
+        (todo) => todo.id == widget.todoId,
+        orElse: () => throw Exception('Todo not found'),
+      );
+      _titleController.text = todo.title;
+      _descriptionController.text = todo.description;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TodoBloc, TodoState>(
       bloc: context.read<TodoBloc>(),
       listener: (context, state) {
-        if (state is TodoCreated) {
+        if (state is TodoUpdated) {
           // Show success message and navigate back
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Задача создана успешно')),
+            const SnackBar(content: Text('Задача обновлена успешно')),
           );
           context.go('/home');
         } else if (state is TodoError) {
           // Show error message
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('Ошибка: ${state.message}')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Ошибка: ${state.message}')),
+          );
         }
       },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Добавить задачу'),
+            title: const Text('Редактировать задачу'),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () => context.go('/home'),
@@ -102,7 +125,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
                             : () {
                                 if (_formKey.currentState!.validate()) {
                                   context.read<TodoBloc>().add(
-                                    CreateTodoEvent(
+                                    UpdateTodoEvent(
+                                      todoId: widget.todoId,
                                       title: _titleController.text.trim(),
                                       description: _descriptionController.text
                                           .trim(),
@@ -115,7 +139,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                         ),
                         child: state is TodoLoading
                             ? const CircularProgressIndicator()
-                            : const Text('Создать задачу'),
+                            : const Text('Обновить задачу'),
                       );
                     },
                   ),

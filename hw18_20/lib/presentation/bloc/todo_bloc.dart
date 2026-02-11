@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/error/failures.dart';
 import '../../domain/entities/todo_item.dart';
 import '../../domain/usecases/create_todo.dart';
+import '../../domain/usecases/delete_todo.dart';
 import '../../domain/usecases/get_todos.dart';
 import '../../domain/usecases/toggle_todo_complete.dart';
+import '../../domain/usecases/update_todo.dart';
 import 'auth_bloc.dart';
 import 'auth_state.dart';
 import 'todo_event.dart';
@@ -15,11 +17,15 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     required this.createTodo,
     required this.getTodos,
     required this.toggleTodoComplete,
+    required this.deleteTodo,
+    required this.updateTodo,
     required this.authBloc,
   }) : super(TodoInitial()) {
     on<CreateTodoEvent>(_onCreateTodo);
     on<LoadTodosEvent>(_onLoadTodos);
     on<ToggleTodoCompleteEvent>(_onToggleTodoComplete);
+    on<DeleteTodoEvent>(_onDeleteTodo);
+    on<UpdateTodoEvent>(_onUpdateTodo);
     on<TodoErrorEvent>(_onTodoError);
     on<ToggleTodoCompleteErrorEvent>(_onToggleTodoCompleteError);
     on<ToggleTodoCompleteSuccessEvent>(_onToggleTodoCompleteSuccess);
@@ -29,6 +35,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   final CreateTodo createTodo;
   final GetTodos getTodos;
   final ToggleTodoComplete toggleTodoComplete;
+  final DeleteTodo deleteTodo;
+  final UpdateTodo updateTodo;
   final AuthBloc authBloc;
 
   Future<void> _onCreateTodo(
@@ -168,6 +176,69 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       }).toList();
       emit(TodosLoaded(updatedTodos));
     }
+  }
+
+  Future<void> _onDeleteTodo(
+    DeleteTodoEvent event,
+    Emitter<TodoState> emit,
+  ) async {
+    final currentState = authBloc.state;
+
+    if (currentState is! Authenticated) {
+      emit(const TodoError('Пользователь должен быть авторизован'));
+      return;
+    }
+
+    final result = await deleteTodo(DeleteTodoParams(id: event.todoId));
+
+    result.fold(
+      (failure) => emit(TodoError(_mapFailureToMessage(failure))),
+      (_) {
+        emit(TodoDeleted(event.todoId));
+        // Reload todos after deletion
+        add(const LoadTodosEvent());
+      },
+    );
+  }
+
+  Future<void> _onUpdateTodo(
+    UpdateTodoEvent event,
+    Emitter<TodoState> emit,
+  ) async {
+    final currentState = authBloc.state;
+
+    if (currentState is! Authenticated) {
+      emit(const TodoError('Пользователь должен быть авторизован'));
+      return;
+    }
+
+    // Get the current todo to preserve other properties
+    final todosState = state;
+    if (todosState is! TodosLoaded) {
+      emit(const TodoError('Не удалось загрузить задачи'));
+      return;
+    }
+
+    final existingTodo = todosState.todos.firstWhere(
+      (todo) => todo.id == event.todoId,
+      orElse: () => throw Exception('Todo not found'),
+    );
+
+    final updatedTodo = existingTodo.copyWith(
+      title: event.title,
+      description: event.description,
+    );
+
+    final result = await updateTodo(updatedTodo);
+
+    result.fold(
+      (failure) => emit(TodoError(_mapFailureToMessage(failure))),
+      (updatedTodo) {
+        emit(TodoUpdated(updatedTodo));
+        // Reload todos after update
+        add(const LoadTodosEvent());
+      },
+    );
   }
 
   String _mapFailureToMessage(Failure failure) {
