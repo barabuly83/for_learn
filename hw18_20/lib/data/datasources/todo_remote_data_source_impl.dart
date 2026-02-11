@@ -9,18 +9,15 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
   @override
   Future<List<TodoItemModel>> getTodos(String userId) async {
     try {
-      // Временное решение: получаем все документы пользователя и сортируем в приложении
-      // После развертывания индексов можно вернуть orderBy на стороне Firestore
       final querySnapshot = await _firestore
           .collection('todos')
           .where('userId', isEqualTo: userId)
           .get();
 
-    final todos = querySnapshot.docs
-        .map((DocumentSnapshot doc) => TodoItemModel.fromFirestore(doc))
-        .toList();
+      final todos = querySnapshot.docs
+          .map((doc) => TodoItemModel.fromFirestore(doc))
+          .toList();
 
-      // Сортируем по createdAt по убыванию (новые задачи сверху)
       todos.sort((a, b) {
         if (a.createdAt == null && b.createdAt == null) return 0;
         if (a.createdAt == null) return 1;
@@ -30,7 +27,6 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
 
       return todos;
     } catch (e) {
-      print('❌ Ошибка загрузки задач: $e');
       rethrow;
     }
   }
@@ -47,18 +43,22 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
   @override
   Future<TodoItemModel> createTodo(TodoItemModel todo) async {
     try {
-      final docRef = await _firestore.collection('todos').add(todo.toFirestore());
+      final docRef = await _firestore
+          .collection('todos')
+          .add(todo.toFirestore());
       final docSnapshot = await docRef.get();
       return TodoItemModel.fromFirestore(docSnapshot);
     } catch (e) {
-      print('❌ Ошибка создания задачи: $e');
       rethrow;
     }
   }
 
   @override
   Future<TodoItemModel> updateTodo(TodoItemModel todo) async {
-    await _firestore.collection('todos').doc(todo.id).update(todo.toFirestore());
+    await _firestore
+        .collection('todos')
+        .doc(todo.id)
+        .update(todo.toFirestore());
     return todo;
   }
 
@@ -77,9 +77,14 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
     }
 
     final currentTodo = TodoItemModel.fromFirestore(docSnapshot);
-    final updatedTodo = currentTodo.copyWith(isCompleted: !currentTodo.isCompleted);
+    final updatedTodo = currentTodo.copyWith(
+      isCompleted: !currentTodo.isCompleted,
+    );
 
-    await docRef.update({'isCompleted': updatedTodo.isCompleted, 'updatedAt': FieldValue.serverTimestamp()});
+    await docRef.update({
+      'isCompleted': updatedTodo.isCompleted,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
 
     return updatedTodo;
   }
