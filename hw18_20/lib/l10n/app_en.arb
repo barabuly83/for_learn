@@ -1,0 +1,99 @@
+{
+  "@@locale": "en",
+  "appTitle": "Todo App",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "login": "Login",
+  "@login": {
+    "description": "Login button text"
+  },
+  "register": "Register",
+  "@register": {
+    "description": "Register button text"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Name field label"
+  },
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout button text"
+  },
+  "todos": "Tasks",
+  "@todos": {
+    "description": "Tasks page title"
+  },
+  "addTodo": "Add Task",
+  "@addTodo": {
+    "description": "Add task button text"
+  },
+  "title": "Title",
+  "@title": {
+    "description": "Task title field label"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Task description field label"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button text"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "complete": "Complete",
+  "@complete": {
+    "description": "Mark task as complete button text"
+  },
+  "incomplete": "Incomplete",
+  "@incomplete": {
+    "description": "Mark task as incomplete button text"
+  },
+  "noTodos": "No tasks yet",
+  "@noTodos": {
+    "description": "Message when no tasks exist"
+  },
+  "addFirstTodo": "Add your first task!",
+  "@addFirstTodo": {
+    "description": "Encouragement to add first task"
+  },
+  "loginRequired": "Login Required",
+  "@loginRequired": {
+    "description": "Login required message"
+  },
+  "pleaseLogin": "Please log in to view your tasks",
+  "@pleaseLogin": {
+    "description": "Please login message"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error title"
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading message"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
+  }
+}

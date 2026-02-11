@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/app_router.dart';
 import 'core/injection_container.dart' as di;
@@ -48,6 +49,16 @@ class _MyAppState extends State<MyApp> {
             useMaterial3: true,
           ),
           routerConfig: AppRouter.router,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'), // English
+            Locale('ru'), // Russian
+          ],
+          locale: const Locale('ru'), // Default to Russian
         ),
       ),
     );
