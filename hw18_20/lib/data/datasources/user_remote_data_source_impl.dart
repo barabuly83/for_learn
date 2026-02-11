@@ -100,12 +100,12 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<UserModel> register(UserModel user) async {
+  Future<UserModel> register(String name, String email, String password) async {
     // Используем AuthRemoteDataSource для регистрации через Firebase
     return await authRemoteDataSource.signUpWithEmailAndPassword(
-      user.email,
-      user.password,
-      user.name,
+      email,
+      password,
+      name,
     );
   }
 
@@ -125,5 +125,11 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<void> sendPasswordResetEmail(String email) async {
     // Используем AuthRemoteDataSource для отправки email восстановления пароля через Firebase
     await authRemoteDataSource.sendPasswordResetEmail(email);
+  }
+
+  @override
+  Future<void> changePassword(String currentPassword, String newPassword) async {
+    // Используем AuthRemoteDataSource для изменения пароля через Firebase
+    await authRemoteDataSource.changePassword(currentPassword, newPassword);
   }
 }

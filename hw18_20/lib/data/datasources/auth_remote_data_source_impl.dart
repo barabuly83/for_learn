@@ -96,6 +96,37 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
+  @override
+  Future<void> changePassword(String currentPassword, String newPassword) async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        throw Exception('Пользователь не авторизован');
+      }
+
+      // Для изменения пароля в Firebase требуется reauthentication
+      final email = user.email;
+      if (email == null) {
+        throw Exception('Email пользователя не найден');
+      }
+
+      // Повторно аутентифицируем пользователя с текущим паролем
+      final credential = EmailAuthProvider.credential(
+        email: email,
+        password: currentPassword,
+      );
+
+      await user.reauthenticateWithCredential(credential);
+
+      // После успешной reauthentication изменяем пароль
+      await user.updatePassword(newPassword);
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthException(e);
+    } catch (e) {
+      throw Exception('Ошибка изменения пароля: ${e.toString()}');
+    }
+  }
+
   /// Обработка исключений Firebase Auth с понятными сообщениями на русском
   Exception _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {

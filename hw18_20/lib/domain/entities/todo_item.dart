@@ -41,12 +41,12 @@ class TodoItem extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        title,
-        description,
-        userId,
-        isCompleted,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    title,
+    description,
+    userId,
+    isCompleted,
+    createdAt,
+    updatedAt,
+  ];
 }

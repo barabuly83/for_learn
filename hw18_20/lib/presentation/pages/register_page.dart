@@ -80,6 +80,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 32),
                 TextFormField(
                   controller: _nameController,
+                  autofocus: true,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                     labelText: 'Имя',
                     hintText: 'Введите ваше имя',
@@ -100,13 +103,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     hintText: 'example@email.com',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email),
                   ),
-                  keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Пожалуйста, введите email';
@@ -120,6 +124,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     labelText: 'Пароль',
                     hintText: 'Минимум 6 символов',
@@ -150,6 +156,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _confirmPasswordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     labelText: 'Подтвердите пароль',
                     hintText: 'Повторите пароль',

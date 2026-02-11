@@ -49,12 +49,71 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: const Text('Мои дела'),
           actions: [
-            IconButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(const LogoutEvent());
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is Authenticated) {
+                  return PopupMenuButton<String>(
+                    onSelected: (value) {
+                      switch (value) {
+                        case 'profile':
+                          context.go('/profile');
+                          break;
+                        case 'logout':
+                          context.read<AuthBloc>().add(const LogoutEvent());
+                          break;
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem<String>(
+                        value: 'profile',
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 16,
+                              child: Text(
+                                state.user.name.isNotEmpty
+                                    ? state.user.name[0].toUpperCase()
+                                    : state.user.email[0].toUpperCase(),
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            const Text('Профиль'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'logout',
+                        child: Row(
+                          children: [
+                            Icon(Icons.logout, color: Colors.red),
+                            SizedBox(width: 12),
+                            Text('Выйти'),
+                          ],
+                        ),
+                      ),
+                    ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          radius: 16,
+                          backgroundImage: state.avatarUrl != null
+                              ? NetworkImage(state.avatarUrl!)
+                              : null,
+                          child: state.avatarUrl == null
+                              ? Text(
+                                  state.user.name.isNotEmpty
+                                      ? state.user.name[0].toUpperCase()
+                                      : state.user.email[0].toUpperCase(),
+                                  style: const TextStyle(fontSize: 14),
+                                )
+                              : null,
+                        ),
+                      ),
+                  );
+                }
+                return const SizedBox.shrink();
               },
-              icon: const Icon(Icons.logout),
-              tooltip: 'Выйти',
             ),
           ],
         ),
@@ -88,6 +147,14 @@ class _HomePageState extends State<HomePage> {
                               ToggleTodoCompleteEvent(todoId: todo.id),
                             );
                           }
+                        },
+                        onEdit: () {
+                          context.go('/edit-todo/${todo.id}');
+                        },
+                        onDelete: () {
+                          context.read<TodoBloc>().add(
+                            DeleteTodoEvent(todoId: todo.id),
+                          );
                         },
                       );
                     },

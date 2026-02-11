@@ -9,6 +9,7 @@ class UserModel extends User {
     required super.email,
     required super.password,
     super.createdAt,
+    super.avatarUrl,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +21,7 @@ class UserModel extends User {
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'] as String)
           : null,
+      avatarUrl: json['avatarUrl'] as String?,
     );
   }
 
@@ -44,6 +46,7 @@ class UserModel extends User {
       'email': email,
       'password': password,
       'createdAt': createdAt?.toIso8601String(),
+      'avatarUrl': avatarUrl,
     };
   }
 
@@ -54,6 +57,7 @@ class UserModel extends User {
       email: email,
       password: password,
       createdAt: createdAt,
+      avatarUrl: avatarUrl,
     );
   }
 
@@ -64,6 +68,7 @@ class UserModel extends User {
       email: user.email,
       password: user.password,
       createdAt: user.createdAt,
+      avatarUrl: user.avatarUrl,
     );
   }
 }
