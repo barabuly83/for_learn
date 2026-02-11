@@ -21,19 +21,13 @@ Data Layer
 
 #### Remote Data Sources (Удаленные источники)
 
-- **`WeatherRemoteDataSource`** - Абстракция для работы с Weather API
-  - `WeatherRemoteDataSourceImpl` - Реализация (mock для демонстрации)
-  
 - **`AuthRemoteDataSource`** - Абстракция для работы с Firebase Auth
-  - `AuthRemoteDataSourceImpl` - Реализация (mock для демонстрации)
+  - `AuthRemoteDataSourceImpl` - Реализация с Firebase
 
 - **`UserRemoteDataSource`** - Абстракция для работы с User API
-  - `UserRemoteDataSourceImpl` - Реализация (mock для демонстрации)
+  - `UserRemoteDataSourceImpl` - Реализация с Firebase
 
 #### Local Data Sources (Локальные источники)
-
-- **`WeatherLocalDataSource`** - Абстракция для локального кэширования погоды
-  - `WeatherLocalDataSourceImpl` - Реализация (in-memory для демонстрации, в реальном приложении - Hive)
 
 - **`UserLocalDataSource`** - Абстракция для локального хранения пользователей
   - `UserLocalDataSourceImpl` - Реализация (in-memory для демонстрации, в реальном приложении - Hive)
@@ -43,7 +37,6 @@ Data Layer
 Модели данных преобразуют данные из внешних источников (JSON, БД) в доменные сущности:
 
 - **`UserModel`** - Модель пользователя с методами `fromJson`, `toJson`, `toEntity`, `fromEntity`
-- **`WeatherModel`** - Модель погоды с методами `fromJson`, `toJson`, `toEntity`, `fromEntity`
 
 ### 3. Repositories (Репозитории)
 
@@ -54,11 +47,6 @@ Data Layer
   - Использует `UserLocalDataSource` для кэширования
   - Реализует стратегию cache-first с фоновым обновлением
 
-- **`WeatherRepositoryImpl`** - Реализует `WeatherRepository`
-  - Использует `WeatherRemoteDataSource` для работы с API
-  - Использует `WeatherLocalDataSource` для кэширования
-  - Реализует стратегию cache-first
-
 ## Принципы работы
 
 ### 1. Абстракция источников данных
@@ -66,8 +54,8 @@ Data Layer
 Каждый источник данных имеет абстрактный интерфейс, который скрывает детали реализации:
 
 ```dart
-abstract class WeatherRemoteDataSource {
-  Future<WeatherModel> getWeatherByCity(String city);
+abstract class UserRemoteDataSource {
+  Future<List<UserModel>> getUsers();
 }
 ```
 
@@ -78,7 +66,7 @@ abstract class WeatherRemoteDataSource {
 Реализации репозиториев предоставляют единый интерфейс для доменного слоя, скрывая сложность работы с несколькими источниками данных:
 
 ```dart
-class WeatherRepositoryImpl implements WeatherRepository {
+class UserRepositoryImpl implements UserRepository {
   // Координирует работу между remote и local источниками
   // Предоставляет единый интерфейс для domain layer
 }
@@ -97,18 +85,6 @@ class WeatherRepositoryImpl implements WeatherRepository {
 
 ## Примеры использования
 
-### Weather Repository
-
-```dart
-final weatherRepo = WeatherRepositoryImpl(
-  remoteDataSource: WeatherRemoteDataSourceImpl(),
-  localDataSource: WeatherLocalDataSourceImpl(),
-);
-
-// Получение погоды (сначала из кэша, затем из API)
-final result = await weatherRepo.getWeatherByCity('Moscow');
-```
-
 ### User Repository
 
 ```dart
@@ -122,17 +98,6 @@ final result = await userRepo.getUsers();
 ```
 
 ## Интеграция с реальными сервисами
-
-### Weather API
-
-В реальном приложении `WeatherRemoteDataSourceImpl` будет использовать HTTP-клиент:
-
-```dart
-final response = await http.get(
-  Uri.parse('$baseUrl/weather?city=$city'),
-);
-return WeatherModel.fromJson(jsonDecode(response.body));
-```
 
 ### Firebase Auth
 
