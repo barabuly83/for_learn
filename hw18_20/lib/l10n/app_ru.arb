@@ -1,0 +1,99 @@
+{
+  "@@locale": "ru",
+  "appTitle": "Список задач",
+  "@appTitle": {
+    "description": "Название приложения"
+  },
+  "login": "Войти",
+  "@login": {
+    "description": "Текст кнопки входа"
+  },
+  "register": "Регистрация",
+  "@register": {
+    "description": "Текст кнопки регистрации"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Метка поля email"
+  },
+  "password": "Пароль",
+  "@password": {
+    "description": "Метка поля пароля"
+  },
+  "name": "Имя",
+  "@name": {
+    "description": "Метка поля имени"
+  },
+  "confirmPassword": "Подтвердите пароль",
+  "@confirmPassword": {
+    "description": "Метка поля подтверждения пароля"
+  },
+  "logout": "Выйти",
+  "@logout": {
+    "description": "Текст кнопки выхода"
+  },
+  "todos": "Задачи",
+  "@todos": {
+    "description": "Заголовок страницы задач"
+  },
+  "addTodo": "Добавить задачу",
+  "@addTodo": {
+    "description": "Текст кнопки добавления задачи"
+  },
+  "title": "Заголовок",
+  "@title": {
+    "description": "Метка поля заголовка задачи"
+  },
+  "description": "Описание",
+  "@description": {
+    "description": "Метка поля описания задачи"
+  },
+  "save": "Сохранить",
+  "@save": {
+    "description": "Текст кнопки сохранения"
+  },
+  "cancel": "Отмена",
+  "@cancel": {
+    "description": "Текст кнопки отмены"
+  },
+  "delete": "Удалить",
+  "@delete": {
+    "description": "Текст кнопки удаления"
+  },
+  "complete": "Выполнить",
+  "@complete": {
+    "description": "Текст кнопки выполнения задачи"
+  },
+  "incomplete": "Не выполнено",
+  "@incomplete": {
+    "description": "Текст для невыполненной задачи"
+  },
+  "noTodos": "Задач пока нет",
+  "@noTodos": {
+    "description": "Сообщение при отсутствии задач"
+  },
+  "addFirstTodo": "Добавьте свою первую задачу!",
+  "@addFirstTodo": {
+    "description": "Призыв добавить первую задачу"
+  },
+  "loginRequired": "Требуется вход",
+  "@loginRequired": {
+    "description": "Сообщение о необходимости входа"
+  },
+  "pleaseLogin": "Пожалуйста, войдите, чтобы просмотреть свои задачи",
+  "@pleaseLogin": {
+    "description": "Сообщение с просьбой войти"
+  },
+  "error": "Ошибка",
+  "@error": {
+    "description": "Заголовок ошибки"
+  },
+  "loading": "Загрузка...",
+  "@loading": {
+    "description": "Сообщение загрузки"
+  },
+  "retry": "Повторить",
+  "@retry": {
+    "description": "Текст кнопки повтора"
+  }
+}
