@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/app_localizations.dart';
+
 import '../bloc/auth_bloc.dart';
-import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 import '../bloc/todo_bloc.dart';
 import '../bloc/todo_event.dart';
 import '../bloc/todo_state.dart';
 import '../widgets/empty_todos_widget.dart';
-import '../widgets/login_required_widget.dart';
 import '../widgets/todo_error_widget.dart';
 import '../widgets/todo_item_widget.dart';
 
@@ -24,152 +24,71 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // Load todos when the page initializes
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<TodoBloc>().add(const LoadTodosEvent());
-    });
+    // Don't load todos immediately - wait for auth state confirmation
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, authState) {
-        print('HomePage: Auth state changed: $authState');
-        if (authState is Authenticated) {
-          // User just signed in, load their todos
-          print(
-            'HomePage: User authenticated, loading todos for user: ${authState.user.id}',
-          );
+      listener: (context, state) {
+        if (state is Authenticated) {
           context.read<TodoBloc>().add(const LoadTodosEvent());
         }
-        // When user signs out, the UI will automatically show the "login required" message
-        // due to the BlocBuilder check in the body
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Мои дела'),
+          title: Text(AppLocalizations.of(context)!.myTasks),
           actions: [
-            BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                if (state is Authenticated) {
-                  return PopupMenuButton<String>(
-                    onSelected: (value) {
-                      switch (value) {
-                        case 'profile':
-                          context.go('/profile');
-                          break;
-                        case 'logout':
-                          context.read<AuthBloc>().add(const LogoutEvent());
-                          break;
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem<String>(
-                        value: 'profile',
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 16,
-                              child: Text(
-                                state.user.name.isNotEmpty
-                                    ? state.user.name[0].toUpperCase()
-                                    : state.user.email[0].toUpperCase(),
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            const Text('Профиль'),
-                          ],
-                        ),
-                      ),
-                      const PopupMenuItem<String>(
-                        value: 'logout',
-                        child: Row(
-                          children: [
-                            Icon(Icons.logout, color: Colors.red),
-                            SizedBox(width: 12),
-                            Text('Выйти'),
-                          ],
-                        ),
-                      ),
-                    ],
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CircleAvatar(
-                          radius: 16,
-                          backgroundImage: state.avatarUrl != null
-                              ? NetworkImage(state.avatarUrl!)
-                              : null,
-                          child: state.avatarUrl == null
-                              ? Text(
-                                  state.user.name.isNotEmpty
-                                      ? state.user.name[0].toUpperCase()
-                                      : state.user.email[0].toUpperCase(),
-                                  style: const TextStyle(fontSize: 14),
-                                )
-                              : null,
-                        ),
-                      ),
-                  );
-                }
-                return const SizedBox.shrink();
-              },
+            // Simple profile button - authentication is handled by router
+            IconButton(
+              icon: const Icon(Icons.account_circle),
+              onPressed: () => context.go('/profile'),
             ),
+            // Logout button removed for now
           ],
         ),
-        body: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, authState) {
-            if (authState is! Authenticated) {
-              print(
-                'HomePage UI: User not authenticated, showing login message',
-              );
-              return const LoginRequiredWidget();
-            }
-
-            return BlocBuilder<TodoBloc, TodoState>(
-              builder: (context, state) {
-                if (state is TodoLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is TodosLoaded) {
-                  if (state.todos.isEmpty) {
-                    return const EmptyTodosWidget();
-                  }
-                  return ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: state.todos.length,
-                    itemBuilder: (context, index) {
-                      final todo = state.todos[index];
-                      return TodoItemWidget(
-                        todo: todo,
-                        onToggleComplete: (value) {
-                          if (value != null) {
-                            context.read<TodoBloc>().add(
-                              ToggleTodoCompleteEvent(todoId: todo.id),
-                            );
-                          }
-                        },
-                        onEdit: () {
-                          context.go('/edit-todo/${todo.id}');
-                        },
-                        onDelete: () {
-                          context.read<TodoBloc>().add(
-                            DeleteTodoEvent(todoId: todo.id),
-                          );
-                        },
+        body: BlocBuilder<TodoBloc, TodoState>(
+          builder: (context, state) {
+            if (state is TodoLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is TodosLoaded) {
+              if (state.todos.isEmpty) {
+                return const EmptyTodosWidget();
+              }
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: state.todos.length,
+                itemBuilder: (context, index) {
+                  final todo = state.todos[index];
+                  return TodoItemWidget(
+                    todo: todo,
+                    onToggleComplete: (value) {
+                      if (value != null) {
+                        context.read<TodoBloc>().add(
+                          ToggleTodoCompleteEvent(todoId: todo.id),
+                        );
+                      }
+                    },
+                    onEdit: () {
+                      context.go('/edit-todo/${todo.id}');
+                    },
+                    onDelete: () {
+                      context.read<TodoBloc>().add(
+                        DeleteTodoEvent(todoId: todo.id),
                       );
                     },
                   );
-                } else if (state is TodoError) {
-                  return TodoErrorWidget(
-                    message: state.message,
-                    onRetry: () {
-                      context.read<TodoBloc>().add(const LoadTodosEvent());
-                    },
-                  );
-                }
-                return const Center(child: Text('Загрузка задач...'));
-              },
-            );
+                },
+              );
+            } else if (state is TodoError) {
+              return TodoErrorWidget(
+                message: state.message,
+                onRetry: () {
+                  context.read<TodoBloc>().add(const LoadTodosEvent());
+                },
+              );
+            }
+            return Center(child: Text(AppLocalizations.of(context)!.loadingTasks));
           },
         ),
         floatingActionButton: FloatingActionButton(

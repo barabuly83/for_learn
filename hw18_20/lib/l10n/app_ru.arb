@@ -95,5 +95,125 @@
   "retry": "Повторить",
   "@retry": {
     "description": "Текст кнопки повтора"
+  },
+  "welcome": "Добро пожаловать",
+  "@welcome": {
+    "description": "Приветственное сообщение на экране входа"
+  },
+  "loginToAccount": "Войдите в свой аккаунт",
+  "@loginToAccount": {
+    "description": "Подзаголовок на экране входа"
+  },
+  "myTasks": "Мои дела",
+  "@myTasks": {
+    "description": "Заголовок главной страницы"
+  },
+  "loadingTasks": "Загрузка задач...",
+  "@loadingTasks": {
+    "description": "Сообщение загрузки задач"
+  },
+  "forgotPassword": "Забыли пароль?",
+  "@forgotPassword": {
+    "description": "Текст ссылки забытого пароля"
+  },
+  "passwordRecovery": "Восстановление пароля",
+  "@passwordRecovery": {
+    "description": "Заголовок диалога восстановления пароля"
+  },
+  "send": "Отправить",
+  "@send": {
+    "description": "Текст кнопки отправки"
+  },
+  "alreadyHaveAccount": "Уже есть аккаунт?",
+  "@alreadyHaveAccount": {
+    "description": "Текст уже есть аккаунт"
+  },
+  "dontHaveAccount": "Нет аккаунта?",
+  "@dontHaveAccount": {
+    "description": "Текст нет аккаунта"
+  },
+  "profile": "Профиль",
+  "@profile": {
+    "description": "Заголовок страницы профиля"
+  },
+  "changePassword": "Изменить пароль",
+  "@changePassword": {
+    "description": "Текст кнопки изменения пароля"
+  },
+  "loginRequired": "Требуется вход",
+  "@loginRequired": {
+    "description": "Сообщение о необходимости входа"
+  },
+  "passwordChanged": "Пароль успешно изменен",
+  "@passwordChanged": {
+    "description": "Сообщение об успешном изменении пароля"
+  },
+  "avatarUpdated": "Аватарка успешно обновлена",
+  "@avatarUpdated": {
+    "description": "Сообщение об успешном обновлении аватарки"
+  },
+  "selectFromGallery": "Выбрать из галереи",
+  "@selectFromGallery": {
+    "description": "Вариант выбора из галереи"
+  },
+  "takePhoto": "Сделать фото",
+  "@takePhoto": {
+    "description": "Вариант съемки фото"
+  },
+  "imageSelectionError": "Ошибка выбора изображения",
+  "@imageSelectionError": {
+    "description": "Префикс сообщения об ошибке выбора изображения"
+  },
+  "photoCaptureError": "Ошибка съемки фото",
+  "@photoCaptureError": {
+    "description": "Префикс сообщения об ошибке съемки фото"
+  },
+  "avatarUploadError": "Ошибка загрузки аватарки",
+  "@avatarUploadError": {
+    "description": "Сообщение об ошибке загрузки аватарки"
+  },
+  "logoutConfirm": "Выход из аккаунта",
+  "@logoutConfirm": {
+    "description": "Заголовок диалога подтверждения выхода"
+  },
+  "logoutConfirmMessage": "Вы уверены, что хотите выйти из аккаунта?",
+  "@logoutConfirmMessage": {
+    "description": "Сообщение диалога подтверждения выхода"
+  },
+  "yes": "Да",
+  "@yes": {
+    "description": "Текст кнопки Да"
+  },
+  "no": "Нет",
+  "@no": {
+    "description": "Текст кнопки Нет"
+  },
+  "editTask": "Редактировать задачу",
+  "@editTask": {
+    "description": "Заголовок страницы редактирования задачи"
+  },
+  "updateTask": "Обновить задачу",
+  "@updateTask": {
+    "description": "Текст кнопки обновления задачи"
+  },
+  "taskUpdated": "Задача обновлена успешно",
+  "@taskUpdated": {
+    "description": "Сообщение об успешном обновлении задачи"
+  },
+  "taskCreated": "Задача создана успешно",
+  "@taskCreated": {
+    "description": "Сообщение об успешном создании задачи"
+  },
+  "taskCreationError": "Ошибка создания задачи",
+  "@taskCreationError": {
+    "description": "Префикс сообщения об ошибке создания задачи"
+  },
+  "taskUpdateError": "Ошибка обновления задачи",
+  "@taskUpdateError": {
+    "description": "Префикс сообщения об ошибке обновления задачи"
+  },
+  "passwordResetSent": "Письмо для восстановления пароля отправлено на ваш email",
+  "@passwordResetSent": {
+    "description": "Сообщение об успешной отправке письма восстановления пароля"
   }
 }

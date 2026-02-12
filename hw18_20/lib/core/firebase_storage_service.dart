@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' as foundation;
 
 class FirebaseStorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   /// Подключение к Firebase Storage эмулятору (только для разработки)
   Future<void> connectToEmulator() async {
-    if (kDebugMode) {
+    if (foundation.kDebugMode) {
       try {
         // Для Android эмулятора используем специальный адрес
         const String emulatorHost = bool.hasEnvironment('ANDROID_EMULATOR')
@@ -15,9 +15,11 @@ class FirebaseStorageService {
             : 'localhost';
 
         await _storage.useStorageEmulator(emulatorHost, 9199);
-        print('✅ Подключено к Firebase Storage эмулятору ($emulatorHost:9199)');
+        foundation.debugPrint(
+          '✅ Подключено к Firebase Storage эмулятору ($emulatorHost:9199)',
+        );
       } catch (e) {
-        print('❌ Ошибка подключения к эмулятору: $e');
+        foundation.debugPrint('❌ Ошибка подключения к эмулятору: $e');
       }
     }
   }
@@ -41,10 +43,10 @@ class FirebaseStorageService {
       final uploadTask = await fileRef.putFile(file);
       final downloadUrl = await uploadTask.ref.getDownloadURL();
 
-      print('✅ Файл загружен: $downloadUrl');
+      foundation.debugPrint('✅ Файл загружен: $downloadUrl');
       return downloadUrl;
     } catch (e) {
-      print('❌ Ошибка загрузки файла: $e');
+      foundation.debugPrint('❌ Ошибка загрузки файла: $e');
       return null;
     }
   }
@@ -57,10 +59,10 @@ class FirebaseStorageService {
     try {
       final file = File(localPath);
       await _storage.refFromURL(downloadUrl).writeToFile(file);
-      print('✅ Файл скачан: $localPath');
+      foundation.debugPrint('✅ Файл скачан: $localPath');
       return file;
     } catch (e) {
-      print('❌ Ошибка скачивания файла: $e');
+      foundation.debugPrint('❌ Ошибка скачивания файла: $e');
       return null;
     }
   }
@@ -69,10 +71,10 @@ class FirebaseStorageService {
   Future<bool> deleteFile(String fileUrl) async {
     try {
       await _storage.refFromURL(fileUrl).delete();
-      print('✅ Файл удалён: $fileUrl');
+      foundation.debugPrint('✅ Файл удалён: $fileUrl');
       return true;
     } catch (e) {
-      print('❌ Ошибка удаления файла: $e');
+      foundation.debugPrint('❌ Ошибка удаления файла: $e');
       return false;
     }
   }
@@ -94,7 +96,7 @@ class FirebaseStorageService {
 
       return urls;
     } catch (e) {
-      print('❌ Ошибка получения списка файлов: $e');
+      foundation.debugPrint('❌ Ошибка получения списка файлов: $e');
       return [];
     }
   }

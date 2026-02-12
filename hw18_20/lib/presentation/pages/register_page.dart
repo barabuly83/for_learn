@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/app_localizations.dart';
+
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -34,15 +36,12 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Регистрация'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.register), centerTitle: true),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
-            // Навигация на главную страницу через GoRouter
-            context.go('/home');
+            // GoRouter will automatically redirect to /home via AuthStateNotifier
+            debugPrint('✅ RegisterPage: User registered, GoRouter will handle navigation');
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -62,19 +61,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 32),
                 const Text(
                   'Создайте аккаунт',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
                 const Text(
                   'Заполните форму для регистрации',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 32),
@@ -133,7 +126,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     prefixIcon: const Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
@@ -203,7 +198,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               width: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
                               ),
                             )
                           : const Text(
@@ -217,10 +214,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Уже есть аккаунт? '),
+                    Text(AppLocalizations.of(context)!.alreadyHaveAccount),
                     TextButton(
                       onPressed: () => context.go('/login'),
-                      child: const Text('Войти'),
+                      child: Text(AppLocalizations.of(context)!.login),
                     ),
                   ],
                 ),
@@ -235,12 +232,12 @@ class _RegisterPageState extends State<RegisterPage> {
   void _submit() {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
-            RegisterEvent(
-              name: _nameController.text.trim(),
-              email: _emailController.text.trim(),
-              password: _passwordController.text,
-            ),
-          );
+        RegisterEvent(
+          name: _nameController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        ),
+      );
     }
   }
 }

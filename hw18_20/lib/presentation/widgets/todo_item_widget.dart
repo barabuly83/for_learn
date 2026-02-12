@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/todo_item.dart';
+import '../../l10n/app_localizations.dart';
 
 class TodoItemWidget extends StatelessWidget {
   final TodoItem todo;
@@ -32,10 +33,7 @@ class TodoItemWidget extends StatelessWidget {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Checkbox(
-              value: todo.isCompleted,
-              onChanged: onToggleComplete,
-            ),
+            Checkbox(value: todo.isCompleted, onChanged: onToggleComplete),
             PopupMenuButton<String>(
               onSelected: (value) {
                 switch (value) {
@@ -48,23 +46,23 @@ class TodoItemWidget extends StatelessWidget {
                 }
               },
               itemBuilder: (context) => [
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'edit',
                   child: Row(
                     children: [
-                      Icon(Icons.edit, color: Colors.blue),
-                      SizedBox(width: 8),
-                      Text('Редактировать'),
+                      const Icon(Icons.edit, color: Colors.blue),
+                      const SizedBox(width: 8),
+                      Text(AppLocalizations.of(context)!.editTask.toLowerCase()),
                     ],
                   ),
                 ),
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'delete',
                   child: Row(
                     children: [
-                      Icon(Icons.delete, color: Colors.red),
-                      SizedBox(width: 8),
-                      Text('Удалить'),
+                      const Icon(Icons.delete, color: Colors.red),
+                      const SizedBox(width: 8),
+                      Text(AppLocalizations.of(context)!.delete),
                     ],
                   ),
                 ),
@@ -81,22 +79,20 @@ class TodoItemWidget extends StatelessWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Удалить задачу'),
-          content: const Text('Вы уверены, что хотите удалить эту задачу?'),
+          title: Text('${AppLocalizations.of(dialogContext)!.delete} ${AppLocalizations.of(dialogContext)!.todos.toLowerCase()}'),
+          content: const Text('Вы уверены, что хотите удалить эту задачу?'), // This could be localized too
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Отмена'),
+              child: Text(AppLocalizations.of(dialogContext)!.cancel),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
                 onDelete();
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text('Удалить'),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: Text(AppLocalizations.of(dialogContext)!.delete),
             ),
           ],
         );

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-
-import '../../domain/entities/user.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 abstract class AuthState extends Equatable {
   const AuthState();
@@ -16,9 +15,11 @@ class AuthLoading extends AuthState {}
 class Authenticated extends AuthState {
   const Authenticated(this.user);
 
-  final User user;
+  final firebase_auth.User user;
 
-  String? get avatarUrl => user.avatarUrl;
+  String? get avatarUrl => user.photoURL;
+
+  String get displayName => user.displayName ?? user.email?.split('@')[0] ?? 'User';
 
   @override
   List<Object?> get props => [user];
@@ -44,10 +45,8 @@ class PasswordChangedSuccess extends AuthState {
 }
 
 class AvatarUpdatedSuccess extends AuthState {
-  const AvatarUpdatedSuccess(this.updatedUser);
-
-  final User updatedUser;
+  const AvatarUpdatedSuccess();
 
   @override
-  List<Object?> get props => [updatedUser];
+  List<Object?> get props => [];
 }
