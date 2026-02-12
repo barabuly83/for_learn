@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../l10n/app_localizations.dart';
+
 import '../../core/avatar_service.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
@@ -16,22 +18,22 @@ class ProfilePage extends StatelessWidget {
       listener: (context, state) {
         if (state is PasswordChangedSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Пароль успешно изменен'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.passwordChanged),
               backgroundColor: Colors.green,
             ),
           );
         } else if (state is AvatarUpdatedSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Аватарка успешно обновлена'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.avatarUpdated),
               backgroundColor: Colors.green,
             ),
           );
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Ошибка: ${state.message}'),
+              content: Text('${AppLocalizations.of(context)!.error}: ${state.message}'),
               backgroundColor: Colors.red,
             ),
           );
@@ -41,55 +43,54 @@ class ProfilePage extends StatelessWidget {
         builder: (context, state) {
           if (state is Authenticated) {
             return Scaffold(
-              appBar: AppBar(
-                title: const Text('Профиль'),
-              ),
+              appBar: AppBar(title: Text(AppLocalizations.of(context)!.profile)),
               body: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundImage: state.avatarUrl != null
-                            ? NetworkImage(state.avatarUrl!)
-                            : null,
-                        child: state.avatarUrl == null
-                            ? const Icon(
-                                Icons.person,
-                                size: 50,
-                                color: Colors.white,
-                              )
-                            : null,
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            shape: BoxShape.circle,
-                          ),
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.camera_alt,
-                              color: Colors.white,
-                              size: 20,
+                    Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: state.avatarUrl != null
+                              ? NetworkImage(state.avatarUrl!)
+                              : null,
+                          child: state.avatarUrl == null
+                              ? const Icon(
+                                  Icons.person,
+                                  size: 50,
+                                  color: Colors.white,
+                                )
+                              : null,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              shape: BoxShape.circle,
                             ),
-                            onPressed: () => _showAvatarOptions(context, state.user.id),
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              onPressed: () =>
+                                  _showAvatarOptions(context, state.user.uid),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                     const SizedBox(height: 24),
-                    _buildProfileInfo('Имя', state.user.name),
+                    _buildProfileInfo('Имя', state.user.displayName ?? 'Не указано'),
                     const SizedBox(height: 16),
-                    _buildProfileInfo('Email', state.user.email),
+                    _buildProfileInfo('Email', state.user.email ?? 'Не указан'),
                     const SizedBox(height: 16),
-                    _buildProfileInfo('ID пользователя', state.user.id),
+                    _buildProfileInfo('ID пользователя', state.user.uid),
                     const SizedBox(height: 32),
                     const Text(
                       'Действия',
@@ -102,7 +103,7 @@ class ProfilePage extends StatelessWidget {
                     ElevatedButton.icon(
                       onPressed: () => _showChangePasswordDialog(context),
                       icon: const Icon(Icons.lock),
-                      label: const Text('Изменить пароль'),
+                      label: Text(AppLocalizations.of(context)!.changePassword),
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 48),
                       ),
@@ -127,10 +128,8 @@ class ProfilePage extends StatelessWidget {
               ),
             );
           }
-          return const Scaffold(
-            body: Center(
-              child: Text('Необходимо войти в систему'),
-            ),
+          return Scaffold(
+            body: Center(child: Text(AppLocalizations.of(context)!.loginRequired)),
           );
         },
       ),
@@ -152,10 +151,7 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         const Divider(),
       ],
@@ -172,7 +168,7 @@ class ProfilePage extends StatelessWidget {
             children: [
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: const Text('Выбрать из галереи'),
+                title: Text(AppLocalizations.of(context)!.selectFromGallery),
                 onTap: () {
                   Navigator.of(modalContext).pop();
                   _pickImageFromGallery(context, userId);
@@ -180,7 +176,7 @@ class ProfilePage extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.camera_alt),
-                title: const Text('Сделать фото'),
+                title: Text(AppLocalizations.of(context)!.takePhoto),
                 onTap: () {
                   Navigator.of(modalContext).pop();
                   _takePhotoWithCamera(context, userId);
@@ -188,7 +184,7 @@ class ProfilePage extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.cancel),
-                title: const Text('Отмена'),
+                title: Text(AppLocalizations.of(context)!.cancel),
                 onTap: () => Navigator.of(modalContext).pop(),
               ),
             ],
@@ -198,7 +194,10 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Future<void> _pickImageFromGallery(BuildContext context, String userId) async {
+  Future<void> _pickImageFromGallery(
+    BuildContext context,
+    String userId,
+  ) async {
     try {
       final avatarService = context.read<AvatarService>();
       final imageFile = await avatarService.pickImageFromGallery();
@@ -210,7 +209,7 @@ class ProfilePage extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ошибка выбора изображения: $e'),
+            content: Text('${AppLocalizations.of(context)!.imageSelectionError}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -230,7 +229,7 @@ class ProfilePage extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ошибка съемки фото: $e'),
+            content: Text('${AppLocalizations.of(context)!.photoCaptureError}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -238,7 +237,11 @@ class ProfilePage extends StatelessWidget {
     }
   }
 
-  Future<void> _uploadAvatar(BuildContext context, File imageFile, String userId) async {
+  Future<void> _uploadAvatar(
+    BuildContext context,
+    File imageFile,
+    String userId,
+  ) async {
     try {
       final avatarService = context.read<AvatarService>();
       final authBloc = context.read<AuthBloc>();
@@ -264,18 +267,15 @@ class ProfilePage extends StatelessWidget {
         }
 
         // Обновляем информацию о пользователе
-        authBloc.add(UpdateAvatarEvent(
-          userId: userId,
-          avatarUrl: avatarUrl,
-        ));
+        authBloc.add(UpdateAvatarEvent(avatarUrl: avatarUrl));
 
         // Сохраняем аватарку в кэш
         await avatarService.saveAvatarToCache(imageFile, userId);
       } else {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Ошибка загрузки аватарки'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.avatarUploadError),
               backgroundColor: Colors.red,
             ),
           );
@@ -285,7 +285,7 @@ class ProfilePage extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ошибка загрузки аватарки: $e'),
+            content: Text('${AppLocalizations.of(context)!.avatarUploadError}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -298,22 +298,20 @@ class ProfilePage extends StatelessWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Выход из аккаунта'),
-          content: const Text('Вы уверены, что хотите выйти из аккаунта?'),
+          title: Text(AppLocalizations.of(context)!.logoutConfirm),
+          content: Text(AppLocalizations.of(context)!.logoutConfirmMessage),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Отмена'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
                 context.read<AuthBloc>().add(const LogoutEvent());
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text('Выйти'),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: Text(AppLocalizations.of(context)!.logout),
             ),
           ],
         );
@@ -332,7 +330,7 @@ class ProfilePage extends StatelessWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Изменить пароль'),
+          title: Text(AppLocalizations.of(context)!.changePassword),
           content: Form(
             key: formKey,
             child: SingleChildScrollView(
@@ -396,7 +394,7 @@ class ProfilePage extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Отмена'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
@@ -418,11 +416,9 @@ class ProfilePage extends StatelessWidget {
                       ? const SizedBox(
                           width: 20,
                           height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('Изменить'),
+                      : Text(AppLocalizations.of(context)!.changePassword),
                 );
               },
             ),

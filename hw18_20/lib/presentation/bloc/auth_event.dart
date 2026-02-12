@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-
-import '../../domain/entities/user.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -61,27 +60,19 @@ class ChangePasswordEvent extends AuthEvent {
 }
 
 class UpdateAvatarEvent extends AuthEvent {
-  const UpdateAvatarEvent({
-    required this.userId,
-    required this.avatarUrl,
-  });
+  const UpdateAvatarEvent({required this.avatarUrl});
 
-  final String userId;
   final String avatarUrl;
 
   @override
-  List<Object?> get props => [userId, avatarUrl];
+  List<Object?> get props => [avatarUrl];
 }
 
-class AuthStateUpdateEvent extends AuthEvent {
-  const AuthStateUpdateEvent(this.user);
+class AuthUserChanged extends AuthEvent {
+  const AuthUserChanged(this.user);
 
-  final User user;
+  final firebase_auth.User? user;
 
   @override
   List<Object?> get props => [user];
-}
-
-class AuthSignOutEvent extends AuthEvent {
-  const AuthSignOutEvent();
 }

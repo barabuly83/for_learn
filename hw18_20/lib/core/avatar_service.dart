@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
@@ -26,7 +27,7 @@ class AvatarService {
       }
       return null;
     } catch (e) {
-      print('❌ Ошибка выбора изображения из галереи: $e');
+      debugPrint('❌ Ошибка выбора изображения из галереи: $e');
       return null;
     }
   }
@@ -46,7 +47,7 @@ class AvatarService {
       }
       return null;
     } catch (e) {
-      print('❌ Ошибка съемки фото: $e');
+      debugPrint('❌ Ошибка съемки фото: $e');
       return null;
     }
   }
@@ -69,7 +70,7 @@ class AvatarService {
 
       return downloadUrl;
     } catch (e) {
-      print('❌ Ошибка загрузки аватарки: $e');
+      debugPrint('❌ Ошибка загрузки аватарки: $e');
       return null;
     }
   }
@@ -79,7 +80,7 @@ class AvatarService {
     try {
       return await _storageService.deleteFile(avatarUrl);
     } catch (e) {
-      print('❌ Ошибка удаления старой аватарки: $e');
+      debugPrint('❌ Ошибка удаления старой аватарки: $e');
       return false;
     }
   }
@@ -91,10 +92,10 @@ class AvatarService {
       final avatarPath = path.join(directory.path, 'avatar_$userId.jpg');
 
       final savedFile = await imageFile.copy(avatarPath);
-      print('✅ Аватарка сохранена в кэш: $avatarPath');
+      debugPrint('✅ Аватарка сохранена в кэш: $avatarPath');
       return savedFile;
     } catch (e) {
-      print('❌ Ошибка сохранения аватарки в кэш: $e');
+      debugPrint('❌ Ошибка сохранения аватарки в кэш: $e');
       return null;
     }
   }
@@ -111,7 +112,7 @@ class AvatarService {
       }
       return null;
     } catch (e) {
-      print('❌ Ошибка загрузки аватарки из кэша: $e');
+      debugPrint('❌ Ошибка загрузки аватарки из кэша: $e');
       return null;
     }
   }

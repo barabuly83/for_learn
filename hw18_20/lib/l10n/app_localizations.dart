@@ -241,6 +241,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry'**
   String get retry;
+
+  /// Welcome message on login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get welcome;
+
+  /// Subtitle on login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to your account'**
+  String get loginToAccount;
+
+  /// Home page title
+  ///
+  /// In en, this message translates to:
+  /// **'My Tasks'**
+  String get myTasks;
+
+  /// Loading tasks message
+  ///
+  /// In en, this message translates to:
+  /// **'Loading tasks...'**
+  String get loadingTasks;
+
+  /// Forgot password link text
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get forgotPassword;
+
+  /// Password recovery dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Password Recovery'**
+  String get passwordRecovery;
+
+  /// Send button text
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get send;
+
+  /// Already have account text
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get alreadyHaveAccount;
+
+  /// Don't have account text
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get dontHaveAccount;
+
+  /// Profile page title
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// Change password button text
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
+
+  /// Password changed success message
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully'**
+  String get passwordChanged;
+
+  /// Avatar updated success message
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar updated successfully'**
+  String get avatarUpdated;
+
+  /// Select from gallery option
+  ///
+  /// In en, this message translates to:
+  /// **'Select from Gallery'**
+  String get selectFromGallery;
+
+  /// Take photo option
+  ///
+  /// In en, this message translates to:
+  /// **'Take Photo'**
+  String get takePhoto;
+
+  /// Image selection error message prefix
+  ///
+  /// In en, this message translates to:
+  /// **'Image selection error'**
+  String get imageSelectionError;
+
+  /// Photo capture error message prefix
+  ///
+  /// In en, this message translates to:
+  /// **'Photo capture error'**
+  String get photoCaptureError;
+
+  /// Avatar upload error message
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar upload error'**
+  String get avatarUploadError;
+
+  /// Logout confirmation dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logoutConfirm;
+
+  /// Logout confirmation dialog message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to logout?'**
+  String get logoutConfirmMessage;
+
+  /// Yes button text
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No button text
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// Edit task page title
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Task'**
+  String get editTask;
+
+  /// Update task button text
+  ///
+  /// In en, this message translates to:
+  /// **'Update Task'**
+  String get updateTask;
+
+  /// Task updated success message
+  ///
+  /// In en, this message translates to:
+  /// **'Task updated successfully'**
+  String get taskUpdated;
+
+  /// Task created success message
+  ///
+  /// In en, this message translates to:
+  /// **'Task created successfully'**
+  String get taskCreated;
+
+  /// Task creation error message prefix
+  ///
+  /// In en, this message translates to:
+  /// **'Task creation error'**
+  String get taskCreationError;
+
+  /// Task update error message prefix
+  ///
+  /// In en, this message translates to:
+  /// **'Task update error'**
+  String get taskUpdateError;
+
+  /// Password reset success message
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset email sent to your email'**
+  String get passwordResetSent;
 }
 
 class _AppLocalizationsDelegate

@@ -80,4 +80,93 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get retry => 'Повторить';
+
+  @override
+  String get welcome => 'Добро пожаловать';
+
+  @override
+  String get loginToAccount => 'Войдите в свой аккаунт';
+
+  @override
+  String get myTasks => 'Мои дела';
+
+  @override
+  String get loadingTasks => 'Загрузка задач...';
+
+  @override
+  String get forgotPassword => 'Забыли пароль?';
+
+  @override
+  String get passwordRecovery => 'Восстановление пароля';
+
+  @override
+  String get send => 'Отправить';
+
+  @override
+  String get alreadyHaveAccount => 'Уже есть аккаунт?';
+
+  @override
+  String get dontHaveAccount => 'Нет аккаунта?';
+
+  @override
+  String get profile => 'Профиль';
+
+  @override
+  String get changePassword => 'Изменить пароль';
+
+  @override
+  String get passwordChanged => 'Пароль успешно изменен';
+
+  @override
+  String get avatarUpdated => 'Аватарка успешно обновлена';
+
+  @override
+  String get selectFromGallery => 'Выбрать из галереи';
+
+  @override
+  String get takePhoto => 'Сделать фото';
+
+  @override
+  String get imageSelectionError => 'Ошибка выбора изображения';
+
+  @override
+  String get photoCaptureError => 'Ошибка съемки фото';
+
+  @override
+  String get avatarUploadError => 'Ошибка загрузки аватарки';
+
+  @override
+  String get logoutConfirm => 'Выход из аккаунта';
+
+  @override
+  String get logoutConfirmMessage =>
+      'Вы уверены, что хотите выйти из аккаунта?';
+
+  @override
+  String get yes => 'Да';
+
+  @override
+  String get no => 'Нет';
+
+  @override
+  String get editTask => 'Редактировать задачу';
+
+  @override
+  String get updateTask => 'Обновить задачу';
+
+  @override
+  String get taskUpdated => 'Задача обновлена успешно';
+
+  @override
+  String get taskCreated => 'Задача создана успешно';
+
+  @override
+  String get taskCreationError => 'Ошибка создания задачи';
+
+  @override
+  String get taskUpdateError => 'Ошибка обновления задачи';
+
+  @override
+  String get passwordResetSent =>
+      'Письмо для восстановления пароля отправлено на ваш email';
 }

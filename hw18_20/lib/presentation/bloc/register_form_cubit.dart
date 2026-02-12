@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 
-import '../../domain/usecases/register.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
 import '../forms/confirmed_password.dart';
 import '../forms/email.dart';
 import '../forms/name.dart';
@@ -13,9 +14,9 @@ import '../forms/register_form_state.dart';
 /// {@endtemplate}
 class RegisterFormCubit extends Cubit<RegisterFormState> {
   /// {@macro register_form_cubit}
-  RegisterFormCubit(this._register) : super(const RegisterFormState());
+  RegisterFormCubit(this._authBloc) : super(const RegisterFormState());
 
-  final Register _register;
+  final AuthBloc _authBloc;
 
   /// Updates the name field.
   void nameChanged(String value) {
@@ -56,17 +57,14 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
 
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
 
-    try {
-      await _register(
-        RegisterParams(
-          name: state.name.value,
-          email: state.email.value,
-          password: state.password.value,
-        ),
-      );
-      emit(state.copyWith(status: FormzSubmissionStatus.success));
-    } catch (error) {
-      emit(state.copyWith(status: FormzSubmissionStatus.failure));
-    }
+    // Dispatch register event to AuthBloc
+    _authBloc.add(RegisterEvent(
+      name: state.name.value,
+      email: state.email.value,
+      password: state.password.value,
+    ));
+
+    // Note: AuthBloc will handle the actual registration
+    // and emit states that are listened to in the UI
   }
 }

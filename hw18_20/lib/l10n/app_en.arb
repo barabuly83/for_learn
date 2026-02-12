@@ -95,5 +95,125 @@
   "retry": "Retry",
   "@retry": {
     "description": "Retry button text"
+  },
+  "welcome": "Welcome",
+  "@welcome": {
+    "description": "Welcome message on login screen"
+  },
+  "loginToAccount": "Log in to your account",
+  "@loginToAccount": {
+    "description": "Subtitle on login screen"
+  },
+  "myTasks": "My Tasks",
+  "@myTasks": {
+    "description": "Home page title"
+  },
+  "loadingTasks": "Loading tasks...",
+  "@loadingTasks": {
+    "description": "Loading tasks message"
+  },
+  "forgotPassword": "Forgot password?",
+  "@forgotPassword": {
+    "description": "Forgot password link text"
+  },
+  "passwordRecovery": "Password Recovery",
+  "@passwordRecovery": {
+    "description": "Password recovery dialog title"
+  },
+  "send": "Send",
+  "@send": {
+    "description": "Send button text"
+  },
+  "alreadyHaveAccount": "Already have an account?",
+  "@alreadyHaveAccount": {
+    "description": "Already have account text"
+  },
+  "dontHaveAccount": "Don't have an account?",
+  "@dontHaveAccount": {
+    "description": "Don't have account text"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile page title"
+  },
+  "changePassword": "Change Password",
+  "@changePassword": {
+    "description": "Change password button text"
+  },
+  "loginRequired": "Login Required",
+  "@loginRequired": {
+    "description": "Login required message"
+  },
+  "passwordChanged": "Password changed successfully",
+  "@passwordChanged": {
+    "description": "Password changed success message"
+  },
+  "avatarUpdated": "Avatar updated successfully",
+  "@avatarUpdated": {
+    "description": "Avatar updated success message"
+  },
+  "selectFromGallery": "Select from Gallery",
+  "@selectFromGallery": {
+    "description": "Select from gallery option"
+  },
+  "takePhoto": "Take Photo",
+  "@takePhoto": {
+    "description": "Take photo option"
+  },
+  "imageSelectionError": "Image selection error",
+  "@imageSelectionError": {
+    "description": "Image selection error message prefix"
+  },
+  "photoCaptureError": "Photo capture error",
+  "@photoCaptureError": {
+    "description": "Photo capture error message prefix"
+  },
+  "avatarUploadError": "Avatar upload error",
+  "@avatarUploadError": {
+    "description": "Avatar upload error message"
+  },
+  "logoutConfirm": "Logout",
+  "@logoutConfirm": {
+    "description": "Logout confirmation dialog title"
+  },
+  "logoutConfirmMessage": "Are you sure you want to logout?",
+  "@logoutConfirmMessage": {
+    "description": "Logout confirmation dialog message"
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "Yes button text"
+  },
+  "no": "No",
+  "@no": {
+    "description": "No button text"
+  },
+  "editTask": "Edit Task",
+  "@editTask": {
+    "description": "Edit task page title"
+  },
+  "updateTask": "Update Task",
+  "@updateTask": {
+    "description": "Update task button text"
+  },
+  "taskUpdated": "Task updated successfully",
+  "@taskUpdated": {
+    "description": "Task updated success message"
+  },
+  "taskCreated": "Task created successfully",
+  "@taskCreated": {
+    "description": "Task created success message"
+  },
+  "taskCreationError": "Task creation error",
+  "@taskCreationError": {
+    "description": "Task creation error message prefix"
+  },
+  "taskUpdateError": "Task update error",
+  "@taskUpdateError": {
+    "description": "Task update error message prefix"
+  },
+  "passwordResetSent": "Password reset email sent to your email",
+  "@passwordResetSent": {
+    "description": "Password reset success message"
   }
 }

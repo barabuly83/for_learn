@@ -79,4 +79,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get retry => 'Retry';
+
+  @override
+  String get welcome => 'Welcome';
+
+  @override
+  String get loginToAccount => 'Log in to your account';
+
+  @override
+  String get myTasks => 'My Tasks';
+
+  @override
+  String get loadingTasks => 'Loading tasks...';
+
+  @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get passwordRecovery => 'Password Recovery';
+
+  @override
+  String get send => 'Send';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account?';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account?';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get passwordChanged => 'Password changed successfully';
+
+  @override
+  String get avatarUpdated => 'Avatar updated successfully';
+
+  @override
+  String get selectFromGallery => 'Select from Gallery';
+
+  @override
+  String get takePhoto => 'Take Photo';
+
+  @override
+  String get imageSelectionError => 'Image selection error';
+
+  @override
+  String get photoCaptureError => 'Photo capture error';
+
+  @override
+  String get avatarUploadError => 'Avatar upload error';
+
+  @override
+  String get logoutConfirm => 'Logout';
+
+  @override
+  String get logoutConfirmMessage => 'Are you sure you want to logout?';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get editTask => 'Edit Task';
+
+  @override
+  String get updateTask => 'Update Task';
+
+  @override
+  String get taskUpdated => 'Task updated successfully';
+
+  @override
+  String get taskCreated => 'Task created successfully';
+
+  @override
+  String get taskCreationError => 'Task creation error';
+
+  @override
+  String get taskUpdateError => 'Task update error';
+
+  @override
+  String get passwordResetSent => 'Password reset email sent to your email';
 }

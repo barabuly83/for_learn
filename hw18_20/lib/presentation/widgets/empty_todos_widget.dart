@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class EmptyTodosWidget extends StatelessWidget {
   const EmptyTodosWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Text(
-        'У вас пока нет задач\nНажмите + чтобы добавить первую',
+        '${AppLocalizations.of(context)!.noTodos}\n${AppLocalizations.of(context)!.addFirstTodo}',
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 16, color: Colors.grey),
+        style: const TextStyle(fontSize: 16, color: Colors.grey),
       ),
     );
   }

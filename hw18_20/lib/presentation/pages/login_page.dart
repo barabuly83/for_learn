@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/app_localizations.dart';
+
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -24,32 +26,50 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Debug: AuthBloc should be available through provider
+    debugPrint('🔍 LoginPage: Building with AuthBloc context');
+
     return BlocProvider.value(
       value: context.read<LoginFormCubit>(),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Вход'), centerTitle: true),
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.login), centerTitle: true),
         body: BlocListener<AuthBloc, AuthState>(
+          listenWhen: (previous, current) => previous != current,
           listener: (context, state) {
+            debugPrint('🎧 LoginPage BlocListener triggered!');
+            debugPrint('🔄 LoginPage: AuthBloc state changed to ${state.runtimeType}');
+            debugPrint('🔄 LoginPage: State details: $state');
             if (state is Authenticated) {
+              debugPrint('✅ LoginPage: User authenticated, GoRouter will handle navigation');
               // Reset the form after successful login
               context.read<LoginFormCubit>().reset();
-              context.go('/home');
+              // GoRouter will automatically redirect to /home via AuthStateNotifier
             } else if (state is AuthError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              debugPrint('❌ LoginPage: Showing error: ${state.message}');
+              // Try showing snackbar with a slight delay
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.message),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              });
             } else if (state is PasswordResetSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    'Письмо для восстановления пароля отправлено на ваш email',
-                  ),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        AppLocalizations.of(context)!.passwordResetSent,
+                      ),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                }
+              });
             }
           },
           child: BlocBuilder<LoginFormCubit, LoginFormState>(
@@ -60,18 +80,18 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 32),
-                    const Text(
-                      'Добро пожаловать',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.welcome,
+                      style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'Войдите в свой аккаунт',
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    Text(
+                      AppLocalizations.of(context)!.loginToAccount,
+                      style: const TextStyle(fontSize: 16, color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 32),
@@ -178,7 +198,7 @@ class _ForgotPasswordButton extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: TextButton(
         onPressed: () => _showForgotPasswordDialog(context),
-        child: const Text('Забыли пароль?'),
+        child: Text(AppLocalizations.of(context)!.forgotPassword),
       ),
     );
   }
@@ -189,7 +209,7 @@ class _ForgotPasswordButton extends StatelessWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Восстановление пароля'),
+          title: Text(AppLocalizations.of(context)!.passwordRecovery),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -211,17 +231,19 @@ class _ForgotPasswordButton extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Отмена'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             ElevatedButton(
               onPressed: () {
                 final email = emailController.text.trim();
                 if (email.isNotEmpty) {
-                  context.read<AuthBloc>().add(PasswordResetEvent(email: email));
+                  context.read<AuthBloc>().add(
+                    PasswordResetEvent(email: email),
+                  );
                   Navigator.of(dialogContext).pop();
                 }
               },
-              child: const Text('Отправить'),
+              child: Text(AppLocalizations.of(context)!.send),
             ),
           ],
         );
@@ -247,7 +269,7 @@ class _LoginButton extends StatelessWidget {
                   minimumSize: const Size(double.infinity, 50),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: const Text('Войти', style: TextStyle(fontSize: 16)),
+                child: Text(AppLocalizations.of(context)!.login, style: const TextStyle(fontSize: 16)),
               );
       },
     );
@@ -261,10 +283,10 @@ class _SignUpButton extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Нет аккаунта? '),
+        Text(AppLocalizations.of(context)!.dontHaveAccount),
         TextButton(
           onPressed: () => context.go('/register'),
-          child: const Text('Зарегистрироваться'),
+          child: Text(AppLocalizations.of(context)!.register),
         ),
       ],
     );

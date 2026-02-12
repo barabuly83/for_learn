@@ -9,10 +9,12 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
   @override
   Future<List<TodoItemModel>> getTodos(String userId) async {
     try {
+      // Add timeout to prevent hanging
       final querySnapshot = await _firestore
           .collection('todos')
           .where('userId', isEqualTo: userId)
-          .get();
+          .get()
+          .timeout(const Duration(seconds: 10));
 
       final todos = querySnapshot.docs
           .map((doc) => TodoItemModel.fromFirestore(doc))

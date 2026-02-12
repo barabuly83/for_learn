@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/app_localizations.dart';
+
 import '../bloc/todo_bloc.dart';
 import '../bloc/todo_event.dart';
 import '../bloc/todo_state.dart';
@@ -33,20 +35,20 @@ class _AddTodoPageState extends State<AddTodoPage> {
         if (state is TodoCreated) {
           // Show success message and navigate back
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Задача создана успешно')),
+            SnackBar(content: Text(AppLocalizations.of(context)!.taskCreated)),
           );
           context.go('/home');
         } else if (state is TodoError) {
           // Show error message
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text('Ошибка: ${state.message}')));
+          ).showSnackBar(SnackBar(content: Text('${AppLocalizations.of(context)!.taskCreationError}: ${state.message}')));
         }
       },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Добавить задачу'),
+            title: Text(AppLocalizations.of(context)!.addTodo),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () => context.go('/home'),
@@ -115,7 +117,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                         ),
                         child: state is TodoLoading
                             ? const CircularProgressIndicator()
-                            : const Text('Создать задачу'),
+                            : Text(AppLocalizations.of(context)!.save),
                       );
                     },
                   ),

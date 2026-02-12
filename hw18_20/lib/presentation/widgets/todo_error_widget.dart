@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class TodoErrorWidget extends StatelessWidget {
   final String message;
   final VoidCallback onRetry;
@@ -19,12 +21,12 @@ class TodoErrorWidget extends StatelessWidget {
           const Icon(Icons.error_outline, size: 64, color: Colors.red),
           const SizedBox(height: 16),
           Text(
-            'Ошибка загрузки задач:\n$message',
+            '${AppLocalizations.of(context)!.error}: $message',
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.red),
           ),
           const SizedBox(height: 16),
-          ElevatedButton(onPressed: onRetry, child: const Text('Повторить')),
+          ElevatedButton(onPressed: onRetry, child: Text(AppLocalizations.of(context)!.retry)),
         ],
       ),
     );

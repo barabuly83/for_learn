@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/app_localizations.dart';
+
 import '../bloc/todo_bloc.dart';
 import '../bloc/todo_event.dart';
 import '../bloc/todo_state.dart';
@@ -56,20 +58,20 @@ class _EditTodoPageState extends State<EditTodoPage> {
         if (state is TodoUpdated) {
           // Show success message and navigate back
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Задача обновлена успешно')),
+            SnackBar(content: Text(AppLocalizations.of(context)!.taskUpdated)),
           );
           context.go('/home');
         } else if (state is TodoError) {
           // Show error message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Ошибка: ${state.message}')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('${AppLocalizations.of(context)!.taskUpdateError}: ${state.message}')));
         }
       },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Редактировать задачу'),
+            title: Text(AppLocalizations.of(context)!.editTask),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () => context.go('/home'),
@@ -139,7 +141,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
                         ),
                         child: state is TodoLoading
                             ? const CircularProgressIndicator()
-                            : const Text('Обновить задачу'),
+                            : Text(AppLocalizations.of(context)!.updateTask),
                       );
                     },
                   ),

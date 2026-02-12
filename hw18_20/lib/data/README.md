@@ -2,17 +2,16 @@
 
 ## Описание
 
-Слой данных служит для абстрагирования источников данных и предоставления их в виде, пригодном для использования доменным слоем. Он скрывает детали реализации (например, работу с базой данных или API) и обеспечивает единообразный доступ к данным через репозитории.
+Слой данных отвечает за работу с внешними источниками данных (Firebase). После рефакторинга архитектура была упрощена - удален сложный слой доменных сущностей и репозиториев для пользователей, поскольку Firebase Auth предоставляет достаточный функционал для аутентификации.
 
 ## Архитектура
 
 ```
 Data Layer
 ├── datasources/          # Источники данных (абстракции и реализации)
-│   ├── remote/          # Удаленные источники (API)
-│   └── local/           # Локальные источники (кэш, БД)
+│   └── remote/          # Удаленные источники (Firebase)
 ├── models/              # Модели данных (DTO)
-└── repositories/        # Реализации репозиториев доменного слоя
+└── repositories/        # Реализации репозиториев (только для задач)
 ```
 
 ## Компоненты
@@ -23,110 +22,123 @@ Data Layer
 
 - **`AuthRemoteDataSource`** - Абстракция для работы с Firebase Auth
   - `AuthRemoteDataSourceImpl` - Реализация с Firebase
+  - Методы: signIn, signUp, signOut, getCurrentUser, changePassword, resetPassword
 
-- **`UserRemoteDataSource`** - Абстракция для работы с User API
-  - `UserRemoteDataSourceImpl` - Реализация с Firebase
-
-#### Local Data Sources (Локальные источники)
-
-- **`UserLocalDataSource`** - Абстракция для локального хранения пользователей
-  - `UserLocalDataSourceImpl` - Реализация (in-memory для демонстрации, в реальном приложении - Hive)
+- **`TodoRemoteDataSource`** - Абстракция для работы с Firestore (задачи)
+  - `TodoRemoteDataSourceImpl` - Реализация с Firestore
 
 ### 2. Models (Модели данных)
 
-Модели данных преобразуют данные из внешних источников (JSON, БД) в доменные сущности:
+Модели данных преобразуют данные из внешних источников в формат, пригодный для использования:
 
-- **`UserModel`** - Модель пользователя с методами `fromJson`, `toJson`, `toEntity`, `fromEntity`
+- **`TodoItemModel`** - Модель задачи с методами `fromJson`, `toJson`, `toEntity`, `fromEntity`
 
 ### 3. Repositories (Репозитории)
 
-Реализации репозиториев из доменного слоя, которые координируют работу между удаленными и локальными источниками:
-
-- **`UserRepositoryImpl`** - Реализует `UserRepository`
-  - Использует `UserRemoteDataSource` для работы с API
-  - Использует `UserLocalDataSource` для кэширования
-  - Реализует стратегию cache-first с фоновым обновлением
+- **`TodoRepositoryImpl`** - Реализует `TodoRepository`
+  - Использует только `TodoRemoteDataSource` (Firestore)
+  - Firestore предоставляет встроенное офлайн-кэширование
+  - Упрощенная архитектура без локального кэширования
 
 ## Принципы работы
 
-### 1. Абстракция источников данных
+### 1. Упрощенная архитектура
 
-Каждый источник данных имеет абстрактный интерфейс, который скрывает детали реализации:
+После рефакторинга была применена упрощенная архитектура:
+
+- **Убрана** сложная иерархия пользовательских сущностей (UserModel → User entity)
+- **Firebase Auth** используется напрямую вместо кастомных репозиториев
+- **Удалено** локальное кэширование пользователей (избыточно при Firebase)
+- **Сохранено** репозиторий для задач с использованием Firestore
+
+### 2. Firebase-first подход
 
 ```dart
-abstract class UserRemoteDataSource {
-  Future<List<UserModel>> getUsers();
+// Прямое использование Firebase Auth вместо репозиториев
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  Future<void> _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: event.email,
+        password: event.password,
+      );
+      // Auth state обновляется автоматически через listener
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      emit(AuthError(_getAuthErrorMessage(e)));
+    }
+  }
 }
 ```
 
-Это позволяет легко заменить реализацию (например, с mock на реальный HTTP-клиент) без изменения кода, который использует этот источник.
+### 3. Кэширование
 
-### 2. Единообразный доступ через репозитории
-
-Реализации репозиториев предоставляют единый интерфейс для доменного слоя, скрывая сложность работы с несколькими источниками данных:
-
-```dart
-class UserRepositoryImpl implements UserRepository {
-  // Координирует работу между remote и local источниками
-  // Предоставляет единый интерфейс для domain layer
-}
-```
-
-### 3. Кэширование данных
-
-Реализована стратегия cache-first:
-1. Сначала проверяется локальный кэш
-2. Если данных нет в кэше, запрос идет к удаленному источнику
-3. Полученные данные сохраняются в кэш для будущего использования
+Для задач используется встроенное кэширование Firestore:
+- Firestore SDK автоматически кэширует данные
+- Поддержка офлайн-режима без дополнительного кода
+- Синхронизация при восстановлении соединения
 
 ### 4. Обработка ошибок
 
-При ошибках удаленного источника система пытается вернуть данные из кэша, обеспечивая отказоустойчивость.
+Простая обработка ошибок через Either<Failure, T> паттерн.
 
 ## Примеры использования
 
-### User Repository
+### Auth Remote Data Source
 
 ```dart
-final userRepo = UserRepositoryImpl(
-  remoteDataSource: UserRemoteDataSourceImpl(),
-  localDataSource: UserLocalDataSourceImpl(),
-);
+final authDataSource = AuthRemoteDataSourceImpl();
 
-// Получение пользователей (сначала из кэша, затем из API)
-final result = await userRepo.getUsers();
+// Прямая работа с Firebase Auth
+final userCredential = await authDataSource.signInWithEmailAndPassword(
+  email, password
+);
 ```
 
-## Интеграция с реальными сервисами
+### Todo Repository
+
+```dart
+final todoRepo = TodoRepositoryImpl(remoteDataSource: TodoRemoteDataSourceImpl());
+
+// Firestore с встроенным кэшированием
+final result = await todoRepo.getTodos(userId);
+```
+
+## Интеграция с Firebase
 
 ### Firebase Auth
 
-В реальном приложении `AuthRemoteDataSourceImpl` будет использовать Firebase:
+Упрощенная интеграция без промежуточных моделей:
 
 ```dart
-final auth = FirebaseAuth.instance;
-final userCredential = await auth.signInWithEmailAndPassword(
-  email: email,
-  password: password,
-);
-return UserModel.fromFirebaseUser(userCredential.user!);
+class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
+  final firebase_auth.FirebaseAuth _auth = firebase_auth.FirebaseAuth.instance;
+
+  @override
+  Future<firebase_auth.UserCredential> signInWithEmailAndPassword(
+    String email, String password,
+  ) async {
+    return await _auth.signInWithEmailAndPassword(
+      email: email, password: password,
+    );
+  }
+}
 ```
 
-### Hive Storage
+### Firestore
 
-В реальном приложении `UserLocalDataSourceImpl` будет использовать Hive:
+Прямая работа с коллекциями без локального кэширования:
 
 ```dart
-final box = await Hive.openBox<UserModel>('users');
-await box.putAll(Map.fromEntries(users.map((u) => MapEntry(u.id, u))));
+final todosRef = FirebaseFirestore.instance.collection('todos');
+final snapshot = await todosRef.where('userId', isEqualTo: userId).get();
 ```
 
 ## Зависимости
 
 Слой данных зависит от:
-- **Domain Layer** - использует интерфейсы репозиториев и сущности
-- **Core Layer** - использует типы ошибок (`Failure`)
+- **Domain Layer** - интерфейсы репозиториев для задач
+- **Core Layer** - типы ошибок (`Failure`)
 
 Слой данных НЕ зависит от:
-- **Presentation Layer** - изоляция от UI
-- Конкретных реализаций внешних библиотек (HTTP, Firebase, Hive) - все скрыто за абстракциями
+- **Presentation Layer** - полная изоляция от UI
+- Сложные пользовательские сущности (упрощено до Firebase User)
