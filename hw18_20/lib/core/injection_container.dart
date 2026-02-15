@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 
 import 'avatar_service.dart';
-import 'firebase_storage_service.dart';
 import '../data/datasources/todo_remote_data_source.dart';
 import '../data/datasources/todo_remote_data_source_impl.dart';
 import '../data/repositories/todo_repository_impl.dart';
@@ -15,13 +14,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // Core services
-  sl.registerLazySingleton<FirebaseStorageService>(
-    () => FirebaseStorageService(),
-  );
-
-  sl.registerLazySingleton<AvatarService>(
-    () => AvatarService(sl<FirebaseStorageService>()),
-  );
+  sl.registerLazySingleton<AvatarService>(() => AvatarService());
 
   // Data layer
   sl.registerLazySingleton<TodoRemoteDataSource>(
@@ -35,13 +28,8 @@ Future<void> init() async {
   // Domain layer removed - using repository directly
 
   // Presentation layer
-  sl.registerFactory(() => AuthBloc());
+  sl.registerLazySingleton(() => AuthBloc());
   sl.registerFactory(() => LoginFormCubit(sl<AuthBloc>()));
   sl.registerFactory(() => RegisterFormCubit(sl<AuthBloc>()));
-  sl.registerFactory(
-    () => TodoBloc(
-      authBloc: sl(),
-      todoRepository: sl(),
-    ),
-  );
+  sl.registerFactory(() => TodoBloc(authBloc: sl(), todoRepository: sl()));
 }

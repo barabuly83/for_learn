@@ -415,6 +415,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password reset email sent to your email'**
   String get passwordResetSent;
+
+  /// Authentication error: user not found
+  ///
+  /// In en, this message translates to:
+  /// **'User with this email not found'**
+  String get authErrorUserNotFound;
+
+  /// Authentication error: wrong password
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid password'**
+  String get authErrorWrongPassword;
+
+  /// Authentication error: email already in use
+  ///
+  /// In en, this message translates to:
+  /// **'User with this email already exists'**
+  String get authErrorEmailAlreadyInUse;
+
+  /// Authentication error: weak password
+  ///
+  /// In en, this message translates to:
+  /// **'Password is too weak'**
+  String get authErrorWeakPassword;
+
+  /// Authentication error: invalid email
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email format'**
+  String get authErrorInvalidEmail;
+
+  /// Authentication error: user disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Account is disabled'**
+  String get authErrorUserDisabled;
+
+  /// Authentication error: too many requests
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please try again later'**
+  String get authErrorTooManyRequests;
+
+  /// Authentication error: operation not allowed
+  ///
+  /// In en, this message translates to:
+  /// **'Operation not allowed'**
+  String get authErrorOperationNotAllowed;
+
+  /// Authentication error: requires recent login
+  ///
+  /// In en, this message translates to:
+  /// **'Please log in again to perform this action'**
+  String get authErrorRequiresRecentLogin;
+
+  /// Generic authentication error
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication error'**
+  String get authErrorUnknown;
 }
 
 class _AppLocalizationsDelegate

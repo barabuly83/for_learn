@@ -169,4 +169,37 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get passwordResetSent =>
       'Письмо для восстановления пароля отправлено на ваш email';
+
+  @override
+  String get authErrorUserNotFound => 'Пользователь с таким email не найден';
+
+  @override
+  String get authErrorWrongPassword => 'Неверный пароль';
+
+  @override
+  String get authErrorEmailAlreadyInUse =>
+      'Пользователь с таким email уже существует';
+
+  @override
+  String get authErrorWeakPassword => 'Пароль слишком слабый';
+
+  @override
+  String get authErrorInvalidEmail => 'Неверный формат email';
+
+  @override
+  String get authErrorUserDisabled => 'Аккаунт заблокирован';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Слишком много попыток. Попробуйте позже';
+
+  @override
+  String get authErrorOperationNotAllowed => 'Операция не разрешена';
+
+  @override
+  String get authErrorRequiresRecentLogin =>
+      'Пожалуйста, войдите снова для выполнения этого действия';
+
+  @override
+  String get authErrorUnknown => 'Ошибка аутентификации';
 }

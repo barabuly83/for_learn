@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 import 'todo_remote_data_source.dart';
 import '../models/todo_item_model.dart';
@@ -9,6 +10,10 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
   @override
   Future<List<TodoItemModel>> getTodos(String userId) async {
     try {
+      debugPrint(
+        '🔥 TodoRemoteDataSourceImpl: Querying Firestore for user: $userId',
+      );
+
       // Add timeout to prevent hanging
       final querySnapshot = await _firestore
           .collection('todos')
@@ -16,19 +21,26 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
           .get()
           .timeout(const Duration(seconds: 10));
 
+      debugPrint(
+        '🔥 TodoRemoteDataSourceImpl: Found ${querySnapshot.docs.length} documents',
+      );
+
       final todos = querySnapshot.docs
           .map((doc) => TodoItemModel.fromFirestore(doc))
           .toList();
 
-      todos.sort((a, b) {
-        if (a.createdAt == null && b.createdAt == null) return 0;
-        if (a.createdAt == null) return 1;
-        if (b.createdAt == null) return -1;
-        return b.createdAt!.compareTo(a.createdAt!);
-      });
+      debugPrint(
+        '🔥 TodoRemoteDataSourceImpl: Successfully parsed ${todos.length} todos',
+      );
 
+      todos.sort((a, b) => a.order.compareTo(b.order));
+
+      debugPrint(
+        '🔥 TodoRemoteDataSourceImpl: Returning ${todos.length} sorted todos',
+      );
       return todos;
     } catch (e) {
+      debugPrint('❌ TodoRemoteDataSourceImpl: Error fetching todos: $e');
       rethrow;
     }
   }

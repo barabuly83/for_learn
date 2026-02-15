@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import 'l10n/app_localizations.dart';
 
 import 'core/app_router.dart';
+import 'core/avatar_service.dart';
 import 'core/injection_container.dart' as di;
 import 'presentation/bloc/auth_bloc.dart';
 import 'presentation/bloc/login_form_cubit.dart';
@@ -23,6 +25,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<LoginFormCubit>(
           create: (context) => di.sl<LoginFormCubit>(),
         ),
+        Provider<AvatarService>(create: (context) => di.sl<AvatarService>()),
       ],
       child: const AppWithRouter(),
     );
@@ -63,9 +66,7 @@ class _AppWithRouterState extends State<AppWithRouter> {
     // Show loading until router is initialized
     if (_router == null) {
       return const MaterialApp(
-        home: Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        ),
+        home: Scaffold(body: Center(child: CircularProgressIndicator())),
       );
     }
 

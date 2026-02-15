@@ -1,59 +1,22 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/todo_item.dart';
 
-abstract class TodoState extends Equatable {
-  const TodoState();
+part 'todo_state.freezed.dart';
 
-  @override
-  List<Object?> get props => [];
-}
+@freezed
+abstract class TodoState with _$TodoState {
+  const factory TodoState.initial() = TodoInitial;
 
-class TodoInitial extends TodoState {}
+  const factory TodoState.loading() = TodoLoading;
 
-class TodoLoading extends TodoState {}
+  const factory TodoState.created(TodoItem todo) = TodoCreated;
 
-class TodoCreated extends TodoState {
-  const TodoCreated(this.todo);
+  const factory TodoState.error(String message) = TodoError;
 
-  final TodoItem todo;
+  const factory TodoState.loaded(List<TodoItem> todos) = TodosLoaded;
 
-  @override
-  List<Object?> get props => [todo];
-}
+  const factory TodoState.deleted(String todoId) = TodoDeleted;
 
-class TodoError extends TodoState {
-  const TodoError(this.message);
-
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class TodosLoaded extends TodoState {
-  const TodosLoaded(this.todos);
-
-  final List<TodoItem> todos;
-
-  @override
-  List<Object?> get props => [todos];
-}
-
-class TodoDeleted extends TodoState {
-  const TodoDeleted(this.todoId);
-
-  final String todoId;
-
-  @override
-  List<Object?> get props => [todoId];
-}
-
-class TodoUpdated extends TodoState {
-  const TodoUpdated(this.todo);
-
-  final TodoItem todo;
-
-  @override
-  List<Object?> get props => [todo];
+  const factory TodoState.updated(TodoItem todo) = TodoUpdated;
 }

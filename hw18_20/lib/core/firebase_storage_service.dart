@@ -1,103 +1,46 @@
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart' as foundation;
 
+import 'package:firebase_storage/firebase_storage.dart';
+
+/// Service for handling Firebase Storage operations
 class FirebaseStorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  /// Подключение к Firebase Storage эмулятору (только для разработки)
-  Future<void> connectToEmulator() async {
-    if (foundation.kDebugMode) {
-      try {
-        // Для Android эмулятора используем специальный адрес
-        const String emulatorHost = bool.hasEnvironment('ANDROID_EMULATOR')
-            ? '10.0.2.2'
-            : 'localhost';
-
-        await _storage.useStorageEmulator(emulatorHost, 9199);
-        foundation.debugPrint(
-          '✅ Подключено к Firebase Storage эмулятору ($emulatorHost:9199)',
-        );
-      } catch (e) {
-        foundation.debugPrint('❌ Ошибка подключения к эмулятору: $e');
-      }
-    }
-  }
-
-  /// Загрузка файла в Firebase Storage
-  Future<String?> uploadFile({
-    required String filePath,
+  /// Upload a file to Firebase Storage
+  /// Returns the download URL of the uploaded file
+  Future<String> uploadFile({
+    required String path,
+    required File file,
     required String fileName,
-    required String folder,
-    required String userId,
   }) async {
     try {
-      final file = File(filePath);
-      if (!await file.exists()) {
-        throw Exception('Файл не найден: $filePath');
-      }
-
-      final storageRef = _storage.ref();
-      final fileRef = storageRef.child('$folder/$userId/$fileName');
-
-      final uploadTask = await fileRef.putFile(file);
-      final downloadUrl = await uploadTask.ref.getDownloadURL();
-
-      foundation.debugPrint('✅ Файл загружен: $downloadUrl');
+      final ref = _storage.ref().child(path).child(fileName);
+      final uploadTask = ref.putFile(file);
+      final snapshot = await uploadTask.whenComplete(() {});
+      final downloadUrl = await snapshot.ref.getDownloadURL();
       return downloadUrl;
     } catch (e) {
-      foundation.debugPrint('❌ Ошибка загрузки файла: $e');
-      return null;
+      throw Exception('Failed to upload file: $e');
     }
   }
 
-  /// Скачивание файла из Firebase Storage
-  Future<File?> downloadFile({
-    required String downloadUrl,
-    required String localPath,
-  }) async {
+  /// Delete a file from Firebase Storage
+  Future<void> deleteFile(String path) async {
     try {
-      final file = File(localPath);
-      await _storage.refFromURL(downloadUrl).writeToFile(file);
-      foundation.debugPrint('✅ Файл скачан: $localPath');
-      return file;
+      final ref = _storage.ref().child(path);
+      await ref.delete();
     } catch (e) {
-      foundation.debugPrint('❌ Ошибка скачивания файла: $e');
-      return null;
+      throw Exception('Failed to delete file: $e');
     }
   }
 
-  /// Удаление файла из Firebase Storage
-  Future<bool> deleteFile(String fileUrl) async {
+  /// Get download URL for a file
+  Future<String> getDownloadUrl(String path) async {
     try {
-      await _storage.refFromURL(fileUrl).delete();
-      foundation.debugPrint('✅ Файл удалён: $fileUrl');
-      return true;
+      final ref = _storage.ref().child(path);
+      return await ref.getDownloadURL();
     } catch (e) {
-      foundation.debugPrint('❌ Ошибка удаления файла: $e');
-      return false;
-    }
-  }
-
-  /// Получение списка файлов пользователя
-  Future<List<String>> listUserFiles({
-    required String folder,
-    required String userId,
-  }) async {
-    try {
-      final storageRef = _storage.ref().child('$folder/$userId');
-      final result = await storageRef.listAll();
-
-      final urls = <String>[];
-      for (final item in result.items) {
-        final url = await item.getDownloadURL();
-        urls.add(url);
-      }
-
-      return urls;
-    } catch (e) {
-      foundation.debugPrint('❌ Ошибка получения списка файлов: $e');
-      return [];
+      throw Exception('Failed to get download URL: $e');
     }
   }
 }

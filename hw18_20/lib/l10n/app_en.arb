@@ -215,5 +215,45 @@
   "passwordResetSent": "Password reset email sent to your email",
   "@passwordResetSent": {
     "description": "Password reset success message"
+  },
+  "authErrorUserNotFound": "User with this email not found",
+  "@authErrorUserNotFound": {
+    "description": "Authentication error: user not found"
+  },
+  "authErrorWrongPassword": "Invalid password",
+  "@authErrorWrongPassword": {
+    "description": "Authentication error: wrong password"
+  },
+  "authErrorEmailAlreadyInUse": "User with this email already exists",
+  "@authErrorEmailAlreadyInUse": {
+    "description": "Authentication error: email already in use"
+  },
+  "authErrorWeakPassword": "Password is too weak",
+  "@authErrorWeakPassword": {
+    "description": "Authentication error: weak password"
+  },
+  "authErrorInvalidEmail": "Invalid email format",
+  "@authErrorInvalidEmail": {
+    "description": "Authentication error: invalid email"
+  },
+  "authErrorUserDisabled": "Account is disabled",
+  "@authErrorUserDisabled": {
+    "description": "Authentication error: user disabled"
+  },
+  "authErrorTooManyRequests": "Too many attempts. Please try again later",
+  "@authErrorTooManyRequests": {
+    "description": "Authentication error: too many requests"
+  },
+  "authErrorOperationNotAllowed": "Operation not allowed",
+  "@authErrorOperationNotAllowed": {
+    "description": "Authentication error: operation not allowed"
+  },
+  "authErrorRequiresRecentLogin": "Please log in again to perform this action",
+  "@authErrorRequiresRecentLogin": {
+    "description": "Authentication error: requires recent login"
+  },
+  "authErrorUnknown": "Authentication error",
+  "@authErrorUnknown": {
+    "description": "Generic authentication error"
   }
 }

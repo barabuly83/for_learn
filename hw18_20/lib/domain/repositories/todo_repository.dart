@@ -10,4 +10,5 @@ abstract class TodoRepository {
   Future<Either<Failure, TodoItem>> updateTodo(TodoItem todo);
   Future<Either<Failure, void>> deleteTodo(String id);
   Future<Either<Failure, TodoItem>> toggleTodoComplete(String id);
+  Future<Either<Failure, List<TodoItem>>> reorderTodos(List<TodoItem> todos);
 }

@@ -1,52 +1,41 @@
-import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class AuthState extends Equatable {
-  const AuthState();
+import '../../core/error/failures.dart';
 
-  @override
-  List<Object?> get props => [];
-}
+part 'auth_state.freezed.dart';
 
-class AuthInitial extends AuthState {}
+@freezed
+abstract class AuthState with _$AuthState {
+  const factory AuthState.initial() = AuthInitial;
 
-class AuthLoading extends AuthState {}
+  const factory AuthState.loading() = AuthLoading;
 
-class Authenticated extends AuthState {
-  const Authenticated(this.user);
+  const factory AuthState.authenticated(
+    firebase_auth.User user, [
+    String? localAvatarPath,
+  ]) = Authenticated;
 
-  final firebase_auth.User user;
+  const factory AuthState.unauthenticated() = Unauthenticated;
 
-  String? get avatarUrl => user.photoURL;
+  const factory AuthState.failure(AuthFailure failure) = AuthFailureState;
 
-  String get displayName => user.displayName ?? user.email?.split('@')[0] ?? 'User';
+  const factory AuthState.passwordResetSuccess() = PasswordResetSuccess;
 
-  @override
-  List<Object?> get props => [user];
-}
+  const factory AuthState.passwordChangedSuccess() = PasswordChangedSuccess;
 
-class Unauthenticated extends AuthState {}
+  const factory AuthState.avatarUpdatedSuccess() = AvatarUpdatedSuccess;
 
-class AuthError extends AuthState {
-  const AuthError(this.message);
+  const AuthState._();
 
-  final String message;
+  String? get avatarUrl => maybeWhen<String?>(
+    authenticated: (user, localAvatarPath) => localAvatarPath ?? user.photoURL,
+    orElse: () => null,
+  );
 
-  @override
-  List<Object?> get props => [message];
-}
-
-class PasswordResetSuccess extends AuthState {
-  const PasswordResetSuccess();
-}
-
-class PasswordChangedSuccess extends AuthState {
-  const PasswordChangedSuccess();
-}
-
-class AvatarUpdatedSuccess extends AuthState {
-  const AvatarUpdatedSuccess();
-
-  @override
-  List<Object?> get props => [];
+  String? get displayName => maybeWhen<String?>(
+    authenticated: (user, _) =>
+        user.displayName ?? user.email?.split('@')[0] ?? 'User',
+    orElse: () => null,
+  );
 }

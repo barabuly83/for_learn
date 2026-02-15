@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:reorderables/reorderables.dart';
 
 import '../../l10n/app_localizations.dart';
 
@@ -21,18 +22,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
-    // Don't load todos immediately - wait for auth state confirmation
+    // Load todos when the page initializes if user is already authenticated
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authBloc = context.read<AuthBloc>();
+      debugPrint(
+        '🏠 HomePage: initState - Auth state: ${authBloc.state.runtimeType}',
+      );
+      if (authBloc.state is Authenticated) {
+        debugPrint('🏠 HomePage: User already authenticated, loading todos');
+        context.read<TodoBloc>().add(const LoadTodosEvent());
+      } else {
+        debugPrint(
+          '🏠 HomePage: User not authenticated, waiting for auth state change',
+        );
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
+        debugPrint(
+          '🏠 HomePage: BlocListener received state: ${state.runtimeType}',
+        );
         if (state is Authenticated) {
+          debugPrint(
+            '🏠 HomePage: User authenticated via BlocListener, loading todos',
+          );
           context.read<TodoBloc>().add(const LoadTodosEvent());
+        } else if (state is AuthFailureState) {
+          debugPrint(
+            '🏠 HomePage: Auth failure received: ${state.failure.code}',
+          );
+        } else if (state is AvatarUpdatedSuccess) {
+          debugPrint('🏠 HomePage: Avatar updated successfully');
         }
       },
       child: Scaffold(
@@ -55,30 +84,48 @@ class _HomePageState extends State<HomePage> {
               if (state.todos.isEmpty) {
                 return const EmptyTodosWidget();
               }
-              return ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: state.todos.length,
-                itemBuilder: (context, index) {
-                  final todo = state.todos[index];
-                  return TodoItemWidget(
-                    todo: todo,
-                    onToggleComplete: (value) {
-                      if (value != null) {
-                        context.read<TodoBloc>().add(
-                          ToggleTodoCompleteEvent(todoId: todo.id),
+              return CustomScrollView(
+                controller: _scrollController,
+                slivers: [
+                  SliverPadding(
+                    padding: const EdgeInsets.all(16),
+                    sliver: ReorderableSliverList(
+                      delegate: ReorderableSliverChildBuilderDelegate((
+                        context,
+                        index,
+                      ) {
+                        final todo = state.todos[index];
+                        return TodoItemWidget(
+                          key: ValueKey(todo.id),
+                          todo: todo,
+                          onToggleComplete: (value) {
+                            if (value != null) {
+                              context.read<TodoBloc>().add(
+                                ToggleTodoCompleteEvent(todoId: todo.id),
+                              );
+                            }
+                          },
+                          onEdit: () {
+                            context.go('/edit-todo/${todo.id}');
+                          },
+                          onDelete: () {
+                            context.read<TodoBloc>().add(
+                              DeleteTodoEvent(todoId: todo.id),
+                            );
+                          },
                         );
-                      }
-                    },
-                    onEdit: () {
-                      context.go('/edit-todo/${todo.id}');
-                    },
-                    onDelete: () {
-                      context.read<TodoBloc>().add(
-                        DeleteTodoEvent(todoId: todo.id),
-                      );
-                    },
-                  );
-                },
+                      }, childCount: state.todos.length),
+                      onReorder: (oldIndex, newIndex) {
+                        context.read<TodoBloc>().add(
+                          ReorderTodosEvent(
+                            oldIndex: oldIndex,
+                            newIndex: newIndex,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               );
             } else if (state is TodoError) {
               return TodoErrorWidget(
@@ -88,7 +135,9 @@ class _HomePageState extends State<HomePage> {
                 },
               );
             }
-            return Center(child: Text(AppLocalizations.of(context)!.loadingTasks));
+            return Center(
+              child: Text(AppLocalizations.of(context)!.loadingTasks),
+            );
           },
         ),
         floatingActionButton: FloatingActionButton(
@@ -99,5 +148,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }

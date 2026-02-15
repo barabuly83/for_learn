@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../core/error/error_localizer.dart';
 import '../../l10n/app_localizations.dart';
 
 import '../../core/avatar_service.dart';
@@ -9,13 +11,46 @@ import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  String? _localAvatarPath;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadExistingAvatar();
+  }
+
+  Future<void> _loadExistingAvatar() async {
+    final authBloc = context.read<AuthBloc>();
+    final currentState = authBloc.state;
+
+    if (currentState is Authenticated) {
+      final avatarService = context.read<AvatarService>();
+      final existingAvatar = await avatarService.loadAvatarFromCache(
+        currentState.user.uid,
+      );
+      if (existingAvatar != null) {
+        setState(() {
+          _localAvatarPath = existingAvatar.path;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
+        debugPrint(
+          '👂 ProfilePage: BlocListener received state: ${state.runtimeType}',
+        );
         if (state is PasswordChangedSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -23,17 +58,14 @@ class ProfilePage extends StatelessWidget {
               backgroundColor: Colors.green,
             ),
           );
-        } else if (state is AvatarUpdatedSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.avatarUpdated),
-              backgroundColor: Colors.green,
-            ),
+        } else if (state is AuthFailureState) {
+          final localizedMessage = ErrorLocalizer.localize(
+            context,
+            state.failure,
           );
-        } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${AppLocalizations.of(context)!.error}: ${state.message}'),
+              content: Text(localizedMessage),
               backgroundColor: Colors.red,
             ),
           );
@@ -41,9 +73,31 @@ class ProfilePage extends StatelessWidget {
       },
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
+          debugPrint(
+            '🔄 ProfilePage: Building with auth state: ${state.runtimeType}',
+          );
           if (state is Authenticated) {
+            debugPrint(
+              '🔄 ProfilePage: User authenticated, avatarUrl: ${state.avatarUrl}',
+            );
             return Scaffold(
-              appBar: AppBar(title: Text(AppLocalizations.of(context)!.profile)),
+              appBar: AppBar(
+                title: Text(AppLocalizations.of(context)!.profile),
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => context.go('/home'),
+                ),
+                actions: [
+                  TextButton.icon(
+                    onPressed: () => context.go('/home'),
+                    icon: const Icon(Icons.task, color: Colors.white),
+                    label: const Text(
+                      'Мои дела',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
               body: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -52,11 +106,16 @@ class ProfilePage extends StatelessWidget {
                     Stack(
                       children: [
                         CircleAvatar(
+                          key: ValueKey(
+                            '${_localAvatarPath}_${DateTime.now().millisecondsSinceEpoch}',
+                          ), // Unique key to force rebuild
                           radius: 50,
-                          backgroundImage: state.avatarUrl != null
-                              ? NetworkImage(state.avatarUrl!)
+                          backgroundImage: _localAvatarPath != null
+                              ? FileImage(
+                                  File(_localAvatarPath!),
+                                ) // Local file image
                               : null,
-                          child: state.avatarUrl == null
+                          child: _localAvatarPath == null
                               ? const Icon(
                                   Icons.person,
                                   size: 50,
@@ -86,12 +145,24 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 24),
-                    _buildProfileInfo('Имя', state.user.displayName ?? 'Не указано'),
+                    _buildProfileInfo(
+                      'Имя',
+                      state.user.displayName ?? 'Не указано',
+                    ),
                     const SizedBox(height: 16),
                     _buildProfileInfo('Email', state.user.email ?? 'Не указан'),
                     const SizedBox(height: 16),
                     _buildProfileInfo('ID пользователя', state.user.uid),
                     const SizedBox(height: 32),
+                    ElevatedButton.icon(
+                      onPressed: () => context.go('/home'),
+                      icon: const Icon(Icons.task),
+                      label: const Text('Мои дела'),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 48),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
                     const Text(
                       'Действия',
                       style: TextStyle(
@@ -129,7 +200,9 @@ class ProfilePage extends StatelessWidget {
             );
           }
           return Scaffold(
-            body: Center(child: Text(AppLocalizations.of(context)!.loginRequired)),
+            body: Center(
+              child: Text(AppLocalizations.of(context)!.loginRequired),
+            ),
           );
         },
       ),
@@ -209,7 +282,9 @@ class ProfilePage extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${AppLocalizations.of(context)!.imageSelectionError}: $e'),
+            content: Text(
+              '${AppLocalizations.of(context)!.imageSelectionError}: $e',
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -229,7 +304,9 @@ class ProfilePage extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${AppLocalizations.of(context)!.photoCaptureError}: $e'),
+            content: Text(
+              '${AppLocalizations.of(context)!.photoCaptureError}: $e',
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -243,49 +320,52 @@ class ProfilePage extends StatelessWidget {
     String userId,
   ) async {
     try {
+      debugPrint('📸 ProfilePage: Starting avatar save for user: $userId');
+
       final avatarService = context.read<AvatarService>();
-      final authBloc = context.read<AuthBloc>();
 
-      // Получаем текущего пользователя для проверки старой аватарки
-      final currentState = authBloc.state;
-      String? oldAvatarUrl;
-
-      if (currentState is Authenticated) {
-        oldAvatarUrl = currentState.avatarUrl;
-      }
-
-      // Загружаем новое изображение
-      final avatarUrl = await avatarService.uploadAvatar(
+      // Сохраняем изображение локально
+      debugPrint('📸 ProfilePage: Saving avatar locally...');
+      final avatarPath = await avatarService.saveAvatarLocally(
         imageFile: imageFile,
         userId: userId,
       );
 
-      if (avatarUrl != null) {
-        // Удаляем старую аватарку, если она есть
-        if (oldAvatarUrl != null) {
-          await avatarService.deleteOldAvatar(oldAvatarUrl);
-        }
+      if (avatarPath != null) {
+        debugPrint('📸 ProfilePage: Avatar saved locally: $avatarPath');
 
-        // Обновляем информацию о пользователе
-        authBloc.add(UpdateAvatarEvent(avatarUrl: avatarUrl));
+        // Обновляем локальное состояние для отображения аватара
+        setState(() {
+          _localAvatarPath = avatarPath;
+        });
 
-        // Сохраняем аватарку в кэш
-        await avatarService.saveAvatarToCache(imageFile, userId);
-      } else {
+        debugPrint('✅ ProfilePage: Avatar save process completed successfully');
+
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.avatarUploadError),
+            const SnackBar(
+              content: Text('Аватарка успешно сохранена'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } else {
+        debugPrint('❌ ProfilePage: Avatar save returned null path');
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Ошибка сохранения аватарки'),
               backgroundColor: Colors.red,
             ),
           );
         }
       }
     } catch (e) {
+      debugPrint('❌ ProfilePage: Error saving avatar: $e');
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${AppLocalizations.of(context)!.avatarUploadError}: $e'),
+            content: Text('Ошибка сохранения аватарки: $e'),
             backgroundColor: Colors.red,
           ),
         );

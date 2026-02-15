@@ -2,11 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/error/failures.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(AuthInitial()) {
+  AuthBloc() : super(const AuthInitial()) {
     on<LoginEvent>(_onLogin);
     on<RegisterEvent>(_onRegister);
     on<LogoutEvent>(_onLogout);
@@ -21,31 +22,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final firebase_auth.FirebaseAuth _auth = firebase_auth.FirebaseAuth.instance;
 
-  String _getAuthErrorMessage(firebase_auth.FirebaseAuthException e) {
-    switch (e.code) {
-      case 'user-not-found':
-        return 'Пользователь с таким email не найден';
-      case 'wrong-password':
-        return 'Неверный пароль';
-      case 'email-already-in-use':
-        return 'Пользователь с таким email уже существует';
-      case 'weak-password':
-        return 'Пароль слишком слабый';
-      case 'invalid-email':
-        return 'Неверный формат email';
-      case 'user-disabled':
-        return 'Аккаунт заблокирован';
-      case 'too-many-requests':
-        return 'Слишком много попыток. Попробуйте позже';
-      default:
-        return 'Ошибка аутентификации: ${e.message ?? e.code}';
-    }
-  }
-
   void _listenToAuthStateChanges() {
-    _auth.authStateChanges().listen((
-      firebaseUser,
-    ) {
+    _auth.authStateChanges().listen((firebaseUser) {
       debugPrint(
         '🎧 AuthBloc: Firebase authStateChanges - User: ${firebaseUser?.email ?? 'null'}',
       );
@@ -57,7 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
+    emit(const AuthLoading());
     try {
       debugPrint('🔐 Попытка входа: ${event.email}');
       await _auth.signInWithEmailAndPassword(
@@ -68,15 +46,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       // Auth state will be updated automatically by the listener
     } on firebase_auth.FirebaseAuthException catch (e) {
       debugPrint('❌ Ошибка Firebase Auth: ${e.code} - ${e.message}');
-      emit(AuthError(_getAuthErrorMessage(e)));
+      final failure = authFailureFromFirebaseCode(e.code);
+      debugPrint(
+        '📤 AuthBloc: Emitting AuthFailureState with failure: ${failure.code}',
+      );
+      emit(AuthFailureState(failure));
     } catch (e) {
       debugPrint('❌ Неизвестная ошибка входа: $e');
-      emit(AuthError('Ошибка входа: ${e.toString()}'));
+      const failure = AuthFailure(
+        message: 'auth-error-unknown',
+        code: 'auth-error-unknown',
+      );
+      debugPrint(
+        '📤 AuthBloc: Emitting AuthFailureState with failure: ${failure.code}',
+      );
+      emit(const AuthFailureState(failure));
     }
   }
 
   Future<void> _onRegister(RegisterEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
+    emit(const AuthLoading());
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
         email: event.email,
@@ -89,19 +78,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         // Auth state will be updated automatically by the listener
       }
     } on firebase_auth.FirebaseAuthException catch (e) {
-      emit(AuthError(_getAuthErrorMessage(e)));
+      final failure = authFailureFromFirebaseCode(e.code);
+      emit(AuthFailureState(failure));
     } catch (e) {
-      emit(AuthError('Ошибка регистрации: ${e.toString()}'));
+      const failure = AuthFailure(
+        message: 'auth-error-unknown',
+        code: 'auth-error-unknown',
+      );
+      emit(const AuthFailureState(failure));
     }
   }
 
   Future<void> _onLogout(LogoutEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
+    emit(const AuthLoading());
     try {
       await _auth.signOut();
       // Auth state will be updated automatically by the listener
     } catch (e) {
-      emit(AuthError('Ошибка выхода: ${e.toString()}'));
+      const failure = AuthFailure(
+        message: 'auth-error-unknown',
+        code: 'auth-error-unknown',
+      );
+      emit(const AuthFailureState(failure));
     }
   }
 
@@ -109,14 +107,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     PasswordResetEvent event,
     Emitter<AuthState> emit,
   ) async {
-    emit(AuthLoading());
+    emit(const AuthLoading());
     try {
       await _auth.sendPasswordResetEmail(email: event.email);
       emit(const PasswordResetSuccess());
     } on firebase_auth.FirebaseAuthException catch (e) {
-      emit(AuthError(_getAuthErrorMessage(e)));
+      final failure = authFailureFromFirebaseCode(e.code);
+      emit(AuthFailureState(failure));
     } catch (e) {
-      emit(AuthError('Ошибка сброса пароля: ${e.toString()}'));
+      const failure = AuthFailure(
+        message: 'auth-error-unknown',
+        code: 'auth-error-unknown',
+      );
+      emit(const AuthFailureState(failure));
     }
   }
 
@@ -124,18 +127,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     ChangePasswordEvent event,
     Emitter<AuthState> emit,
   ) async {
-    emit(AuthLoading());
+    emit(const AuthLoading());
     try {
       final user = _auth.currentUser;
       if (user == null) {
-        emit(const AuthError('Пользователь не авторизован'));
+        const failure = AuthFailure(
+          message: 'auth-error-unknown',
+          code: 'auth-error-unknown',
+        );
+        emit(const AuthFailureState(failure));
         return;
       }
 
       // Для изменения пароля в Firebase требуется reauthentication
       final email = user.email;
       if (email == null) {
-        emit(const AuthError('Email пользователя не найден'));
+        const failure = AuthFailure(
+          message: 'auth-error-unknown',
+          code: 'auth-error-unknown',
+        );
+        emit(const AuthFailureState(failure));
         return;
       }
 
@@ -148,9 +159,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await user.updatePassword(event.newPassword);
       emit(const PasswordChangedSuccess());
     } on firebase_auth.FirebaseAuthException catch (e) {
-      emit(AuthError(_getAuthErrorMessage(e)));
+      final failure = authFailureFromFirebaseCode(e.code);
+      emit(AuthFailureState(failure));
     } catch (e) {
-      emit(AuthError('Ошибка изменения пароля: ${e.toString()}'));
+      const failure = AuthFailure(
+        message: 'auth-error-unknown',
+        code: 'auth-error-unknown',
+      );
+      emit(const AuthFailureState(failure));
     }
   }
 
@@ -158,16 +174,69 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     UpdateAvatarEvent event,
     Emitter<AuthState> emit,
   ) async {
-    // Avatar updates are handled by the profile page through AvatarService
-    // This method is kept for interface compatibility but not used
-    emit(const AvatarUpdatedSuccess());
+    try {
+      debugPrint('📸 AuthBloc: Updating user avatar URL: ${event.avatarUrl}');
+
+      final currentUser = _auth.currentUser;
+      if (currentUser == null) {
+        debugPrint('❌ AuthBloc: No current user found');
+        const failure = AuthFailure(
+          message: 'auth-error-unknown',
+          code: 'auth-error-unknown',
+        );
+        emit(const AuthFailureState(failure));
+        return;
+      }
+
+      debugPrint('📸 AuthBloc: Current user photoURL: ${currentUser.photoURL}');
+
+      // Update the user's photoURL in Firebase Auth
+      await currentUser.updatePhotoURL(event.avatarUrl);
+      debugPrint('📸 AuthBloc: photoURL updated in Firebase Auth');
+
+      // Reload user data to get updated photoURL
+      await currentUser.reload();
+      debugPrint('📸 AuthBloc: User data reloaded');
+
+      // Add a small delay to ensure Firebase Auth is fully updated
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+
+      final updatedUser = _auth.currentUser;
+      if (updatedUser != null) {
+        debugPrint(
+          '✅ AuthBloc: Avatar updated successfully, new photoURL: ${updatedUser.photoURL}',
+        );
+
+        // Emit the updated Authenticated state with new avatar
+        emit(Authenticated(updatedUser));
+
+        // Small delay before emitting success to ensure UI updates
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+
+        // Then emit success state for UI feedback
+        emit(const AvatarUpdatedSuccess());
+      } else {
+        debugPrint('❌ AuthBloc: Updated user is null');
+        const failure = AuthFailure(
+          message: 'auth-error-unknown',
+          code: 'auth-error-unknown',
+        );
+        emit(const AuthFailureState(failure));
+      }
+    } catch (e) {
+      debugPrint('❌ AuthBloc: Error updating avatar: $e');
+      const failure = AuthFailure(
+        message: 'auth-error-unknown',
+        code: 'auth-error-unknown',
+      );
+      emit(const AuthFailureState(failure));
+    }
   }
 
-  void _onAuthUserChanged(
-    AuthUserChanged event,
-    Emitter<AuthState> emit,
-  ) {
-    debugPrint('🔄 AuthBloc._onAuthUserChanged: user=${event.user?.email ?? 'null'}');
+  void _onAuthUserChanged(AuthUserChanged event, Emitter<AuthState> emit) {
+    debugPrint(
+      '🔄 AuthBloc._onAuthUserChanged: user=${event.user?.email ?? 'null'}',
+    );
     if (event.user != null) {
       // User is signed in
       debugPrint('✅ AuthBloc: Emitting Authenticated');
@@ -175,8 +244,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else {
       // User is signed out
       debugPrint('❌ AuthBloc: Emitting Unauthenticated');
-      emit(Unauthenticated());
+      emit(const Unauthenticated());
     }
   }
-
 }

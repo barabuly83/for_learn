@@ -4,13 +4,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
-import 'firebase_storage_service.dart';
-
 class AvatarService {
-  final FirebaseStorageService _storageService;
   final ImagePicker _imagePicker = ImagePicker();
 
-  AvatarService(this._storageService);
+  AvatarService();
 
   /// Выбор изображения из галереи
   Future<File?> pickImageFromGallery() async {
@@ -52,50 +49,43 @@ class AvatarService {
     }
   }
 
-  /// Загрузка аватарки в Firebase Storage
-  Future<String?> uploadAvatar({
+  /// Сохранение аватарки локально
+  Future<String?> saveAvatarLocally({
     required File imageFile,
     required String userId,
   }) async {
     try {
-      // Генерируем уникальное имя файла
-      final fileName = 'avatar_${DateTime.now().millisecondsSinceEpoch}.jpg';
-
-      final downloadUrl = await _storageService.uploadFile(
-        filePath: imageFile.path,
-        fileName: fileName,
-        folder: 'avatars',
-        userId: userId,
+      debugPrint(
+        '💾 AvatarService: Starting local avatar save for user: $userId',
       );
 
-      return downloadUrl;
+      // Сохраняем изображение в локальном хранилище
+      final savedFile = await saveAvatarToLocalStorage(imageFile, userId);
+
+      if (savedFile != null) {
+        debugPrint('✅ AvatarService: Avatar saved locally: ${savedFile.path}');
+        return savedFile.path;
+      } else {
+        debugPrint('❌ AvatarService: Avatar save returned null');
+        return null;
+      }
     } catch (e) {
-      debugPrint('❌ Ошибка загрузки аватарки: $e');
+      debugPrint('❌ Ошибка сохранения аватарки локально: $e');
       return null;
     }
   }
 
-  /// Удаление старой аватарки из Firebase Storage
-  Future<bool> deleteOldAvatar(String avatarUrl) async {
-    try {
-      return await _storageService.deleteFile(avatarUrl);
-    } catch (e) {
-      debugPrint('❌ Ошибка удаления старой аватарки: $e');
-      return false;
-    }
-  }
-
-  /// Сохранение аватарки в локальное хранилище (кеш)
-  Future<File?> saveAvatarToCache(File imageFile, String userId) async {
+  /// Сохранение аватарки в локальное хранилище
+  Future<File?> saveAvatarToLocalStorage(File imageFile, String userId) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
       final avatarPath = path.join(directory.path, 'avatar_$userId.jpg');
 
       final savedFile = await imageFile.copy(avatarPath);
-      debugPrint('✅ Аватарка сохранена в кэш: $avatarPath');
+      debugPrint('✅ Аватарка сохранена локально: $avatarPath');
       return savedFile;
     } catch (e) {
-      debugPrint('❌ Ошибка сохранения аватарки в кэш: $e');
+      debugPrint('❌ Ошибка сохранения аватарки локально: $e');
       return null;
     }
   }

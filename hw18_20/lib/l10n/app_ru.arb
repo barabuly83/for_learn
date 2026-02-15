@@ -215,5 +215,45 @@
   "passwordResetSent": "Письмо для восстановления пароля отправлено на ваш email",
   "@passwordResetSent": {
     "description": "Сообщение об успешной отправке письма восстановления пароля"
+  },
+  "authErrorUserNotFound": "Пользователь с таким email не найден",
+  "@authErrorUserNotFound": {
+    "description": "Ошибка аутентификации: пользователь не найден"
+  },
+  "authErrorWrongPassword": "Неверный пароль",
+  "@authErrorWrongPassword": {
+    "description": "Ошибка аутентификации: неверный пароль"
+  },
+  "authErrorEmailAlreadyInUse": "Пользователь с таким email уже существует",
+  "@authErrorEmailAlreadyInUse": {
+    "description": "Ошибка аутентификации: email уже используется"
+  },
+  "authErrorWeakPassword": "Пароль слишком слабый",
+  "@authErrorWeakPassword": {
+    "description": "Ошибка аутентификации: слабый пароль"
+  },
+  "authErrorInvalidEmail": "Неверный формат email",
+  "@authErrorInvalidEmail": {
+    "description": "Ошибка аутентификации: неверный email"
+  },
+  "authErrorUserDisabled": "Аккаунт заблокирован",
+  "@authErrorUserDisabled": {
+    "description": "Ошибка аутентификации: пользователь заблокирован"
+  },
+  "authErrorTooManyRequests": "Слишком много попыток. Попробуйте позже",
+  "@authErrorTooManyRequests": {
+    "description": "Ошибка аутентификации: слишком много запросов"
+  },
+  "authErrorOperationNotAllowed": "Операция не разрешена",
+  "@authErrorOperationNotAllowed": {
+    "description": "Ошибка аутентификации: операция не разрешена"
+  },
+  "authErrorRequiresRecentLogin": "Пожалуйста, войдите снова для выполнения этого действия",
+  "@authErrorRequiresRecentLogin": {
+    "description": "Ошибка аутентификации: требуется недавний вход"
+  },
+  "authErrorUnknown": "Ошибка аутентификации",
+  "@authErrorUnknown": {
+    "description": "Общая ошибка аутентификации"
   }
 }

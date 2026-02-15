@@ -14,7 +14,13 @@ import '../presentation/pages/register_page.dart';
 /// Wraps AuthBloc state changes to trigger router redirects
 class AuthStateNotifier extends ChangeNotifier {
   AuthStateNotifier(this._authBloc) {
+    debugPrint(
+      '🔄 AuthStateNotifier: Created, initial state: ${_authBloc.state.runtimeType}',
+    );
     _authBloc.stream.listen((state) {
+      debugPrint(
+        '🔄 AuthStateNotifier: AuthBloc state changed to: ${state.runtimeType}',
+      );
       notifyListeners();
     });
   }
@@ -32,7 +38,11 @@ class AppRouter {
   static const List<String> _publicRoutes = ['/login', '/register'];
 
   // Routes that require authentication
-  static const List<String> _protectedRoutes = ['/home', '/add-todo', '/profile'];
+  static const List<String> _protectedRoutes = [
+    '/home',
+    '/add-todo',
+    '/profile',
+  ];
 
   static GoRouter createRouter(AuthStateNotifier authNotifier) {
     return GoRouter(
@@ -79,15 +89,23 @@ class AppRouter {
     );
   }
 
-  static String? _handleRedirect(AuthStateNotifier authNotifier, GoRouterState state) {
+  static String? _handleRedirect(
+    AuthStateNotifier authNotifier,
+    GoRouterState state,
+  ) {
     final isAuthenticated = authNotifier.isAuthenticated;
     final currentRoute = state.matchedLocation;
+    final authState = authNotifier.authState;
 
-    debugPrint('🔀 GoRouter redirect check: authenticated=$isAuthenticated, route=$currentRoute');
+    debugPrint(
+      '🔀 GoRouter redirect check: authenticated=$isAuthenticated, route=$currentRoute, authState=${authState.runtimeType}',
+    );
 
     // If user is not authenticated and trying to access protected routes
     if (!isAuthenticated && _isProtectedRoute(currentRoute)) {
-      debugPrint('🔀 Redirecting to /login (protected route, not authenticated)');
+      debugPrint(
+        '🔀 Redirecting to /login (protected route, not authenticated)',
+      );
       return '/login';
     }
 
@@ -99,7 +117,9 @@ class AppRouter {
 
     // If user is not authenticated and not on a public route, redirect to login
     if (!isAuthenticated && !_isPublicRoute(currentRoute)) {
-      debugPrint('🔀 Redirecting to /login (not authenticated, not on public route)');
+      debugPrint(
+        '🔀 Redirecting to /login (not authenticated, not on public route)',
+      );
       return '/login';
     }
 
@@ -109,8 +129,9 @@ class AppRouter {
 
   // Helper method to check if a route is protected
   static bool _isProtectedRoute(String route) {
-    return _protectedRoutes.any((protectedRoute) =>
-        route.startsWith(protectedRoute.split(':')[0])); // Handle parameterized routes
+    return _protectedRoutes.any(
+      (protectedRoute) => route.startsWith(protectedRoute.split(':')[0]),
+    ); // Handle parameterized routes
   }
 
   // Helper method to check if a route is public

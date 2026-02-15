@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/error/error_localizer.dart';
 import '../../l10n/app_localizations.dart';
 
 import '../bloc/auth_bloc.dart';
@@ -36,16 +37,25 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.register), centerTitle: true),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.register),
+        centerTitle: true,
+      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
             // GoRouter will automatically redirect to /home via AuthStateNotifier
-            debugPrint('✅ RegisterPage: User registered, GoRouter will handle navigation');
-          } else if (state is AuthError) {
+            debugPrint(
+              '✅ RegisterPage: User registered, GoRouter will handle navigation',
+            );
+          } else if (state is AuthFailureState) {
+            final localizedMessage = ErrorLocalizer.localize(
+              context,
+              state.failure,
+            );
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.message),
+                content: Text(localizedMessage),
                 backgroundColor: Colors.red,
               ),
             );

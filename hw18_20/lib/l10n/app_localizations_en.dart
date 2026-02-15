@@ -166,4 +166,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordResetSent => 'Password reset email sent to your email';
+
+  @override
+  String get authErrorUserNotFound => 'User with this email not found';
+
+  @override
+  String get authErrorWrongPassword => 'Invalid password';
+
+  @override
+  String get authErrorEmailAlreadyInUse =>
+      'User with this email already exists';
+
+  @override
+  String get authErrorWeakPassword => 'Password is too weak';
+
+  @override
+  String get authErrorInvalidEmail => 'Invalid email format';
+
+  @override
+  String get authErrorUserDisabled => 'Account is disabled';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Too many attempts. Please try again later';
+
+  @override
+  String get authErrorOperationNotAllowed => 'Operation not allowed';
+
+  @override
+  String get authErrorRequiresRecentLogin =>
+      'Please log in again to perform this action';
+
+  @override
+  String get authErrorUnknown => 'Authentication error';
 }

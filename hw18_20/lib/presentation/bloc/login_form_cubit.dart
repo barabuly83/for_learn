@@ -24,13 +24,17 @@ class LoginFormCubit extends Cubit<LoginFormState> {
   /// Updates the email field.
   void emailChanged(String value) {
     final email = Email.dirty(value);
-    emit(state.copyWith(email: email));
+    // Reset status to initial when user starts typing (clear any previous errors)
+    emit(state.copyWith(email: email, status: FormzSubmissionStatus.initial));
   }
 
   /// Updates the password field.
   void passwordChanged(String value) {
     final password = Password.dirty(value);
-    emit(state.copyWith(password: password));
+    // Reset status to initial when user starts typing (clear any previous errors)
+    emit(
+      state.copyWith(password: password, status: FormzSubmissionStatus.initial),
+    );
   }
 
   /// Submits the login form.
@@ -39,10 +43,9 @@ class LoginFormCubit extends Cubit<LoginFormState> {
 
     // Dispatch login event to AuthBloc
     // AuthBloc will emit AuthLoading, which will be caught by _onAuthStateChanged
-    _authBloc.add(LoginEvent(
-      email: state.email.value,
-      password: state.password.value,
-    ));
+    _authBloc.add(
+      LoginEvent(email: state.email.value, password: state.password.value),
+    );
 
     // Note: AuthBloc will handle the actual authentication
     // and emit states that are listened to in the UI
@@ -55,20 +58,37 @@ class LoginFormCubit extends Cubit<LoginFormState> {
 
   /// Listens to AuthBloc state changes and updates form status accordingly.
   void _onAuthStateChanged(AuthState authState) {
-    debugPrint('🔄 LoginFormCubit: Auth state changed to ${authState.runtimeType}');
+    debugPrint(
+      '🔄 LoginFormCubit: Auth state changed to ${authState.runtimeType}',
+    );
+
     if (authState is AuthLoading) {
-      // AuthBloc started loading, keep form in progress
+      // AuthBloc started loading, set form to in progress
       debugPrint('🔄 LoginFormCubit: Setting status to inProgress');
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
-    } else if (authState is AuthError) {
+    } else if (authState is AuthFailureState) {
       // AuthBloc failed, set form to failure
-      debugPrint('❌ LoginFormCubit: Setting status to failure due to AuthError: ${authState.message}');
+      debugPrint(
+        '❌ LoginFormCubit: Setting status to failure due to AuthFailureState: ${authState.failure.code}',
+      );
       emit(state.copyWith(status: FormzSubmissionStatus.failure));
     } else if (authState is Authenticated) {
-      // AuthBloc succeeded, set form to success
+      // AuthBloc succeeded, set form to success and then reset after navigation
       debugPrint('✅ LoginFormCubit: Setting status to success');
       emit(state.copyWith(status: FormzSubmissionStatus.success));
+
+      // Reset form after successful authentication (delayed to allow navigation)
+      Future.delayed(const Duration(milliseconds: 100), () {
+        debugPrint(
+          '🔄 LoginFormCubit: Resetting form after successful authentication',
+        );
+        emit(const LoginFormState());
+      });
+    } else if (authState is Unauthenticated) {
+      // User logged out, reset form to initial state
+      debugPrint('🔄 LoginFormCubit: User logged out, resetting form');
+      emit(const LoginFormState());
     }
-    // For other states (Unauthenticated, etc.), don't change form status
+    // For other states (PasswordResetSuccess, etc.), don't change form status
   }
 }
