@@ -160,6 +160,14 @@
   "@takePhoto": {
     "description": "Вариант съемки фото"
   },
+  "deleteAvatar": "Удалить аватар",
+  "@deleteAvatar": {
+    "description": "Вариант удаления аватара"
+  },
+  "avatarDeleted": "Аватар успешно удален",
+  "@avatarDeleted": {
+    "description": "Сообщение об успешном удалении аватара"
+  },
   "imageSelectionError": "Ошибка выбора изображения",
   "@imageSelectionError": {
     "description": "Префикс сообщения об ошибке выбора изображения"

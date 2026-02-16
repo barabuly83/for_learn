@@ -7,6 +7,7 @@ import '../../core/error/error_localizer.dart';
 import '../../l10n/app_localizations.dart';
 
 import '../../core/avatar_service.dart';
+import '../widgets/profile_info_widget.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -145,14 +146,20 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                     const SizedBox(height: 24),
-                    _buildProfileInfo(
-                      'Имя',
-                      state.user.displayName ?? 'Не указано',
+                    ProfileInfoWidget(
+                      label: 'Имя',
+                      value: state.user.displayName ?? 'Не указано',
                     ),
                     const SizedBox(height: 16),
-                    _buildProfileInfo('Email', state.user.email ?? 'Не указан'),
+                    ProfileInfoWidget(
+                      label: 'Email',
+                      value: state.user.email ?? 'Не указан',
+                    ),
                     const SizedBox(height: 16),
-                    _buildProfileInfo('ID пользователя', state.user.uid),
+                    ProfileInfoWidget(
+                      label: 'ID пользователя',
+                      value: state.user.uid,
+                    ),
                     const SizedBox(height: 32),
                     ElevatedButton.icon(
                       onPressed: () => context.go('/home'),
@@ -209,27 +216,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildProfileInfo(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-        ),
-        const Divider(),
-      ],
-    );
-  }
 
   void _showAvatarOptions(BuildContext context, String userId) {
     showModalBottomSheet<void>(
@@ -255,6 +241,23 @@ class _ProfilePageState extends State<ProfilePage> {
                   _takePhotoWithCamera(context, userId);
                 },
               ),
+              if (_localAvatarPath != null) ...[
+                const Divider(),
+                ListTile(
+                  leading: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                  title: Text(
+                    AppLocalizations.of(context)!.deleteAvatar,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                  onTap: () {
+                    Navigator.of(modalContext).pop();
+                    _deleteAvatar(context, userId);
+                  },
+                ),
+              ],
               ListTile(
                 leading: const Icon(Icons.cancel),
                 title: Text(AppLocalizations.of(context)!.cancel),
@@ -366,6 +369,48 @@ class _ProfilePageState extends State<ProfilePage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Ошибка сохранения аватарки: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _deleteAvatar(BuildContext context, String userId) async {
+    try {
+      debugPrint('🗑️ ProfilePage: Starting avatar deletion for user: $userId');
+
+      final avatarService = context.read<AvatarService>();
+      final success = await avatarService.deleteAvatar(userId);
+
+      if (success && context.mounted) {
+        // Обновляем локальное состояние для отображения стандартного аватара
+        setState(() {
+          _localAvatarPath = null;
+        });
+
+        debugPrint('✅ ProfilePage: Avatar deletion completed successfully');
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.avatarDeleted),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Ошибка удаления аватара'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('❌ ProfilePage: Error deleting avatar: $e');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Ошибка удаления аватара: $e'),
             backgroundColor: Colors.red,
           ),
         );

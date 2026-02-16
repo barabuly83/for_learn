@@ -40,9 +40,13 @@ class _AddTodoPageState extends State<AddTodoPage> {
           context.go('/home');
         } else if (state is TodoError) {
           // Show error message
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('${AppLocalizations.of(context)!.taskCreationError}: ${state.message}')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                '${AppLocalizations.of(context)!.taskCreationError}: ${state.message}',
+              ),
+            ),
+          );
         }
       },
       builder: (context, state) {

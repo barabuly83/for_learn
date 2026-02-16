@@ -127,6 +127,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get takePhoto => 'Сделать фото';
 
   @override
+  String get deleteAvatar => 'Удалить аватар';
+
+  @override
+  String get avatarDeleted => 'Аватар успешно удален';
+
+  @override
   String get imageSelectionError => 'Ошибка выбора изображения';
 
   @override

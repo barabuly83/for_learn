@@ -58,11 +58,13 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
 
     // Dispatch register event to AuthBloc
-    _authBloc.add(RegisterEvent(
-      name: state.name.value,
-      email: state.email.value,
-      password: state.password.value,
-    ));
+    _authBloc.add(
+      RegisterEvent(
+        name: state.name.value,
+        email: state.email.value,
+        password: state.password.value,
+      ),
+    );
 
     // Note: AuthBloc will handle the actual registration
     // and emit states that are listened to in the UI

@@ -126,6 +126,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get takePhoto => 'Take Photo';
 
   @override
+  String get deleteAvatar => 'Delete Avatar';
+
+  @override
+  String get avatarDeleted => 'Avatar deleted successfully';
+
+  @override
   String get imageSelectionError => 'Image selection error';
 
   @override

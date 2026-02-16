@@ -332,6 +332,18 @@ abstract class AppLocalizations {
   /// **'Take Photo'**
   String get takePhoto;
 
+  /// Delete avatar option
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Avatar'**
+  String get deleteAvatar;
+
+  /// Avatar deleted success message
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar deleted successfully'**
+  String get avatarDeleted;
+
   /// Image selection error message prefix
   ///
   /// In en, this message translates to:

@@ -48,9 +48,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         : <TodoItem>[];
     final maxOrder = currentTodos.isEmpty
         ? 0
-        : currentTodos
-              .map((t) => t.order)
-              .reduce((a, b) => a > b ? a : b);
+        : currentTodos.map((t) => t.order).reduce((a, b) => a > b ? a : b);
     final nextOrder = maxOrder + 1;
 
     final todo = TodoItem(

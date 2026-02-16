@@ -106,4 +106,29 @@ class AvatarService {
       return null;
     }
   }
+
+  /// Удаление аватарки
+  Future<bool> deleteAvatar(String userId) async {
+    try {
+      debugPrint(
+        '🗑️ AvatarService: Starting avatar deletion for user: $userId',
+      );
+
+      final directory = await getApplicationDocumentsDirectory();
+      final avatarPath = path.join(directory.path, 'avatar_$userId.jpg');
+
+      final file = File(avatarPath);
+      if (await file.exists()) {
+        await file.delete();
+        debugPrint('✅ AvatarService: Avatar deleted successfully: $avatarPath');
+        return true;
+      } else {
+        debugPrint('⚠️ AvatarService: Avatar file not found: $avatarPath');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('❌ Ошибка удаления аватарки: $e');
+      return false;
+    }
+  }
 }

@@ -63,9 +63,13 @@ class _EditTodoPageState extends State<EditTodoPage> {
           context.go('/home');
         } else if (state is TodoError) {
           // Show error message
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('${AppLocalizations.of(context)!.taskUpdateError}: ${state.message}')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                '${AppLocalizations.of(context)!.taskUpdateError}: ${state.message}',
+              ),
+            ),
+          );
         }
       },
       builder: (context, state) {

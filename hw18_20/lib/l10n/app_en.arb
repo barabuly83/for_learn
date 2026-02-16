@@ -160,6 +160,14 @@
   "@takePhoto": {
     "description": "Take photo option"
   },
+  "deleteAvatar": "Delete Avatar",
+  "@deleteAvatar": {
+    "description": "Delete avatar option"
+  },
+  "avatarDeleted": "Avatar deleted successfully",
+  "@avatarDeleted": {
+    "description": "Avatar deleted success message"
+  },
   "imageSelectionError": "Image selection error",
   "@imageSelectionError": {
     "description": "Image selection error message prefix"

@@ -52,7 +52,9 @@ class TodoItemWidget extends StatelessWidget {
                     children: [
                       const Icon(Icons.edit, color: Colors.blue),
                       const SizedBox(width: 8),
-                      Text(AppLocalizations.of(context)!.editTask.toLowerCase()),
+                      Text(
+                        AppLocalizations.of(context)!.editTask.toLowerCase(),
+                      ),
                     ],
                   ),
                 ),
@@ -79,8 +81,12 @@ class TodoItemWidget extends StatelessWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: Text('${AppLocalizations.of(dialogContext)!.delete} ${AppLocalizations.of(dialogContext)!.todos.toLowerCase()}'),
-          content: const Text('Вы уверены, что хотите удалить эту задачу?'), // This could be localized too
+          title: Text(
+            '${AppLocalizations.of(dialogContext)!.delete} ${AppLocalizations.of(dialogContext)!.todos.toLowerCase()}',
+          ),
+          content: const Text(
+            'Вы уверены, что хотите удалить эту задачу?',
+          ), // This could be localized too
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
