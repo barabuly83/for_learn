@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../l10n/app_localizations.dart';
 import '../presentation/bloc/auth_bloc.dart';
 import '../presentation/bloc/auth_state.dart';
 import '../presentation/pages/add_todo_page.dart';
@@ -17,7 +19,7 @@ class AuthStateNotifier extends ChangeNotifier {
     debugPrint(
       '🔄 AuthStateNotifier: Created, initial state: ${_authBloc.state.runtimeType}',
     );
-    _authBloc.stream.listen((state) {
+    _authSubscription = _authBloc.stream.listen((state) {
       debugPrint(
         '🔄 AuthStateNotifier: AuthBloc state changed to: ${state.runtimeType}',
       );
@@ -26,9 +28,16 @@ class AuthStateNotifier extends ChangeNotifier {
   }
 
   final AuthBloc _authBloc;
+  late final StreamSubscription<AuthState> _authSubscription;
 
   AuthState get authState => _authBloc.state;
   bool get isAuthenticated => authState is Authenticated;
+
+  @override
+  void dispose() {
+    _authSubscription.cancel();
+    super.dispose();
+  }
 }
 
 class AppRouter {
@@ -84,8 +93,13 @@ class AppRouter {
           builder: (context, state) => const ProfilePage(),
         ),
       ],
-      errorBuilder: (context, state) =>
-          Scaffold(body: Center(child: Text('Ошибка: ${state.error}'))),
+      errorBuilder: (context, state) => Scaffold(
+        body: Center(
+          child: Text(
+            '${AppLocalizations.of(context)?.error ?? 'Error'}: ${state.error}',
+          ),
+        ),
+      ),
     );
   }
 

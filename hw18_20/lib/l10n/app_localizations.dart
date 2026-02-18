@@ -487,6 +487,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Authentication error'**
   String get authErrorUnknown;
+
+  /// Actions section title
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get actions;
+
+  /// Logout from account button text
+  ///
+  /// In en, this message translates to:
+  /// **'Logout from account'**
+  String get logoutFromAccount;
+
+  /// User ID field label
+  ///
+  /// In en, this message translates to:
+  /// **'User ID'**
+  String get userId;
+
+  /// Text for unspecified values
+  ///
+  /// In en, this message translates to:
+  /// **'Not specified'**
+  String get notSpecified;
+
+  /// Current password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get currentPassword;
+
+  /// Current password validation message
+  ///
+  /// In en, this message translates to:
+  /// **'Enter current password'**
+  String get enterCurrentPassword;
+
+  /// New password field label
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get newPassword;
+
+  /// New password validation message
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new password'**
+  String get enterNewPassword;
+
+  /// Confirm new password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm new password'**
+  String get confirmNewPassword;
+
+  /// Passwords mismatch error message
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// Password length validation message
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordMinLength;
+
+  /// Avatar saved success message
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar saved successfully'**
+  String get avatarSavedSuccessfully;
+
+  /// Avatar save error message prefix
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar save error'**
+  String get avatarSaveError;
+
+  /// Avatar delete error message prefix
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar delete error'**
+  String get avatarDeleteError;
+
+  /// Registration page title
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get createAccount;
+
+  /// Registration page subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Fill out the registration form'**
+  String get fillRegistrationForm;
+
+  /// Name field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get enterYourName;
+
+  /// Name field validation message
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter name'**
+  String get pleaseEnterName;
+
+  /// Name length validation message
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be at least 2 characters'**
+  String get nameMinLength;
+
+  /// Email field validation message
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter email'**
+  String get pleaseEnterEmail;
+
+  /// Email format validation message
+  ///
+  /// In en, this message translates to:
+  /// **'Enter valid email'**
+  String get enterValidEmail;
+
+  /// Password field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum 6 characters'**
+  String get minimum6Characters;
+
+  /// Password field validation message
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter password'**
+  String get pleaseEnterPassword;
+
+  /// Confirm password field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat password'**
+  String get repeatPassword;
+
+  /// Confirm password field validation message
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm password'**
+  String get pleaseConfirmPassword;
+
+  /// Register button text
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get registerButton;
+
+  /// Password field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter password'**
+  String get enterPassword;
+
+  /// Password length validation message
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least 6 characters'**
+  String get passwordMin6Characters;
+
+  /// Login error button text
+  ///
+  /// In en, this message translates to:
+  /// **'Login error'**
+  String get loginError;
+
+  /// Login error message
+  ///
+  /// In en, this message translates to:
+  /// **'Check email and password'**
+  String get checkEmailAndPassword;
+
+  /// Password reset dialog message
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address. We will send you an email with password recovery instructions.'**
+  String get enterEmailForPasswordReset;
+
+  /// Task title field label
+  ///
+  /// In en, this message translates to:
+  /// **'Task title'**
+  String get taskTitle;
+
+  /// Task title field validation message
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter task title'**
+  String get pleaseEnterTaskTitle;
+
+  /// Task description field label
+  ///
+  /// In en, this message translates to:
+  /// **'Task description'**
+  String get taskDescription;
+
+  /// Task description field validation message
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter task description'**
+  String get pleaseEnterTaskDescription;
+
+  /// Error messages prefix
+  ///
+  /// In en, this message translates to:
+  /// **'Error: '**
+  String get errorPrefix;
+
+  /// Error message: user is not authenticated
+  ///
+  /// In en, this message translates to:
+  /// **'User must be authenticated'**
+  String get userMustBeAuthenticated;
+
+  /// Error message for failed task loading
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load tasks'**
+  String get failedToLoadTodos;
 }
 
 class _AppLocalizationsDelegate

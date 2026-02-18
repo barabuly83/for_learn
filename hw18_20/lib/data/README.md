@@ -54,7 +54,7 @@ Data Layer
 ### 2. Firebase-first подход
 
 ```dart
-// Прямое использование Firebase Auth вместо репозиториев
+// Direct use of Firebase Auth instead of repositories
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
     try {
@@ -88,7 +88,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 ```dart
 final authDataSource = AuthRemoteDataSourceImpl();
 
-// Прямая работа с Firebase Auth
+// Direct work with Firebase Auth
 final userCredential = await authDataSource.signInWithEmailAndPassword(
   email, password
 );

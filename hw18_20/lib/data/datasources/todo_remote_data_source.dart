@@ -1,6 +1,5 @@
 import '../models/todo_item_model.dart';
 
-/// Интерфейс для удаленного источника данных задач
 abstract class TodoRemoteDataSource {
   Future<List<TodoItemModel>> getTodos(String userId);
   Future<TodoItemModel> getTodoById(String id);

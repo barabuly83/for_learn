@@ -76,10 +76,6 @@
   "@addFirstTodo": {
     "description": "Призыв добавить первую задачу"
   },
-  "loginRequired": "Требуется вход",
-  "@loginRequired": {
-    "description": "Сообщение о необходимости входа"
-  },
   "pleaseLogin": "Пожалуйста, войдите, чтобы просмотреть свои задачи",
   "@pleaseLogin": {
     "description": "Сообщение с просьбой войти"
@@ -263,5 +259,157 @@
   "authErrorUnknown": "Ошибка аутентификации",
   "@authErrorUnknown": {
     "description": "Общая ошибка аутентификации"
+  },
+  "actions": "Действия",
+  "@actions": {
+    "description": "Заголовок секции действий"
+  },
+  "logoutFromAccount": "Выйти из аккаунта",
+  "@logoutFromAccount": {
+    "description": "Текст кнопки выхода из аккаунта"
+  },
+  "userId": "ID пользователя",
+  "@userId": {
+    "description": "Метка поля ID пользователя"
+  },
+  "notSpecified": "Не указано",
+  "@notSpecified": {
+    "description": "Текст для не указанных значений"
+  },
+  "currentPassword": "Текущий пароль",
+  "@currentPassword": {
+    "description": "Метка поля текущего пароля"
+  },
+  "enterCurrentPassword": "Введите текущий пароль",
+  "@enterCurrentPassword": {
+    "description": "Сообщение валидации для текущего пароля"
+  },
+  "newPassword": "Новый пароль",
+  "@newPassword": {
+    "description": "Метка поля нового пароля"
+  },
+  "enterNewPassword": "Введите новый пароль",
+  "@enterNewPassword": {
+    "description": "Сообщение валидации для нового пароля"
+  },
+  "confirmNewPassword": "Подтвердите новый пароль",
+  "@confirmNewPassword": {
+    "description": "Метка поля подтверждения нового пароля"
+  },
+  "passwordsDoNotMatch": "Пароли не совпадают",
+  "@passwordsDoNotMatch": {
+    "description": "Сообщение об ошибке несовпадения паролей"
+  },
+  "passwordMinLength": "Пароль должен быть не менее 6 символов",
+  "@passwordMinLength": {
+    "description": "Сообщение валидации длины пароля"
+  },
+  "avatarSavedSuccessfully": "Аватарка успешно сохранена",
+  "@avatarSavedSuccessfully": {
+    "description": "Сообщение об успешном сохранении аватарки"
+  },
+  "avatarSaveError": "Ошибка сохранения аватарки",
+  "@avatarSaveError": {
+    "description": "Префикс сообщения об ошибке сохранения аватарки"
+  },
+  "avatarDeleteError": "Ошибка удаления аватара",
+  "@avatarDeleteError": {
+    "description": "Префикс сообщения об ошибке удаления аватара"
+  },
+  "createAccount": "Создайте аккаунт",
+  "@createAccount": {
+    "description": "Заголовок страницы регистрации"
+  },
+  "fillRegistrationForm": "Заполните форму для регистрации",
+  "@fillRegistrationForm": {
+    "description": "Подзаголовок страницы регистрации"
+  },
+  "enterYourName": "Введите ваше имя",
+  "@enterYourName": {
+    "description": "Подсказка для поля имени"
+  },
+  "pleaseEnterName": "Пожалуйста, введите имя",
+  "@pleaseEnterName": {
+    "description": "Сообщение валидации для поля имени"
+  },
+  "nameMinLength": "Имя должно содержать минимум 2 символа",
+  "@nameMinLength": {
+    "description": "Сообщение валидации длины имени"
+  },
+  "pleaseEnterEmail": "Пожалуйста, введите email",
+  "@pleaseEnterEmail": {
+    "description": "Сообщение валидации для поля email"
+  },
+  "enterValidEmail": "Введите корректный email",
+  "@enterValidEmail": {
+    "description": "Сообщение валидации формата email"
+  },
+  "minimum6Characters": "Минимум 6 символов",
+  "@minimum6Characters": {
+    "description": "Подсказка для поля пароля"
+  },
+  "pleaseEnterPassword": "Пожалуйста, введите пароль",
+  "@pleaseEnterPassword": {
+    "description": "Сообщение валидации для поля пароля"
+  },
+  "repeatPassword": "Повторите пароль",
+  "@repeatPassword": {
+    "description": "Подсказка для поля подтверждения пароля"
+  },
+  "pleaseConfirmPassword": "Пожалуйста, подтвердите пароль",
+  "@pleaseConfirmPassword": {
+    "description": "Сообщение валидации для поля подтверждения пароля"
+  },
+  "registerButton": "Зарегистрироваться",
+  "@registerButton": {
+    "description": "Текст кнопки регистрации"
+  },
+  "enterPassword": "Введите пароль",
+  "@enterPassword": {
+    "description": "Подсказка для поля пароля"
+  },
+  "passwordMin6Characters": "Пароль должен содержать минимум 6 символов",
+  "@passwordMin6Characters": {
+    "description": "Сообщение валидации длины пароля"
+  },
+  "loginError": "Ошибка входа",
+  "@loginError": {
+    "description": "Текст кнопки при ошибке входа"
+  },
+  "checkEmailAndPassword": "Проверьте email и пароль",
+  "@checkEmailAndPassword": {
+    "description": "Сообщение об ошибке входа"
+  },
+  "enterEmailForPasswordReset": "Введите ваш email адрес. Мы отправим вам письмо с инструкциями по восстановлению пароля.",
+  "@enterEmailForPasswordReset": {
+    "description": "Сообщение в диалоге восстановления пароля"
+  },
+  "taskTitle": "Название задачи",
+  "@taskTitle": {
+    "description": "Метка поля названия задачи"
+  },
+  "pleaseEnterTaskTitle": "Пожалуйста, введите название задачи",
+  "@pleaseEnterTaskTitle": {
+    "description": "Сообщение валидации для поля названия задачи"
+  },
+  "taskDescription": "Описание задачи",
+  "@taskDescription": {
+    "description": "Метка поля описания задачи"
+  },
+  "pleaseEnterTaskDescription": "Пожалуйста, введите описание задачи",
+  "@pleaseEnterTaskDescription": {
+    "description": "Сообщение валидации для поля описания задачи"
+  },
+  "errorPrefix": "Ошибка: ",
+  "@errorPrefix": {
+    "description": "Префикс для сообщений об ошибках"
+  },
+  "userMustBeAuthenticated": "Пользователь должен быть авторизован",
+  "@userMustBeAuthenticated": {
+    "description": "Сообщение об ошибке: пользователь не авторизован"
+  },
+  "failedToLoadTodos": "Не удалось загрузить задачи",
+  "@failedToLoadTodos": {
+    "description": "Сообщение об ошибке загрузки задач"
   }
 }

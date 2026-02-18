@@ -110,14 +110,10 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     }
-
-    // Note: AuthLoading and Authenticated states are handled by LoginFormCubit
-    // to avoid duplicate listeners on the same stream
   }
 
   @override
   Widget build(BuildContext context) {
-    // Debug: AuthBloc should be available through provider
     debugPrint('🔍 LoginPage: Building with AuthBloc context');
 
     return BlocProvider.value(
@@ -212,14 +208,14 @@ class _EmailInputState extends State<_EmailInput> {
               context.read<LoginFormCubit>().emailChanged(email);
             },
             decoration: InputDecoration(
-              labelText: 'Email',
-              hintText: 'example@email.com',
+              labelText: AppLocalizations.of(context)!.email,
+              hintText: 'user@example.com',
               border: const OutlineInputBorder(),
               prefixIcon: const Icon(Icons.email),
               errorText:
                   _authError ??
                   (state.email.displayError != null
-                      ? 'Введите корректный email'
+                      ? AppLocalizations.of(context)!.enterValidEmail
                       : null),
               errorMaxLines: 2,
             ),
@@ -275,8 +271,8 @@ class _PasswordInputState extends State<_PasswordInput> {
               context.read<LoginFormCubit>().passwordChanged(password);
             },
             decoration: InputDecoration(
-              labelText: 'Пароль',
-              hintText: 'Введите пароль',
+              labelText: AppLocalizations.of(context)!.password,
+              hintText: AppLocalizations.of(context)!.enterPassword,
               border: const OutlineInputBorder(),
               prefixIcon: const Icon(Icons.lock),
               suffixIcon: IconButton(
@@ -292,7 +288,7 @@ class _PasswordInputState extends State<_PasswordInput> {
               errorText:
                   _authError ??
                   (state.password.displayError != null
-                      ? 'Пароль должен содержать минимум 6 символов'
+                      ? AppLocalizations.of(context)!.passwordMin6Characters
                       : null),
               errorMaxLines: 2,
             ),
@@ -324,44 +320,54 @@ class _ForgotPasswordButton extends StatelessWidget {
     showDialog<void>(
       context: context,
       builder: (dialogContext) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.passwordRecovery),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Введите ваш email адрес. Мы отправим вам письмо с инструкциями по восстановлению пароля.',
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'example@email.com',
-                  border: OutlineInputBorder(),
+        // Ensure controller is disposed when dialog is dismissed
+        return PopScope(
+          onPopInvokedWithResult: (didPop, result) {
+            if (didPop) {
+              emailController.dispose();
+            }
+          },
+          child: AlertDialog(
+            title: Text(AppLocalizations.of(context)!.passwordRecovery),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(AppLocalizations.of(context)!.enterEmailForPasswordReset),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.email,
+                    hintText: 'user@example.com',
+                    border: const OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
                 ),
-                keyboardType: TextInputType.emailAddress,
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  emailController.dispose();
+                  Navigator.of(dialogContext).pop();
+                },
+                child: Text(AppLocalizations.of(context)!.cancel),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  final email = emailController.text.trim();
+                  if (email.isNotEmpty) {
+                    context.read<AuthBloc>().add(
+                      PasswordResetEvent(email: email),
+                    );
+                    emailController.dispose();
+                    Navigator.of(dialogContext).pop();
+                  }
+                },
+                child: Text(AppLocalizations.of(context)!.send),
               ),
             ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(AppLocalizations.of(context)!.cancel),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final email = emailController.text.trim();
-                if (email.isNotEmpty) {
-                  context.read<AuthBloc>().add(
-                    PasswordResetEvent(email: email),
-                  );
-                  Navigator.of(dialogContext).pop();
-                }
-              },
-              child: Text(AppLocalizations.of(context)!.send),
-            ),
-          ],
         );
       },
     );
@@ -395,7 +401,7 @@ class _LoginButton extends StatelessWidget {
               ),
               child: Text(
                 state.status.isFailure
-                    ? 'Ошибка входа'
+                    ? AppLocalizations.of(context)!.loginError
                     : AppLocalizations.of(context)!.login,
                 style: const TextStyle(fontSize: 16),
               ),
@@ -403,7 +409,7 @@ class _LoginButton extends StatelessWidget {
             if (state.status.isFailure) ...[
               const SizedBox(height: 8),
               Text(
-                'Проверьте email и пароль',
+                AppLocalizations.of(context)!.checkEmailAndPassword,
                 style: TextStyle(color: Colors.red.shade700, fontSize: 14),
                 textAlign: TextAlign.center,
               ),

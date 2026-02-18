@@ -92,9 +92,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   TextButton.icon(
                     onPressed: () => context.go('/home'),
                     icon: const Icon(Icons.task, color: Colors.white),
-                    label: const Text(
-                      'Мои дела',
-                      style: TextStyle(color: Colors.white),
+                    label: Text(
+                      AppLocalizations.of(context)!.myTasks,
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ],
@@ -147,32 +147,36 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 24),
                     ProfileInfoWidget(
-                      label: 'Имя',
-                      value: state.user.displayName ?? 'Не указано',
+                      label: AppLocalizations.of(context)!.name,
+                      value:
+                          state.user.displayName ??
+                          AppLocalizations.of(context)!.notSpecified,
                     ),
                     const SizedBox(height: 16),
                     ProfileInfoWidget(
-                      label: 'Email',
-                      value: state.user.email ?? 'Не указан',
+                      label: AppLocalizations.of(context)!.email,
+                      value:
+                          state.user.email ??
+                          AppLocalizations.of(context)!.notSpecified,
                     ),
                     const SizedBox(height: 16),
                     ProfileInfoWidget(
-                      label: 'ID пользователя',
+                      label: AppLocalizations.of(context)!.userId,
                       value: state.user.uid,
                     ),
                     const SizedBox(height: 32),
                     ElevatedButton.icon(
                       onPressed: () => context.go('/home'),
                       icon: const Icon(Icons.task),
-                      label: const Text('Мои дела'),
+                      label: Text(AppLocalizations.of(context)!.myTasks),
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 48),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Действия',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.actions,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -192,9 +196,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         _showLogoutDialog(context);
                       },
                       icon: const Icon(Icons.logout, color: Colors.red),
-                      label: const Text(
-                        'Выйти из аккаунта',
-                        style: TextStyle(color: Colors.red),
+                      label: Text(
+                        AppLocalizations.of(context)!.logoutFromAccount,
+                        style: const TextStyle(color: Colors.red),
                       ),
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 48),
@@ -215,7 +219,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
 
   void _showAvatarOptions(BuildContext context, String userId) {
     showModalBottomSheet<void>(
@@ -244,10 +247,7 @@ class _ProfilePageState extends State<ProfilePage> {
               if (_localAvatarPath != null) ...[
                 const Divider(),
                 ListTile(
-                  leading: const Icon(
-                    Icons.delete,
-                    color: Colors.red,
-                  ),
+                  leading: const Icon(Icons.delete, color: Colors.red),
                   title: Text(
                     AppLocalizations.of(context)!.deleteAvatar,
                     style: const TextStyle(color: Colors.red),
@@ -327,7 +327,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
       final avatarService = context.read<AvatarService>();
 
-      // Сохраняем изображение локально
       debugPrint('📸 ProfilePage: Saving avatar locally...');
       final avatarPath = await avatarService.saveAvatarLocally(
         imageFile: imageFile,
@@ -337,7 +336,6 @@ class _ProfilePageState extends State<ProfilePage> {
       if (avatarPath != null) {
         debugPrint('📸 ProfilePage: Avatar saved locally: $avatarPath');
 
-        // Обновляем локальное состояние для отображения аватара
         setState(() {
           _localAvatarPath = avatarPath;
         });
@@ -346,8 +344,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Аватарка успешно сохранена'),
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)!.avatarSavedSuccessfully,
+              ),
               backgroundColor: Colors.green,
             ),
           );
@@ -356,8 +356,8 @@ class _ProfilePageState extends State<ProfilePage> {
         debugPrint('❌ ProfilePage: Avatar save returned null path');
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Ошибка сохранения аватарки'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.avatarSaveError),
               backgroundColor: Colors.red,
             ),
           );
@@ -384,7 +384,6 @@ class _ProfilePageState extends State<ProfilePage> {
       final success = await avatarService.deleteAvatar(userId);
 
       if (success && context.mounted) {
-        // Обновляем локальное состояние для отображения стандартного аватара
         setState(() {
           _localAvatarPath = null;
         });
@@ -399,8 +398,8 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       } else if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Ошибка удаления аватара'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.avatarDeleteError),
             backgroundColor: Colors.red,
           ),
         );
@@ -410,7 +409,9 @@ class _ProfilePageState extends State<ProfilePage> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ошибка удаления аватара: $e'),
+            content: Text(
+              '${AppLocalizations.of(context)!.avatarDeleteError}: $e',
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -465,13 +466,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   TextFormField(
                     controller: currentPasswordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Текущий пароль',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.currentPassword,
+                      border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Введите текущий пароль';
+                        return AppLocalizations.of(
+                          context,
+                        )!.enterCurrentPassword;
                       }
                       return null;
                     },
@@ -480,16 +483,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   TextFormField(
                     controller: newPasswordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Новый пароль',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.newPassword,
+                      border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Введите новый пароль';
+                        return AppLocalizations.of(context)!.enterNewPassword;
                       }
                       if (value.length < 6) {
-                        return 'Пароль должен быть не менее 6 символов';
+                        return AppLocalizations.of(context)!.passwordMinLength;
                       }
                       return null;
                     },
@@ -498,16 +501,22 @@ class _ProfilePageState extends State<ProfilePage> {
                   TextFormField(
                     controller: confirmPasswordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Подтвердите новый пароль',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(
+                        context,
+                      )!.confirmNewPassword,
+                      border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Подтвердите новый пароль';
+                        return AppLocalizations.of(
+                          context,
+                        )!.pleaseConfirmPassword;
                       }
                       if (value != newPasswordController.text) {
-                        return 'Пароли не совпадают';
+                        return AppLocalizations.of(
+                          context,
+                        )!.passwordsDoNotMatch;
                       }
                       return null;
                     },

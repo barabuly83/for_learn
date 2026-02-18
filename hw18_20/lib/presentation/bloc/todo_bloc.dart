@@ -36,7 +36,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     final currentState = authBloc.state;
 
     if (currentState is! Authenticated) {
-      emit(const TodoError('Пользователь должен быть авторизован'));
+      emit(const TodoError('userMustBeAuthenticated'));
       return;
     }
 
@@ -87,7 +87,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       debugPrint(
         '❌ TodoBloc: User not authenticated - current state: ${currentState.runtimeType}',
       );
-      emit(const TodoError('Пользователь должен быть авторизован'));
+      emit(const TodoError('userMustBeAuthenticated'));
       return;
     }
 
@@ -202,7 +202,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     final currentState = authBloc.state;
 
     if (currentState is! Authenticated) {
-      emit(const TodoError('Пользователь должен быть авторизован'));
+      emit(const TodoError('userMustBeAuthenticated'));
       return;
     }
 
@@ -224,14 +224,14 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     final currentState = authBloc.state;
 
     if (currentState is! Authenticated) {
-      emit(const TodoError('Пользователь должен быть авторизован'));
+      emit(const TodoError('userMustBeAuthenticated'));
       return;
     }
 
     // Get the current todo to preserve other properties
     final todosState = state;
     if (todosState is! TodosLoaded) {
-      emit(const TodoError('Не удалось загрузить задачи'));
+      emit(const TodoError('failedToLoadTodos'));
       return;
     }
 

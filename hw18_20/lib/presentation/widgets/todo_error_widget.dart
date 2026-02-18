@@ -12,6 +12,19 @@ class TodoErrorWidget extends StatelessWidget {
     required this.onRetry,
   });
 
+  String _getLocalizedMessage(BuildContext context, String messageKey) {
+    final l10n = AppLocalizations.of(context)!;
+
+    switch (messageKey) {
+      case 'userMustBeAuthenticated':
+        return l10n.userMustBeAuthenticated;
+      case 'failedToLoadTodos':
+        return l10n.failedToLoadTodos;
+      default:
+        return '${l10n.error}: $messageKey';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -21,7 +34,7 @@ class TodoErrorWidget extends StatelessWidget {
           const Icon(Icons.error_outline, size: 64, color: Colors.red),
           const SizedBox(height: 16),
           Text(
-            '${AppLocalizations.of(context)!.error}: $message',
+            _getLocalizedMessage(context, message),
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.red),
           ),

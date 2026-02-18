@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:formz/formz.dart';
@@ -16,10 +17,11 @@ class LoginFormCubit extends Cubit<LoginFormState> {
   /// {@macro login_form_cubit}
   LoginFormCubit(this._authBloc) : super(const LoginFormState()) {
     // Listen to AuthBloc state changes to update form status
-    _authBloc.stream.listen(_onAuthStateChanged);
+    _authSubscription = _authBloc.stream.listen(_onAuthStateChanged);
   }
 
   final AuthBloc _authBloc;
+  StreamSubscription<AuthState>? _authSubscription;
 
   /// Updates the email field.
   void emailChanged(String value) {
@@ -90,5 +92,11 @@ class LoginFormCubit extends Cubit<LoginFormState> {
       emit(const LoginFormState());
     }
     // For other states (PasswordResetSuccess, etc.), don't change form status
+  }
+
+  @override
+  Future<void> close() async {
+    _authSubscription?.cancel();
+    await super.close();
   }
 }

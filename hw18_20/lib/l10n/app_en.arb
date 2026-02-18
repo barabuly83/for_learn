@@ -263,5 +263,157 @@
   "authErrorUnknown": "Authentication error",
   "@authErrorUnknown": {
     "description": "Generic authentication error"
+  },
+  "actions": "Actions",
+  "@actions": {
+    "description": "Actions section title"
+  },
+  "logoutFromAccount": "Logout from account",
+  "@logoutFromAccount": {
+    "description": "Logout from account button text"
+  },
+  "userId": "User ID",
+  "@userId": {
+    "description": "User ID field label"
+  },
+  "notSpecified": "Not specified",
+  "@notSpecified": {
+    "description": "Text for unspecified values"
+  },
+  "currentPassword": "Current password",
+  "@currentPassword": {
+    "description": "Current password field label"
+  },
+  "enterCurrentPassword": "Enter current password",
+  "@enterCurrentPassword": {
+    "description": "Current password validation message"
+  },
+  "newPassword": "New password",
+  "@newPassword": {
+    "description": "New password field label"
+  },
+  "enterNewPassword": "Enter new password",
+  "@enterNewPassword": {
+    "description": "New password validation message"
+  },
+  "confirmNewPassword": "Confirm new password",
+  "@confirmNewPassword": {
+    "description": "Confirm new password field label"
+  },
+  "passwordsDoNotMatch": "Passwords do not match",
+  "@passwordsDoNotMatch": {
+    "description": "Passwords mismatch error message"
+  },
+  "passwordMinLength": "Password must be at least 6 characters",
+  "@passwordMinLength": {
+    "description": "Password length validation message"
+  },
+  "avatarSavedSuccessfully": "Avatar saved successfully",
+  "@avatarSavedSuccessfully": {
+    "description": "Avatar saved success message"
+  },
+  "avatarSaveError": "Avatar save error",
+  "@avatarSaveError": {
+    "description": "Avatar save error message prefix"
+  },
+  "avatarDeleteError": "Avatar delete error",
+  "@avatarDeleteError": {
+    "description": "Avatar delete error message prefix"
+  },
+  "createAccount": "Create account",
+  "@createAccount": {
+    "description": "Registration page title"
+  },
+  "fillRegistrationForm": "Fill out the registration form",
+  "@fillRegistrationForm": {
+    "description": "Registration page subtitle"
+  },
+  "enterYourName": "Enter your name",
+  "@enterYourName": {
+    "description": "Name field hint"
+  },
+  "pleaseEnterName": "Please enter name",
+  "@pleaseEnterName": {
+    "description": "Name field validation message"
+  },
+  "nameMinLength": "Name must be at least 2 characters",
+  "@nameMinLength": {
+    "description": "Name length validation message"
+  },
+  "pleaseEnterEmail": "Please enter email",
+  "@pleaseEnterEmail": {
+    "description": "Email field validation message"
+  },
+  "enterValidEmail": "Enter valid email",
+  "@enterValidEmail": {
+    "description": "Email format validation message"
+  },
+  "minimum6Characters": "Minimum 6 characters",
+  "@minimum6Characters": {
+    "description": "Password field hint"
+  },
+  "pleaseEnterPassword": "Please enter password",
+  "@pleaseEnterPassword": {
+    "description": "Password field validation message"
+  },
+  "repeatPassword": "Repeat password",
+  "@repeatPassword": {
+    "description": "Confirm password field hint"
+  },
+  "pleaseConfirmPassword": "Please confirm password",
+  "@pleaseConfirmPassword": {
+    "description": "Confirm password field validation message"
+  },
+  "registerButton": "Register",
+  "@registerButton": {
+    "description": "Register button text"
+  },
+  "enterPassword": "Enter password",
+  "@enterPassword": {
+    "description": "Password field hint"
+  },
+  "passwordMin6Characters": "Password must contain at least 6 characters",
+  "@passwordMin6Characters": {
+    "description": "Password length validation message"
+  },
+  "loginError": "Login error",
+  "@loginError": {
+    "description": "Login error button text"
+  },
+  "checkEmailAndPassword": "Check email and password",
+  "@checkEmailAndPassword": {
+    "description": "Login error message"
+  },
+  "enterEmailForPasswordReset": "Enter your email address. We will send you an email with password recovery instructions.",
+  "@enterEmailForPasswordReset": {
+    "description": "Password reset dialog message"
+  },
+  "taskTitle": "Task title",
+  "@taskTitle": {
+    "description": "Task title field label"
+  },
+  "pleaseEnterTaskTitle": "Please enter task title",
+  "@pleaseEnterTaskTitle": {
+    "description": "Task title field validation message"
+  },
+  "taskDescription": "Task description",
+  "@taskDescription": {
+    "description": "Task description field label"
+  },
+  "pleaseEnterTaskDescription": "Please enter task description",
+  "@pleaseEnterTaskDescription": {
+    "description": "Task description field validation message"
+  },
+  "errorPrefix": "Error: ",
+  "@errorPrefix": {
+    "description": "Error messages prefix"
+  },
+  "userMustBeAuthenticated": "User must be authenticated",
+  "@userMustBeAuthenticated": {
+    "description": "Error message: user is not authenticated"
+  },
+  "failedToLoadTodos": "Failed to load tasks",
+  "@failedToLoadTodos": {
+    "description": "Error message for failed task loading"
   }
 }

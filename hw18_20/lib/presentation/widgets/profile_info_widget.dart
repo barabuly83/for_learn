@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Виджет для отображения информации профиля (метка + значение)
 class ProfileInfoWidget extends StatelessWidget {
   const ProfileInfoWidget({
     super.key,

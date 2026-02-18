@@ -9,7 +9,6 @@ class AvatarService {
 
   AvatarService();
 
-  /// Выбор изображения из галереи
   Future<File?> pickImageFromGallery() async {
     try {
       final pickedFile = await _imagePicker.pickImage(
@@ -29,7 +28,6 @@ class AvatarService {
     }
   }
 
-  /// Съемка фото с камеры
   Future<File?> takePhotoWithCamera() async {
     try {
       final pickedFile = await _imagePicker.pickImage(
@@ -49,7 +47,6 @@ class AvatarService {
     }
   }
 
-  /// Сохранение аватарки локально
   Future<String?> saveAvatarLocally({
     required File imageFile,
     required String userId,
@@ -59,7 +56,6 @@ class AvatarService {
         '💾 AvatarService: Starting local avatar save for user: $userId',
       );
 
-      // Сохраняем изображение в локальном хранилище
       final savedFile = await saveAvatarToLocalStorage(imageFile, userId);
 
       if (savedFile != null) {
@@ -75,7 +71,6 @@ class AvatarService {
     }
   }
 
-  /// Сохранение аватарки в локальное хранилище
   Future<File?> saveAvatarToLocalStorage(File imageFile, String userId) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
@@ -90,7 +85,6 @@ class AvatarService {
     }
   }
 
-  /// Загрузка аватарки из кэша
   Future<File?> loadAvatarFromCache(String userId) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
@@ -107,7 +101,6 @@ class AvatarService {
     }
   }
 
-  /// Удаление аватарки
   Future<bool> deleteAvatar(String userId) async {
     try {
       debugPrint(

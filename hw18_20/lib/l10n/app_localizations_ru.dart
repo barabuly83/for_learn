@@ -208,4 +208,121 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get authErrorUnknown => 'Ошибка аутентификации';
+
+  @override
+  String get actions => 'Действия';
+
+  @override
+  String get logoutFromAccount => 'Выйти из аккаунта';
+
+  @override
+  String get userId => 'ID пользователя';
+
+  @override
+  String get notSpecified => 'Не указано';
+
+  @override
+  String get currentPassword => 'Текущий пароль';
+
+  @override
+  String get enterCurrentPassword => 'Введите текущий пароль';
+
+  @override
+  String get newPassword => 'Новый пароль';
+
+  @override
+  String get enterNewPassword => 'Введите новый пароль';
+
+  @override
+  String get confirmNewPassword => 'Подтвердите новый пароль';
+
+  @override
+  String get passwordsDoNotMatch => 'Пароли не совпадают';
+
+  @override
+  String get passwordMinLength => 'Пароль должен быть не менее 6 символов';
+
+  @override
+  String get avatarSavedSuccessfully => 'Аватарка успешно сохранена';
+
+  @override
+  String get avatarSaveError => 'Ошибка сохранения аватарки';
+
+  @override
+  String get avatarDeleteError => 'Ошибка удаления аватара';
+
+  @override
+  String get createAccount => 'Создайте аккаунт';
+
+  @override
+  String get fillRegistrationForm => 'Заполните форму для регистрации';
+
+  @override
+  String get enterYourName => 'Введите ваше имя';
+
+  @override
+  String get pleaseEnterName => 'Пожалуйста, введите имя';
+
+  @override
+  String get nameMinLength => 'Имя должно содержать минимум 2 символа';
+
+  @override
+  String get pleaseEnterEmail => 'Пожалуйста, введите email';
+
+  @override
+  String get enterValidEmail => 'Введите корректный email';
+
+  @override
+  String get minimum6Characters => 'Минимум 6 символов';
+
+  @override
+  String get pleaseEnterPassword => 'Пожалуйста, введите пароль';
+
+  @override
+  String get repeatPassword => 'Повторите пароль';
+
+  @override
+  String get pleaseConfirmPassword => 'Пожалуйста, подтвердите пароль';
+
+  @override
+  String get registerButton => 'Зарегистрироваться';
+
+  @override
+  String get enterPassword => 'Введите пароль';
+
+  @override
+  String get passwordMin6Characters =>
+      'Пароль должен содержать минимум 6 символов';
+
+  @override
+  String get loginError => 'Ошибка входа';
+
+  @override
+  String get checkEmailAndPassword => 'Проверьте email и пароль';
+
+  @override
+  String get enterEmailForPasswordReset =>
+      'Введите ваш email адрес. Мы отправим вам письмо с инструкциями по восстановлению пароля.';
+
+  @override
+  String get taskTitle => 'Название задачи';
+
+  @override
+  String get pleaseEnterTaskTitle => 'Пожалуйста, введите название задачи';
+
+  @override
+  String get taskDescription => 'Описание задачи';
+
+  @override
+  String get pleaseEnterTaskDescription =>
+      'Пожалуйста, введите описание задачи';
+
+  @override
+  String get errorPrefix => 'Ошибка: ';
+
+  @override
+  String get userMustBeAuthenticated => 'Пользователь должен быть авторизован';
+
+  @override
+  String get failedToLoadTodos => 'Не удалось загрузить задачи';
 }

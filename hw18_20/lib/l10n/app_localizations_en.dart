@@ -205,4 +205,120 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authErrorUnknown => 'Authentication error';
+
+  @override
+  String get actions => 'Actions';
+
+  @override
+  String get logoutFromAccount => 'Logout from account';
+
+  @override
+  String get userId => 'User ID';
+
+  @override
+  String get notSpecified => 'Not specified';
+
+  @override
+  String get currentPassword => 'Current password';
+
+  @override
+  String get enterCurrentPassword => 'Enter current password';
+
+  @override
+  String get newPassword => 'New password';
+
+  @override
+  String get enterNewPassword => 'Enter new password';
+
+  @override
+  String get confirmNewPassword => 'Confirm new password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get passwordMinLength => 'Password must be at least 6 characters';
+
+  @override
+  String get avatarSavedSuccessfully => 'Avatar saved successfully';
+
+  @override
+  String get avatarSaveError => 'Avatar save error';
+
+  @override
+  String get avatarDeleteError => 'Avatar delete error';
+
+  @override
+  String get createAccount => 'Create account';
+
+  @override
+  String get fillRegistrationForm => 'Fill out the registration form';
+
+  @override
+  String get enterYourName => 'Enter your name';
+
+  @override
+  String get pleaseEnterName => 'Please enter name';
+
+  @override
+  String get nameMinLength => 'Name must be at least 2 characters';
+
+  @override
+  String get pleaseEnterEmail => 'Please enter email';
+
+  @override
+  String get enterValidEmail => 'Enter valid email';
+
+  @override
+  String get minimum6Characters => 'Minimum 6 characters';
+
+  @override
+  String get pleaseEnterPassword => 'Please enter password';
+
+  @override
+  String get repeatPassword => 'Repeat password';
+
+  @override
+  String get pleaseConfirmPassword => 'Please confirm password';
+
+  @override
+  String get registerButton => 'Register';
+
+  @override
+  String get enterPassword => 'Enter password';
+
+  @override
+  String get passwordMin6Characters =>
+      'Password must contain at least 6 characters';
+
+  @override
+  String get loginError => 'Login error';
+
+  @override
+  String get checkEmailAndPassword => 'Check email and password';
+
+  @override
+  String get enterEmailForPasswordReset =>
+      'Enter your email address. We will send you an email with password recovery instructions.';
+
+  @override
+  String get taskTitle => 'Task title';
+
+  @override
+  String get pleaseEnterTaskTitle => 'Please enter task title';
+
+  @override
+  String get taskDescription => 'Task description';
+
+  @override
+  String get pleaseEnterTaskDescription => 'Please enter task description';
+
+  @override
+  String get errorPrefix => 'Error: ';
+
+  @override
+  String get userMustBeAuthenticated => 'User must be authenticated';
+
+  @override
+  String get failedToLoadTodos => 'Failed to load tasks';
 }

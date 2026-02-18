@@ -3,28 +3,25 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import 'failures.dart';
 
-/// Локализатор ошибок для преобразования объектов Failure в локализованные сообщения
 class ErrorLocalizer {
   const ErrorLocalizer._();
 
-  /// Локализует ошибку на основе типа Failure и текущей локали
   static String localize(BuildContext context, Failure failure) {
     final l10n = AppLocalizations.of(context)!;
 
     if (failure is AuthFailure) {
       return _localizeAuthFailure(failure, l10n);
     } else if (failure is ServerFailure) {
-      return l10n.error; // Можно расширить для серверных ошибок
+      return l10n.error;
     } else if (failure is CacheFailure) {
-      return l10n.error; // Можно расширить для кэш ошибок
+      return l10n.error;
     } else if (failure is NetworkFailure) {
-      return l10n.error; // Можно расширить для сетевых ошибок
+      return l10n.error;
     } else {
-      return l10n.error; // Общая ошибка
+      return l10n.error;
     }
   }
 
-  /// Локализует ошибки авторизации
   static String _localizeAuthFailure(
     AuthFailure failure,
     AppLocalizations l10n,

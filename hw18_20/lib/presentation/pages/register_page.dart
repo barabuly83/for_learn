@@ -69,15 +69,18 @@ class _RegisterPageState extends State<RegisterPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 32),
-                const Text(
-                  'Создайте аккаунт',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                Text(
+                  AppLocalizations.of(context)!.createAccount,
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Заполните форму для регистрации',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                Text(
+                  AppLocalizations.of(context)!.fillRegistrationForm,
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 32),
@@ -86,19 +89,19 @@ class _RegisterPageState extends State<RegisterPage> {
                   autofocus: true,
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Имя',
-                    hintText: 'Введите ваше имя',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.person),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.name,
+                    hintText: AppLocalizations.of(context)!.enterYourName,
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.person),
                   ),
                   textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Пожалуйста, введите имя';
+                      return AppLocalizations.of(context)!.pleaseEnterName;
                     }
                     if (value.length < 2) {
-                      return 'Имя должно содержать минимум 2 символа';
+                      return AppLocalizations.of(context)!.nameMinLength;
                     }
                     return null;
                   },
@@ -108,18 +111,18 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'example@email.com',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.email,
+                    hintText: 'user@example.com',
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.email),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Пожалуйста, введите email';
+                      return AppLocalizations.of(context)!.pleaseEnterEmail;
                     }
                     if (!value.contains('@') || !value.contains('.')) {
-                      return 'Введите корректный email';
+                      return AppLocalizations.of(context)!.enterValidEmail;
                     }
                     return null;
                   },
@@ -130,8 +133,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: 'Пароль',
-                    hintText: 'Минимум 6 символов',
+                    labelText: AppLocalizations.of(context)!.password,
+                    hintText: AppLocalizations.of(context)!.minimum6Characters,
                     border: const OutlineInputBorder(),
                     prefixIcon: const Icon(Icons.lock),
                     suffixIcon: IconButton(
@@ -150,10 +153,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: _obscurePassword,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Пожалуйста, введите пароль';
+                      return AppLocalizations.of(context)!.pleaseEnterPassword;
                     }
                     if (value.length < 6) {
-                      return 'Пароль должен быть не менее 6 символов';
+                      return AppLocalizations.of(context)!.passwordMinLength;
                     }
                     return null;
                   },
@@ -164,8 +167,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                    labelText: 'Подтвердите пароль',
-                    hintText: 'Повторите пароль',
+                    labelText: AppLocalizations.of(context)!.confirmPassword,
+                    hintText: AppLocalizations.of(context)!.repeatPassword,
                     border: const OutlineInputBorder(),
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
@@ -184,10 +187,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: _obscureConfirmPassword,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Пожалуйста, подтвердите пароль';
+                      return AppLocalizations.of(
+                        context,
+                      )!.pleaseConfirmPassword;
                     }
                     if (value != _passwordController.text) {
-                      return 'Пароли не совпадают';
+                      return AppLocalizations.of(context)!.passwordsDoNotMatch;
                     }
                     return null;
                   },
@@ -213,9 +218,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                               ),
                             )
-                          : const Text(
-                              'Зарегистрироваться',
-                              style: TextStyle(fontSize: 16),
+                          : Text(
+                              AppLocalizations.of(context)!.registerButton,
+                              style: const TextStyle(fontSize: 16),
                             ),
                     );
                   },

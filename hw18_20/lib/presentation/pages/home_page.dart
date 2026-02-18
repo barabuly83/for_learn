@@ -27,7 +27,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // Load todos when the page initializes if user is already authenticated
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final authBloc = context.read<AuthBloc>();
       debugPrint(
@@ -73,7 +72,6 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.account_circle),
               onPressed: () => context.go('/profile'),
             ),
-            // Logout button removed for now
           ],
         ),
         body: BlocBuilder<TodoBloc, TodoState>(

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,9 +22,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   final firebase_auth.FirebaseAuth _auth = firebase_auth.FirebaseAuth.instance;
+  StreamSubscription<firebase_auth.User?>? _authSubscription;
 
   void _listenToAuthStateChanges() {
-    _auth.authStateChanges().listen((firebaseUser) {
+    _authSubscription = _auth.authStateChanges().listen((firebaseUser) {
       debugPrint(
         '🎧 AuthBloc: Firebase authStateChanges - User: ${firebaseUser?.email ?? 'null'}',
       );
@@ -139,7 +141,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return;
       }
 
-      // Для изменения пароля в Firebase требуется reauthentication
       final email = user.email;
       if (email == null) {
         const failure = AuthFailure(
@@ -246,5 +247,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       debugPrint('❌ AuthBloc: Emitting Unauthenticated');
       emit(const Unauthenticated());
     }
+  }
+
+  @override
+  Future<void> close() async {
+    _authSubscription?.cancel();
+    await super.close();
   }
 }

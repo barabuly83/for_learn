@@ -7,9 +7,6 @@ import '../../domain/repositories/todo_repository.dart';
 import '../datasources/todo_remote_data_source.dart';
 import '../models/todo_item_model.dart';
 
-/// Реализация репозитория задач
-/// Работает только с удаленным источником данных (Firestore)
-/// Firestore предоставляет встроенное офлайн-кэширование
 class TodoRepositoryImpl implements TodoRepository {
   const TodoRepositoryImpl({required this.remoteDataSource});
 
@@ -19,7 +16,6 @@ class TodoRepositoryImpl implements TodoRepository {
   Future<Either<Failure, List<TodoItem>>> getTodos(String userId) async {
     try {
       debugPrint('📊 TodoRepositoryImpl: Fetching todos for user: $userId');
-      // Firestore предоставляет встроенное офлайн-кэширование
       final todoModels = await remoteDataSource.getTodos(userId);
       debugPrint(
         '📊 TodoRepositoryImpl: Retrieved ${todoModels.length} todos from data source',
@@ -35,7 +31,6 @@ class TodoRepositoryImpl implements TodoRepository {
   @override
   Future<Either<Failure, TodoItem>> getTodoById(String id) async {
     try {
-      // Firestore предоставляет встроенное офлайн-кэширование
       final todoModel = await remoteDataSource.getTodoById(id);
       return Right(todoModel.toEntity());
     } catch (e) {
@@ -48,7 +43,6 @@ class TodoRepositoryImpl implements TodoRepository {
     try {
       final todoModel = TodoItemModel.fromEntity(todo);
 
-      // Создаем задачу через Firestore
       final createdTodo = await remoteDataSource.createTodo(todoModel);
 
       return Right(createdTodo.toEntity());
@@ -62,7 +56,6 @@ class TodoRepositoryImpl implements TodoRepository {
     try {
       final todoModel = TodoItemModel.fromEntity(todo);
 
-      // Обновляем задачу через Firestore
       final updatedTodo = await remoteDataSource.updateTodo(todoModel);
 
       return Right(updatedTodo.toEntity());
@@ -74,7 +67,6 @@ class TodoRepositoryImpl implements TodoRepository {
   @override
   Future<Either<Failure, void>> deleteTodo(String id) async {
     try {
-      // Удаляем задачу через Firestore
       await remoteDataSource.deleteTodo(id);
 
       return const Right(null);
@@ -101,7 +93,6 @@ class TodoRepositoryImpl implements TodoRepository {
     try {
       debugPrint('🔄 TodoRepositoryImpl: Reordering ${todos.length} todos');
 
-      // Обновляем порядок задач в базе данных
       final updatedModels = <TodoItemModel>[];
       for (var i = 0; i < todos.length; i++) {
         final todo = todos[i];

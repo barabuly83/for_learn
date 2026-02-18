@@ -33,13 +33,11 @@ class _AddTodoPageState extends State<AddTodoPage> {
       bloc: context.read<TodoBloc>(),
       listener: (context, state) {
         if (state is TodoCreated) {
-          // Show success message and navigate back
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(AppLocalizations.of(context)!.taskCreated)),
           );
           context.go('/home');
         } else if (state is TodoError) {
-          // Show error message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -70,13 +68,15 @@ class _AddTodoPageState extends State<AddTodoPage> {
                     autofocus: true,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Название задачи',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.taskTitle,
+                      border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Пожалуйста, введите название задачи';
+                        return AppLocalizations.of(
+                          context,
+                        )!.pleaseEnterTaskTitle;
                       }
                       return null;
                     },
@@ -86,14 +86,16 @@ class _AddTodoPageState extends State<AddTodoPage> {
                     controller: _descriptionController,
                     keyboardType: TextInputType.multiline,
                     textInputAction: TextInputAction.newline,
-                    decoration: const InputDecoration(
-                      labelText: 'Описание задачи',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.taskDescription,
+                      border: const OutlineInputBorder(),
                     ),
                     maxLines: 3,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Пожалуйста, введите описание задачи';
+                        return AppLocalizations.of(
+                          context,
+                        )!.pleaseEnterTaskDescription;
                       }
                       return null;
                     },
