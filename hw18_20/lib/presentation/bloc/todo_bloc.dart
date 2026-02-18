@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,10 +24,12 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<ToggleTodoCompleteErrorEvent>(_onToggleTodoCompleteError);
     on<ToggleTodoCompleteSuccessEvent>(_onToggleTodoCompleteSuccess);
     on<ShowTodoErrorEvent>(_onShowTodoError);
+    on<TodosLoadedEvent>(_onTodosLoaded);
   }
 
   final TodoRepository todoRepository;
   final AuthBloc authBloc;
+  StreamSubscription<Either<Failure, List<TodoItem>>>? _todosSubscription;
 
   Future<void> _onCreateTodo(
     CreateTodoEvent event,
@@ -74,8 +78,10 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     LoadTodosEvent event,
     Emitter<TodoState> emit,
   ) async {
-    debugPrint('📋 TodoBloc: Loading todos...');
-    emit(const TodoLoading());
+    debugPrint('📋 TodoBloc: Setting up realtime todos listener...');
+
+    // Cancel existing subscription if any
+    _todosSubscription?.cancel();
 
     // Get the current user ID from auth state
     final currentState = authBloc.state;
@@ -93,24 +99,38 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 
     final userId = currentState.user.uid;
     debugPrint(
-      '📋 TodoBloc: Loading todos for user: $userId, user email: ${currentState.user.email}',
+      '📋 TodoBloc: Setting up realtime listener for user: $userId, user email: ${currentState.user.email}',
     );
 
-    final result = await todoRepository.getTodos(userId);
-    debugPrint(
-      '📋 TodoBloc: Repository result: ${result.isRight() ? 'success' : 'failure'}',
-    );
+    emit(const TodoLoading());
 
-    result.fold(
-      (failure) {
-        debugPrint('❌ TodoBloc: Failed to load todos: ${failure.message}');
-        emit(TodoError(_mapFailureToMessage(failure)));
+    // Set up realtime listener
+    _todosSubscription = todoRepository.watchTodos(userId).listen(
+      (result) {
+        result.fold(
+          (failure) {
+            debugPrint('❌ TodoBloc: Realtime error: ${failure.message}');
+            add(TodoErrorEvent(_mapFailureToMessage(failure)));
+          },
+          (todos) {
+            debugPrint('✅ TodoBloc: Realtime update - ${todos.length} todos');
+            add(TodosLoadedEvent(todos));
+          },
+        );
       },
-      (todos) {
-        debugPrint('✅ TodoBloc: Successfully loaded ${todos.length} todos');
-        emit(TodosLoaded(todos));
+      onError: (Object error) {
+        debugPrint('❌ TodoBloc: Realtime stream error: $error');
+        add(TodoErrorEvent('Failed to watch todos: $error'));
       },
     );
+  }
+
+  void _onTodosLoaded(
+    TodosLoadedEvent event,
+    Emitter<TodoState> emit,
+  ) {
+    debugPrint('📋 TodoBloc: Emitting TodosLoaded with ${event.todos.length} todos');
+    emit(TodosLoaded(event.todos));
   }
 
   void _onToggleTodoComplete(
@@ -306,5 +326,11 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   String _mapFailureToMessage(Failure failure) {
     // This would be more sophisticated in a real app
     return 'Failed to create todo: ${failure.message}';
+  }
+
+  @override
+  Future<void> close() async {
+    _todosSubscription?.cancel();
+    await super.close();
   }
 }

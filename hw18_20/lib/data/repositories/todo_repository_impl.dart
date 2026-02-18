@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 
@@ -26,6 +27,27 @@ class TodoRepositoryImpl implements TodoRepository {
       debugPrint('❌ TodoRepositoryImpl: Error fetching todos: $e');
       return Left(ServerFailure(message: e.toString()));
     }
+  }
+
+  @override
+  Stream<Either<Failure, List<TodoItem>>> watchTodos(String userId) {
+    debugPrint('📊 TodoRepositoryImpl: Setting up realtime stream for user: $userId');
+
+    return remoteDataSource.watchTodos(userId).map((todoModels) {
+      try {
+        debugPrint('📊 TodoRepositoryImpl: Realtime update - ${todoModels.length} todos');
+        final todos = todoModels.map((model) => model.toEntity()).toList();
+        return Right<Failure, List<TodoItem>>(todos);
+      } catch (e) {
+        debugPrint('❌ TodoRepositoryImpl: Error in realtime stream: $e');
+        return Left<Failure, List<TodoItem>>(ServerFailure(message: e.toString()));
+      }
+    }).transform(StreamTransformer<Either<Failure, List<TodoItem>>, Either<Failure, List<TodoItem>>>.fromHandlers(
+      handleError: (error, stackTrace, sink) {
+        debugPrint('❌ TodoRepositoryImpl: Realtime stream error: $error');
+        sink.add(Left<Failure, List<TodoItem>>(ServerFailure(message: error.toString())));
+      },
+    ));
   }
 
   @override

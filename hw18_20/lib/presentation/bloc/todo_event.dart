@@ -96,6 +96,15 @@ class ShowTodoErrorEvent extends TodoEvent {
   List<Object?> get props => [message];
 }
 
+class TodosLoadedEvent extends TodoEvent {
+  const TodosLoadedEvent(this.todos);
+
+  final List<TodoItem> todos;
+
+  @override
+  List<Object?> get props => [todos];
+}
+
 class ReorderTodosEvent extends TodoEvent {
   const ReorderTodosEvent({required this.oldIndex, required this.newIndex});
 

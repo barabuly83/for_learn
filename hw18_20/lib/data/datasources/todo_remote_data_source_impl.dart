@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
@@ -43,6 +44,33 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
       debugPrint('❌ TodoRemoteDataSourceImpl: Error fetching todos: $e');
       rethrow;
     }
+  }
+
+  @override
+  Stream<List<TodoItemModel>> watchTodos(String userId) {
+    debugPrint('🔥 TodoRemoteDataSourceImpl: Setting up realtime listener for user: $userId');
+
+    return _firestore
+        .collection('todos')
+        .where('userId', isEqualTo: userId)
+        .orderBy('order')
+        .snapshots()
+        .map((querySnapshot) {
+          debugPrint('🔥 TodoRemoteDataSourceImpl: Realtime update - ${querySnapshot.docs.length} documents');
+
+          final todos = querySnapshot.docs
+              .map((doc) => TodoItemModel.fromFirestore(doc))
+              .toList();
+
+          debugPrint('🔥 TodoRemoteDataSourceImpl: Realtime parsed ${todos.length} todos');
+          return todos;
+        })
+        .transform(StreamTransformer<List<TodoItemModel>, List<TodoItemModel>>.fromHandlers(
+          handleError: (error, stackTrace, sink) {
+            debugPrint('❌ TodoRemoteDataSourceImpl: Realtime listener error: $error');
+            // Don't add anything to sink on error - let it propagate
+          },
+        ));
   }
 
   @override
