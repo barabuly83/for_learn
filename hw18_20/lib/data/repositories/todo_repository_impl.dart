@@ -31,23 +31,41 @@ class TodoRepositoryImpl implements TodoRepository {
 
   @override
   Stream<Either<Failure, List<TodoItem>>> watchTodos(String userId) {
-    debugPrint('📊 TodoRepositoryImpl: Setting up realtime stream for user: $userId');
+    debugPrint(
+      '📊 TodoRepositoryImpl: Setting up realtime stream for user: $userId',
+    );
 
-    return remoteDataSource.watchTodos(userId).map((todoModels) {
-      try {
-        debugPrint('📊 TodoRepositoryImpl: Realtime update - ${todoModels.length} todos');
-        final todos = todoModels.map((model) => model.toEntity()).toList();
-        return Right<Failure, List<TodoItem>>(todos);
-      } catch (e) {
-        debugPrint('❌ TodoRepositoryImpl: Error in realtime stream: $e');
-        return Left<Failure, List<TodoItem>>(ServerFailure(message: e.toString()));
-      }
-    }).transform(StreamTransformer<Either<Failure, List<TodoItem>>, Either<Failure, List<TodoItem>>>.fromHandlers(
-      handleError: (error, stackTrace, sink) {
-        debugPrint('❌ TodoRepositoryImpl: Realtime stream error: $error');
-        sink.add(Left<Failure, List<TodoItem>>(ServerFailure(message: error.toString())));
-      },
-    ));
+    return remoteDataSource
+        .watchTodos(userId)
+        .map((todoModels) {
+          try {
+            debugPrint(
+              '📊 TodoRepositoryImpl: Realtime update - ${todoModels.length} todos',
+            );
+            final todos = todoModels.map((model) => model.toEntity()).toList();
+            return Right<Failure, List<TodoItem>>(todos);
+          } catch (e) {
+            debugPrint('❌ TodoRepositoryImpl: Error in realtime stream: $e');
+            return Left<Failure, List<TodoItem>>(
+              ServerFailure(message: e.toString()),
+            );
+          }
+        })
+        .transform(
+          StreamTransformer<
+            Either<Failure, List<TodoItem>>,
+            Either<Failure, List<TodoItem>>
+          >.fromHandlers(
+            handleError: (error, stackTrace, sink) {
+              debugPrint('❌ TodoRepositoryImpl: Realtime stream error: $error');
+              sink.add(
+                Left<Failure, List<TodoItem>>(
+                  ServerFailure(message: error.toString()),
+                ),
+              );
+            },
+          ),
+        );
   }
 
   @override

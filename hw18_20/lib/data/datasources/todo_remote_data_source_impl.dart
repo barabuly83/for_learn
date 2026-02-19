@@ -48,7 +48,9 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
 
   @override
   Stream<List<TodoItemModel>> watchTodos(String userId) {
-    debugPrint('🔥 TodoRemoteDataSourceImpl: Setting up realtime listener for user: $userId');
+    debugPrint(
+      '🔥 TodoRemoteDataSourceImpl: Setting up realtime listener for user: $userId',
+    );
 
     return _firestore
         .collection('todos')
@@ -56,21 +58,32 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
         .orderBy('order')
         .snapshots()
         .map((querySnapshot) {
-          debugPrint('🔥 TodoRemoteDataSourceImpl: Realtime update - ${querySnapshot.docs.length} documents');
+          debugPrint(
+            '🔥 TodoRemoteDataSourceImpl: Realtime update - ${querySnapshot.docs.length} documents',
+          );
 
           final todos = querySnapshot.docs
               .map((doc) => TodoItemModel.fromFirestore(doc))
               .toList();
 
-          debugPrint('🔥 TodoRemoteDataSourceImpl: Realtime parsed ${todos.length} todos');
+          debugPrint(
+            '🔥 TodoRemoteDataSourceImpl: Realtime parsed ${todos.length} todos',
+          );
           return todos;
         })
-        .transform(StreamTransformer<List<TodoItemModel>, List<TodoItemModel>>.fromHandlers(
-          handleError: (error, stackTrace, sink) {
-            debugPrint('❌ TodoRemoteDataSourceImpl: Realtime listener error: $error');
-            // Don't add anything to sink on error - let it propagate
-          },
-        ));
+        .transform(
+          StreamTransformer<
+            List<TodoItemModel>,
+            List<TodoItemModel>
+          >.fromHandlers(
+            handleError: (error, stackTrace, sink) {
+              debugPrint(
+                '❌ TodoRemoteDataSourceImpl: Realtime listener error: $error',
+              );
+              // Don't add anything to sink on error - let it propagate
+            },
+          ),
+        );
   }
 
   @override

@@ -78,6 +78,9 @@ dependencies:
   # Drag and drop reordering
   reorderables: ^0.6.0
 
+  # Environment variables
+  flutter_dotenv: ^5.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

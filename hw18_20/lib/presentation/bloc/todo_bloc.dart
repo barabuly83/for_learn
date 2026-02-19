@@ -105,31 +105,34 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     emit(const TodoLoading());
 
     // Set up realtime listener
-    _todosSubscription = todoRepository.watchTodos(userId).listen(
-      (result) {
-        result.fold(
-          (failure) {
-            debugPrint('❌ TodoBloc: Realtime error: ${failure.message}');
-            add(TodoErrorEvent(_mapFailureToMessage(failure)));
+    _todosSubscription = todoRepository
+        .watchTodos(userId)
+        .listen(
+          (result) {
+            result.fold(
+              (failure) {
+                debugPrint('❌ TodoBloc: Realtime error: ${failure.message}');
+                add(TodoErrorEvent(_mapFailureToMessage(failure)));
+              },
+              (todos) {
+                debugPrint(
+                  '✅ TodoBloc: Realtime update - ${todos.length} todos',
+                );
+                add(TodosLoadedEvent(todos));
+              },
+            );
           },
-          (todos) {
-            debugPrint('✅ TodoBloc: Realtime update - ${todos.length} todos');
-            add(TodosLoadedEvent(todos));
+          onError: (Object error) {
+            debugPrint('❌ TodoBloc: Realtime stream error: $error');
+            add(TodoErrorEvent('Failed to watch todos: $error'));
           },
         );
-      },
-      onError: (Object error) {
-        debugPrint('❌ TodoBloc: Realtime stream error: $error');
-        add(TodoErrorEvent('Failed to watch todos: $error'));
-      },
-    );
   }
 
-  void _onTodosLoaded(
-    TodosLoadedEvent event,
-    Emitter<TodoState> emit,
-  ) {
-    debugPrint('📋 TodoBloc: Emitting TodosLoaded with ${event.todos.length} todos');
+  void _onTodosLoaded(TodosLoadedEvent event, Emitter<TodoState> emit) {
+    debugPrint(
+      '📋 TodoBloc: Emitting TodosLoaded with ${event.todos.length} todos',
+    );
     emit(TodosLoaded(event.todos));
   }
 
